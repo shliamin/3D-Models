@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Tent Model</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <h1>Interactive Tent Model</h1>
@@ -17,6 +19,19 @@
         <input type="number" id="height" value="120" step="1" min="1" onchange="updateModel()">
     </div>
     <div id="tentModel" style="width: 100%; height: 600px;"></div>
+    <div>
+        <h2>Mathematical Formula</h2>
+        <p>Arc coordinates calculation:</p>
+        <p>\[
+        x = \text{midX} + (p0_x - \text{midX}) \cdot \cos(\pi \cdot t)
+        \]</p>
+        <p>\[
+        y = \text{midY} + (p0_y - \text{midY}) \cdot \cos(\pi \cdot t)
+        \]</p>
+        <p>\[
+        z = \text{height} \cdot \sin(\pi \cdot t)
+        \]</p>
+    </div>
     <script>
         // Function to create a circular arc
         function circularArc(p0, p1, height, num_points=100) {
