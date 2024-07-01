@@ -32,6 +32,9 @@
             margin-top: 10px;
             display: inline-block;
         }
+        .toggle-group {
+            margin-top: 10px;
+        }
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -70,6 +73,11 @@
         <div class="surface-area">
             <h2>Surface Area</h2>
             <p id="surfaceArea">Surface area: 0 m²</p>
+        </div>
+        <div class="toggle-group">
+            <label><input type="checkbox" id="surface1" checked onchange="updateModel()"> Surface 1</label>
+            <label><input type="checkbox" id="surface2" checked onchange="updateModel()"> Surface 2</label>
+            <label><input type="checkbox" id="surface3" checked onchange="updateModel()"> Surface 3</label>
         </div>
     </div>
     <div class="model" id="tentModel" style="width: 100%; height: 700px;"></div>
@@ -124,7 +132,7 @@
             return surface;
         }
 
-        // Function to calculate the surface area of the tent
+        // Function to calculate the surface area of a surface
         function calculateSurfaceArea(surface, num_points=100) {
             let area = 0;
 
@@ -181,58 +189,98 @@
             // Draw arcs intersecting at the tent's top vertex
             let arc1 = circularArc(vertices[0], vertices[3], height);
             let arc2 = circularArc(vertices[1], vertices[2], height);
+            let arc3 = circularArc(vertices[0], vertices[1], height);
+            let arc4 = circularArc(vertices[2], vertices[3], height);
 
             // Interpolate to create surface points between arcs
-            let surface = interpolateSurface(arc1, arc2);
+            let surface1 = interpolateSurface(arc1, arc2);
+            let surface2 = interpolateSurface(arc1, arc3);
+            let surface3 = interpolateSurface(arc2, arc4);
 
-            // Calculate surface area
-            let area = calculateSurfaceArea(surface);
-            document.getElementById('surfaceArea').innerText = `Surface area: ${area.toFixed(2)} m²`;
+            // Calculate surface areas
+            let area1 = calculateSurfaceArea(surface1);
+            let area2 = calculateSurfaceArea(surface2);
+            let area3 = calculateSurfaceArea(surface3);
 
-            let data = [
-                {
-                    x: arc1.x,
-                    y: arc1.y,
-                    z: arc1.z,
-                    mode: 'lines',
-                    line: {
-                        color: 'blue',
-                        width: 5
-                    },
-                    type: 'scatter3d'
-                },
-                {
-                    x: arc2.x,
-                    y: arc2.y,
-                    z: arc2.z,
-                    mode: 'lines',
-                    line: {
-                        color: 'blue',
-                        width: 5
-                    },
-                    type: 'scatter3d'
-                },
-                {
-                    x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
-                    y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
-                    z: [vertices[0][2], vertices[1][2], vertices[3][2], vertices[2][2], vertices[0][2]],
-                    mode: 'lines',
-                    line: {
-                        color: 'blue',
-                        width: 5
-                    },
-                    type: 'scatter3d'
-                },
-                {
-                    x: surface.x,
-                    y: surface.y,
-                    z: surface.z,
+            // Initialize total area
+            let totalArea = 0;
+
+            // Check which surfaces are enabled
+            let data = [];
+            if (document.getElementById('surface1').checked) {
+                totalArea += area1;
+                data.push({
+                    x: surface1.x,
+                    y: surface1.y,
+                    z: surface1.z,
                     type: 'surface',
                     colorscale: [[0, 'rgba(0, 255, 255, 0.3)'], [1, 'rgba(0, 255, 255, 0.3)']],
                     opacity: 0.7,
                     showscale: false
-                }
-            ];
+                });
+            }
+            if (document.getElementById('surface2').checked) {
+                totalArea += area2;
+                data.push({
+                    x: surface2.x,
+                    y: surface2.y,
+                    z: surface2.z,
+                    type: 'surface',
+                    colorscale: [[0, 'rgba(255, 0, 0, 0.3)'], [1, 'rgba(255, 0, 0, 0.3)']],
+                    opacity: 0.7,
+                    showscale: false
+                });
+            }
+            if (document.getElementById('surface3').checked) {
+                totalArea += area3;
+                data.push({
+                    x: surface3.x,
+                    y: surface3.y,
+                    z: surface3.z,
+                    type: 'surface',
+                    colorscale: [[0, 'rgba(0, 255, 0, 0.3)'], [1, 'rgba(0, 255, 0, 0.3)']],
+                    opacity: 0.7,
+                    showscale: false
+                });
+            }
+
+            // Update total surface area
+            document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
+
+            // Add arcs and edges
+            data.push({
+                x: arc1.x,
+                y: arc1.y,
+                z: arc1.z,
+                mode: 'lines',
+                line: {
+                    color: 'blue',
+                    width: 5
+                },
+                type: 'scatter3d'
+            });
+            data.push({
+                x: arc2.x,
+                y: arc2.y,
+                z: arc2.z,
+                mode: 'lines',
+                line: {
+                    color: 'blue',
+                    width: 5
+                },
+                type: 'scatter3d'
+            });
+            data.push({
+                x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
+                y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
+                z: [vertices[0][2], vertices[1][2], vertices[3][2], vertices[2][2], vertices[0][2]],
+                mode: 'lines',
+                line: {
+                    color: 'blue',
+                    width: 5
+                },
+                type: 'scatter3d'
+            });
 
             let layout = {
                 scene: {
