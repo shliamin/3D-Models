@@ -6,141 +6,76 @@
     <title>Interactive 3D Circles</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
-        body { margin: 0; display: flex; flex-direction: column; align-items: center; }
-        #plot { width: 100%; height: 80vh; }
-        .controls { display: flex; flex-direction: column; align-items: center; margin-top: 20px; }
-        .control-group { margin-bottom: 10px; }
+        body { margin: 0; }
+        #plot { width: 100%; height: 100vh; }
     </style>
 </head>
 <body>
     <div id="plot"></div>
-    <div class="controls">
-        <div class="control-group">
-            <label>Intersection 1-1 (X, Y, Z): <input id="int1_1_x" type="number" step="0.1"> <input id="int1_1_y" type="number" step="0.1"> <input id="int1_1_z" type="number" step="0.1"></label>
-        </div>
-        <div class="control-group">
-            <label>Intersection 1-2 (X, Y, Z): <input id="int1_2_x" type="number" step="0.1"> <input id="int1_2_y" type="number" step="0.1"> <input id="int1_2_z" type="number" step="0.1"></label>
-        </div>
-        <div class="control-group">
-            <label>Intersection 2-1 (X, Y, Z): <input id="int2_1_x" type="number" step="0.1"> <input id="int2_1_y" type="number" step="0.1"> <input id="int2_1_z" type="number" step="0.1"></label>
-        </div>
-        <div class="control-group">
-            <label>Intersection 2-2 (X, Y, Z): <input id="int2_2_x" type="number" step="0.1"> <input id="int2_2_y" type="number" step="0.1"> <input id="int2_2_z" type="number" step="0.1"></label>
-        </div>
-        <div class="control-group">
-            <label>Intersection Both (X, Y, Z): <input id="int_both_x" type="number" step="0.1"> <input id="int_both_y" type="number" step="0.1"> <input id="int_both_z" type="number" step="0.1"></label>
-        </div>
-        <button onclick="updateCoordinates()">Update Coordinates</button>
-    </div>
     <script>
-        // Пересечения первого круга с полом
-        var intersection1_1 = [5, 0, 0];
-        var intersection1_2 = [-5, 0, 0];
+        var data = [];
 
-        // Пересечения второго круга с полом
-        var intersection2_1 = [0, 5, 0];
-        var intersection2_2 = [0, -5, 0];
-
-        // Пересечение обоих кругов
-        var intersection_both = [0, 0, 5];
-
-        function updatePlot() {
-            var data = [];
-
-            // Создание первого круга (вертикально относительно пола)
-            var theta1 = [];
-            var x1 = [];
-            var z1 = [];
-            for (var i = 0; i <= 360; i++) {
-                theta1.push(i);
-                x1.push(Math.cos(i * Math.PI / 180) * 5);
-                z1.push(Math.sin(i * Math.PI / 180) * 5);
-            }
-            var circle1 = {
-                type: 'scatter3d',
-                mode: 'lines',
-                x: x1,
-                y: Array(theta1.length).fill(0),
-                z: z1.filter(z => z >= 0), // Убираем нижнюю половину круга
-                line: {color: 'blue', width: 4}
-            };
-            data.push(circle1);
-
-            // Создание второго круга (перпендикулярно первому)
-            var theta2 = [];
-            var y2 = [];
-            var z2 = [];
-            for (var i = 0; i <= 360; i++) {
-                theta2.push(i);
-                y2.push(Math.cos(i * Math.PI / 180) * 5);
-                z2.push(Math.sin(i * Math.PI / 180) * 5);
-            }
-            var circle2 = {
-                type: 'scatter3d',
-                mode: 'lines',
-                x: Array(theta2.length).fill(0),
-                y: y2,
-                z: z2,
-                line: {color: 'blue', width: 4}
-            };
-            data.push(circle2);
-
-            // Создание пола
-            var planeX = [intersection1_1[0], intersection1_2[0], 0, 0];
-            var planeY = [0, 0, intersection2_1[1], intersection2_2[1]];
-            var planeZ = [0, 0, 0, 0];
-            var plane = {
-                type: 'mesh3d',
-                x: planeX,
-                y: planeY,
-                z: planeZ,
-                opacity: 0.5,
-                color: 'blue'
-            };
-            data.push(plane);
-
-            var layout = {
-                scene: {
-                    xaxis: {range: [-10, 10]},
-                    yaxis: {range: [-10, 10]},
-                    zaxis: {range: [0, 20]}, // Убираем нижнюю часть
-                }
-            };
-
-            Plotly.newPlot('plot', data, layout);
+        // Создание первого круга (вертикально относительно пола)
+        var theta1 = [];
+        var x1 = [];
+        var z1 = [];
+        for (var i = 0; i <= 360; i++) {
+            theta1.push(i);
+            x1.push(Math.cos(i * Math.PI / 180) * 5);
+            z1.push(Math.sin(i * Math.PI / 180) * 5);
         }
+        var circle1 = {
+            type: 'scatter3d',
+            mode: 'lines',
+            x: x1,
+            y: Array(theta1.length).fill(0),
+            z: z1.filter(z => z >= 0), // Убираем нижнюю половину круга
+            line: {color: 'blue', width: 4}
+        };
+        data.push(circle1);
 
-        function updateCoordinates() {
-            intersection1_1 = [parseFloat(document.getElementById('int1_1_x').value), parseFloat(document.getElementById('int1_1_y').value), parseFloat(document.getElementById('int1_1_z').value)];
-            intersection1_2 = [parseFloat(document.getElementById('int1_2_x').value), parseFloat(document.getElementById('int1_2_y').value), parseFloat(document.getElementById('int1_2_z').value)];
-            intersection2_1 = [parseFloat(document.getElementById('int2_1_x').value), parseFloat(document.getElementById('int2_1_y').value), parseFloat(document.getElementById('int2_1_z').value)];
-            intersection2_2 = [parseFloat(document.getElementById('int2_2_x').value), parseFloat(document.getElementById('int2_2_y').value), parseFloat(document.getElementById('int2_2_z').value)];
-            intersection_both = [parseFloat(document.getElementById('int_both_x').value), parseFloat(document.getElementById('int_both_y').value), parseFloat(document.getElementById('int_both_z').value)];
-            updatePlot();
+        // Создание второго круга (перпендикулярно первому)
+        var theta2 = [];
+        var y2 = [];
+        var z2 = [];
+        for (var i = 0; i <= 360; i++) {
+            theta2.push(i);
+            y2.push(Math.cos(i * Math.PI / 180) * 5);
+            z2.push(Math.sin(i * Math.PI / 180) * 5);
         }
+        var circle2 = {
+            type: 'scatter3d',
+            mode: 'lines',
+            x: Array(theta2.length).fill(0),
+            y: y2,
+            z: z2,
+            line: {color: 'blue', width: 4}
+        };
+        data.push(circle2);
 
-        // Инициализация значений в полях ввода
-        document.getElementById('int1_1_x').value = intersection1_1[0];
-        document.getElementById('int1_1_y').value = intersection1_1[1];
-        document.getElementById('int1_1_z').value = intersection1_1[2];
+        // Создание пола
+        var planeX = [-5, 5, 0, 0];
+        var planeY = [0, 0, -5, 5];
+        var planeZ = [0, 0, 0, 0];
+        var plane = {
+            type: 'mesh3d',
+            x: planeX,
+            y: planeY,
+            z: planeZ,
+            opacity: 0.5,
+            color: 'blue'
+        };
+        data.push(plane);
 
-        document.getElementById('int1_2_x').value = intersection1_2[0];
-        document.getElementById('int1_2_y').value = intersection1_2[1];
-        document.getElementById('int1_2_z').value = intersection1_2[2];
+        var layout = {
+            scene: {
+                xaxis: {range: [-10, 10]},
+                yaxis: {range: [-10, 10]},
+                zaxis: {range: [0, 20]}, // Убираем нижнюю часть
+            }
+        };
 
-        document.getElementById('int2_1_x').value = intersection2_1[0];
-        document.getElementById('int2_1_y').value = intersection2_1[1];
-        document.getElementById('int2_1_z').value = intersection2_1[2];
-
-        document.getElementById('int2_2_x').value = intersection2_2[0];
-        document.getElementById('int2_2_y').value = intersection2_2[1];
-        document.getElementById('int2_2_z').value = intersection2_2[2];
-
-        document.getElementById('int_both_x').value = intersection_both[0];
-        document.getElementById('int_both_y').value = intersection_both[1];
-        document.getElementById('int_both_z').value = intersection_both[2];
-
-        updatePlot();
+        Plotly.newPlot('plot', data, layout);
 
         window.addEventListener('resize', () => {
             Plotly.Plots.resize(document.getElementById('plot'));
