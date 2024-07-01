@@ -9,12 +9,12 @@
 <body>
     <h1>Interactive Tent Model</h1>
     <div>
-        <label for="width">Width (m):</label>
-        <input type="number" id="width" value="1.4" step="0.1" min="0.1" onchange="updateModel()">
-        <label for="depth">Depth (m):</label>
-        <input type="number" id="depth" value="2.3" step="0.1" min="0.1" onchange="updateModel()">
-        <label for="height">Height (m):</label>
-        <input type="number" id="height" value="1.2" step="0.1" min="0.1" onchange="updateModel()">
+        <label for="width">Width (cm):</label>
+        <input type="number" id="width" value="140" step="1" min="1" onchange="updateModel()">
+        <label for="depth">Depth (cm):</label>
+        <input type="number" id="depth" value="230" step="1" min="1" onchange="updateModel()">
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" value="120" step="1" min="1" onchange="updateModel()">
     </div>
     <div id="tentModel" style="width: 100%; height: 600px;"></div>
     <script>
@@ -33,9 +33,10 @@
 
         // Функция для обновления модели палатки
         function updateModel() {
-            const width = parseFloat(document.getElementById('width').value);
-            const depth = parseFloat(document.getElementById('depth').value);
-            const height = parseFloat(document.getElementById('height').value);
+            // Получение значений в сантиметрах и преобразование их в метры
+            const width = parseFloat(document.getElementById('width').value) / 100;
+            const depth = parseFloat(document.getElementById('depth').value) / 100;
+            const height = parseFloat(document.getElementById('height').value) / 100;
 
             // Координаты вершин палатки
             let vertices = [
@@ -43,7 +44,7 @@
                 [width, 0, 0],     // Нижний передний правый угол
                 [0, depth, 0],     // Нижний задний левый угол
                 [width, depth, 0], // Нижний задний правый угол
-                [width/2, depth/2, height]  // Верхняя центральная точка
+                [width / 2, depth / 2, height]  // Верхняя центральная точка
             ];
 
             // Рисуем дуги, пересекающиеся в вершине палатки
