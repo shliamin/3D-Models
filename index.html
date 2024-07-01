@@ -21,26 +21,20 @@
         // Функция для создания дуги окружности
         function circularArc(p0, p1, height, num_points=100) {
             let arc = {x: [], y: [], z: []};
-            let cx = (p0[0] + p1[0]) / 2;
-            let cy = (p0[1] + p1[1]) / 2;
-            let radius = Math.sqrt((p0[0] - p1[0]) ** 2 + (p0[1] - p1[1]) ** 2) / 2;
+            let cx = (p0[0] + p1[0]) / 2;  // Центр дуги по X
+            let cy = (p0[1] + p1[1]) / 2;  // Центр дуги по Y
+            let radius = Math.sqrt((p0[0] - p1[0]) ** 2 + (p0[1] - p1[1]) ** 2) / 2; // Радиус дуги
 
             for (let i = 0; i < num_points; i++) {
                 let t = i / (num_points - 1);
-                let angle = Math.PI * t;
-                
-                let x = (1 - t) * p0[0] + t * p1[0];
-                let y = (1 - t) * p0[1] + t * p1[1];
-                let z = height * Math.sin(angle);
+                let angle = Math.PI * t;  // Угол для текущей точки
 
-                // Calculate the actual arc position
-                let dx = x - cx;
-                let dy = y - cy;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                let scale = radius / distance;
+                let x = cx + radius * Math.cos(Math.PI - angle);  // Вычисляем x координату
+                let y = cy + radius * Math.sin(Math.PI - angle);  // Вычисляем y координату
+                let z = height * Math.sin(angle);  // z координата для высоты дуги
 
-                arc.x.push(cx + dx * scale);
-                arc.y.push(cy + dy * scale);
+                arc.x.push(x);
+                arc.y.push(y);
                 arc.z.push(z);
             }
 
