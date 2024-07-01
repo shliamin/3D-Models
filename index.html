@@ -78,6 +78,7 @@
             <label><input type="checkbox" id="surface1" checked onchange="updateModel()"> Surface 1</label>
             <label><input type="checkbox" id="surface2" checked onchange="updateModel()"> Surface 2</label>
         </div>
+        <button onclick="downloadModel()">Download Model</button>
     </div>
     <div class="model" id="tentModel" style="width: 100%; height: 700px;"></div>
     
@@ -131,7 +132,7 @@
             return surface;
         }
 
-        // Function to extrapolite two arcs to create surface points
+        // Function to extrapolate two arcs to create surface points
         function extrapolateSurface(p0, p1, height, t_extrap, num_points=100) {
             let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
             let arc = {x: [], y: [], z: []};
@@ -194,14 +195,38 @@
             return area;
         }
 
-        // Function to update the tent model
-        function updateModel() {
-            // Get values in centimeters and convert to meters
+        // Function to generate OBJ file content
+        function generateOBJ(vertices, surfaces) {
+            let objContent = '';
+            let vertexOffset = 1;
+        
+            vertices.forEach(v => {
+                objContent += `v ${v[0]} ${v[1]} ${v[2]}\n`;
+            });
+        
+            surfaces.forEach(surface => {
+                for (let i = 0; i < surface.x.length - 1; i++) {
+                    for (let j = 0; j < surface.x[i].length - 1; j++) {
+                        let v1 = vertexOffset + i * surface.x[i].length + j;
+                        let v2 = v1 + 1;
+                        let v3 = v1 + surface.x[i].length;
+                        let v4 = v3 + 1;
+                        objContent += `f ${v1} ${v2} ${v4}\n`;
+                        objContent += `f ${v1} ${v4} ${v3}\n`;
+                    }
+                }
+                vertexOffset += surface.x.length * surface.x[0].length;
+            });
+        
+            return objContent;
+        }
+
+        // Function to download the model as an OBJ file
+        function downloadModel() {
             const width = parseFloat(document.getElementById('width').value) / 100;
             const depth = parseFloat(document.getElementById('depth').value) / 100;
             const height = parseFloat(document.getElementById('height').value) / 100;
 
-            // Tent vertices coordinates
             let vertices = [
                 [0, 0, 0],         // Bottom front left corner
                 [width, 0, 0],     // Bottom front right corner
@@ -210,24 +235,46 @@
                 [width / 2, depth / 2, height]  // Top center point
             ];
 
-            // Draw arcs intersecting at the tent's top vertex
+            let arc1 = circularArc(vertices[0], vertices[3], height);
+            let arc2 = circularArc(vertices[1], vertices[2], height);
+            let surface1 = interpolateSurface(arc1, arc2);
+            
+            let surfaces = [surface1];
+            let objContent = generateOBJ(vertices, surfaces);
+
+            let blob = new Blob([objContent], {type: 'text/plain'});
+            let link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'tent_model.obj';
+            link.click();
+        }
+
+        // Function to update the tent model
+        function updateModel() {
+            const width = parseFloat(document.getElementById('width').value) / 100;
+            const depth = parseFloat(document.getElementById('depth').value) / 100;
+            const height = parseFloat(document.getElementById('height').value) / 100;
+
+            let vertices = [
+                [0, 0, 0],         // Bottom front left corner
+                [width, 0, 0],     // Bottom front right corner
+                [0, depth, 0],     // Bottom back left corner
+                [width, depth, 0], // Bottom back right corner
+                [width / 2, depth / 2, height]  // Top center point
+            ];
+
             let arc1 = circularArc(vertices[0], vertices[3], height);
             let arc2 = circularArc(vertices[1], vertices[2], height);
             let arc3 = circularArc(vertices[0], vertices[3], height);
             let arc4 = circularArc(vertices[2], vertices[1], height);
 
-            // Interpolate to create surface points between arcs
             let surface1 = interpolateSurface(arc1, arc2);
             let surface2a = interpolateSurface(arc3, arc4);
 
-            // Calculate surface areas
             let area1 = calculateSurfaceArea(surface1);
             let area2a = calculateSurfaceArea(surface2a);
 
-            // Initialize total area
             let totalArea = 0;
-
-            // Check which surfaces are enabled
             let data = [];
             if (document.getElementById('surface1').checked) {
                 totalArea += area1;
@@ -254,10 +301,8 @@
                 });
             }
 
-            // Update total surface area
             document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
 
-            // Add arcs and edges
             data.push({
                 x: arc1.x,
                 y: arc1.y,
@@ -296,15 +341,15 @@
                 scene: {
                     xaxis: {
                         title: 'Width',
-                        dtick: 0.1  // Grid step for X axis 10 cm
+                        dtick: 0.1
                     },
                     yaxis: {
                         title: 'Depth',
-                        dtick: 0.1  // Grid step for Y axis 10 cm
+                        dtick: 0.1
                     },
                     zaxis: {
                         title: 'Height',
-                        dtick: 0.1  // Grid step for Z axis 10 cm
+                        dtick: 0.1
                     },
                     aspectratio: {x: width, y: depth, z: height}
                 },
@@ -323,7 +368,6 @@
             Plotly.newPlot('tentModel', data, layout);
         }
 
-        // Initialize the model on page load
         updateModel();
     </script>
 </body>
