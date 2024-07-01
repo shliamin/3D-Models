@@ -334,7 +334,7 @@
             const depth = parseFloat(document.getElementById('depth').value);
             const height = parseFloat(document.getElementById('height').value);
 
-            const response = await fetch('/generate', {
+            const response = await fetch('http://127.0.0.1:5000/generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -352,7 +352,7 @@
                 <p>${JSON.stringify(data.patterns.base)}</p>
                 <h3>Side</h3>
                 <p>${JSON.stringify(data.patterns.side)}</p>
-                <a href="/download/tent.obj">Download 3D Model (OBJ)</a>
+                <a href="http://127.0.0.1:5000/download/tent.obj">Download 3D Model (OBJ)</a>
             `;
         }
     </script>
