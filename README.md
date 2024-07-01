@@ -1,5 +1,6 @@
 
 # Interactive Tent Model
+### Efim Shliamin
 
 An interactive 3D tent model visualizer using Plotly.js, allowing users to input dimensions, toggle surfaces, and dynamically view the structure with real-time surface area calculations.
 
