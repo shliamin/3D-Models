@@ -58,6 +58,22 @@
             return arc;
         }
 
+        // Function to create a polygon between two arcs
+        function createPolygon(arc1, arc2) {
+            return {
+                x: [...arc1.x, ...arc2.x.reverse()],
+                y: [...arc1.y, ...arc2.y.reverse()],
+                z: [...arc1.z, ...arc2.z.reverse()],
+                mode: 'lines',
+                type: 'scatter3d',
+                fill: 'toself',
+                fillcolor: 'rgba(0, 128, 255, 0.5)',
+                line: {
+                    color: 'rgba(0, 128, 255, 0.5)'
+                }
+            };
+        }
+
         // Function to update the tent model
         function updateModel() {
             // Get values in centimeters and convert to meters
@@ -77,6 +93,9 @@
             // Draw arcs intersecting at the tent's top vertex
             let arc1 = circularArc(vertices[0], vertices[3], height);
             let arc2 = circularArc(vertices[1], vertices[2], height);
+
+            // Create a polygon connecting the two arcs
+            let polygon = createPolygon(arc1, arc2);
 
             let data = [
                 {
@@ -101,6 +120,7 @@
                     },
                     type: 'scatter3d'
                 },
+                polygon,
                 {
                     x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
                     y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
