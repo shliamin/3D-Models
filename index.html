@@ -351,22 +351,34 @@
             let surface1 = interpolateSurface(arc1, arc2);
             let surface2a = interpolateSurface(arc3, arc4);
 
-            // Transform 3D points to 2D by dropping the z coordinate
-            let surface1_2D = {
-                x: surface1.x.map(row => row.map(x => x * 100)),
-                y: surface1.y.map(row => row.map(y => y * 100))
-            };
+            // Function to flatten a 3D surface to 2D
+            function flattenSurface(surface) {
+                let flattened = { x: [], y: [] };
 
-            let surface2_2D = {
-                x: surface2a.x.map(row => row.map(x => x * 100)),
-                y: surface2a.y.map(row => row.map(y => y * 100))
-            };
+                for (let i = 0; i < surface.x.length; i++) {
+                    for (let j = 0; j < surface.x[i].length; j++) {
+                        let x = surface.x[i][j];
+                        let y = surface.y[i][j];
+                        let z = surface.z[i][j];
 
-            // Plot 2D projections
+                        // Flatten the surface by projecting along the z-axis
+                        flattened.x.push(x);
+                        flattened.y.push(Math.sqrt(y * y + z * z));
+                    }
+                }
+
+                return flattened;
+            }
+
+            // Flatten Surface 1 and Surface 2
+            let flatSurface1 = flattenSurface(surface1);
+            let flatSurface2 = flattenSurface(surface2a);
+
+            // Plot 2D flattened surfaces
             let data = [
                 {
-                    x: surface1_2D.x.flat(),
-                    y: surface1_2D.y.flat(),
+                    x: flatSurface1.x.map(x => x * 100),
+                    y: flatSurface1.y.map(y => y * 100),
                     mode: 'markers',
                     type: 'scatter',
                     name: 'Surface 1',
@@ -375,8 +387,8 @@
                     }
                 },
                 {
-                    x: surface2_2D.x.flat(),
-                    y: surface2_2D.y.flat(),
+                    x: flatSurface2.x.map(x => x * 100),
+                    y: flatSurface2.y.map(y => y * 100),
                     mode: 'markers',
                     type: 'scatter',
                     name: 'Surface 2',
@@ -395,7 +407,7 @@
                     title: 'Y (cm)',
                     dtick: 10
                 },
-                aspectratio: {x: 1, y: 1},
+                aspectratio: { x: 1, y: 1 },
                 margin: {
                     l: 0,
                     r: 0,
