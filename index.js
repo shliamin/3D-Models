@@ -234,20 +234,28 @@ async function generateModel() {
         surface2
     };
 
-    const response = await fetch('http://127.0.0.1:5001/generate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    });
+    try {
+        const response = await fetch('http://127.0.0.1:5001/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
 
-    // Create a link element to download the file
-    const blob = await response.blob();
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'tent.obj';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        // Create a link element to download the file
+        const blob = await response.blob();
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'tent.obj';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+    }
 }
