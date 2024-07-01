@@ -18,35 +18,24 @@
     </div>
     <div id="tentModel" style="width: 100%; height: 600px;"></div>
     <script>
-        // Функция для создания дуги окружности
-        function circularArc(p0, p1, height, num_points=100) {
-            let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
-            let arc = {x: [], y: [], z: []};
-
-            // Находим середину между p0 и p1
-            let midX = (p0[0] + p1[0]) / 2;
-            let midY = (p0[1] + p1[1]) / 2;
-
-            // Расстояние между p0 и p1 по горизонтали
-            let distance = Math.sqrt((p1[0] - p0[0]) ** 2 + (p1[1] - p0[1]) ** 2);
-
-            // Радиус окружности
-            let radius = Math.sqrt((distance / 2) ** 2 + height ** 2);
-
-            t.forEach(val => {
-                let angle = Math.PI * val;
-
-                // Используем параметрическое уравнение окружности для x и y координат
-                let x = midX + (distance / 2) * Math.cos(angle);
-                let y = midY + (distance / 2) * Math.sin(angle);
-                let z = height * Math.sin(angle);
-
-                arc.x.push(x);
-                arc.y.push(y);
-                arc.z.push(z);
+        // Функция для создания координат круга
+        function createCircle(radius, centerX, centerY, centerZ, plane, num_points=100) {
+            let t = Array.from({length: num_points}, (_, i) => 2 * Math.PI * i / num_points);
+            let circle = {x: [], y: [], z: []};
+            
+            t.forEach(angle => {
+                if (plane === 'xy') {
+                    circle.x.push(centerX + radius * Math.cos(angle));
+                    circle.y.push(centerY + radius * Math.sin(angle));
+                    circle.z.push(centerZ);
+                } else if (plane === 'xz') {
+                    circle.x.push(centerX + radius * Math.cos(angle));
+                    circle.y.push(centerY);
+                    circle.z.push(centerZ + radius * Math.sin(angle));
+                }
             });
-
-            return arc;
+        
+            return circle;
         }
 
         // Функция для обновления модели палатки
@@ -56,24 +45,21 @@
             const depth = parseFloat(document.getElementById('depth').value) / 100;
             const height = parseFloat(document.getElementById('height').value) / 100;
 
-            // Координаты вершин палатки
-            let vertices = [
-                [0, 0, 0],         // Нижний передний левый угол
-                [width, 0, 0],     // Нижний передний правый угол
-                [0, depth, 0],     // Нижний задний левый угол
-                [width, depth, 0], // Нижний задний правый угол
-                [width / 2, depth / 2, height]  // Верхняя центральная точка
-            ];
-
-            // Рисуем дуги, пересекающиеся в вершине палатки
-            let arc1 = circularArc(vertices[0], vertices[3], height);
-            let arc2 = circularArc(vertices[1], vertices[2], height);
+            // Центры и радиусы кругов
+            const centerX = width / 2;
+            const centerY = depth / 2;
+            const radiusX = width / 2;
+            const radiusY = depth / 2;
+            
+            // Создание кругов в плоскостях XY и XZ
+            let circle1 = createCircle(radiusX, centerX, 0, height / 2, 'xy');
+            let circle2 = createCircle(radiusY, centerX, centerY, height / 2, 'xz');
 
             let data = [
                 {
-                    x: arc1.x,
-                    y: arc1.y,
-                    z: arc1.z,
+                    x: circle1.x,
+                    y: circle1.y,
+                    z: circle1.z,
                     mode: 'lines',
                     line: {
                         color: 'blue',
@@ -82,23 +68,12 @@
                     type: 'scatter3d'
                 },
                 {
-                    x: arc2.x,
-                    y: arc2.y,
-                    z: arc2.z,
+                    x: circle2.x,
+                    y: circle2.y,
+                    z: circle2.z,
                     mode: 'lines',
                     line: {
-                        color: 'blue',
-                        width: 5
-                    },
-                    type: 'scatter3d'
-                },
-                {
-                    x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
-                    y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
-                    z: [vertices[0][2], vertices[1][2], vertices[3][2], vertices[2][2], vertices[0][2]],
-                    mode: 'lines',
-                    line: {
-                        color: 'cyan',
+                        color: 'red',
                         width: 5
                     },
                     type: 'scatter3d'
