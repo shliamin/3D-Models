@@ -1,0 +1,32 @@
+body {
+    display: flex;
+    flex-wrap: wrap;
+    font-family: Arial, sans-serif;
+}
+.content {
+    flex: 1;
+    padding: 10px;
+    min-width: 300px;
+}
+.model {
+    flex: 2;
+    padding: 10px;
+    min-width: 300px;
+}
+.input-group {
+    margin-bottom: 10px;
+}
+.surface-area {
+    border: 1px solid #000;
+    padding: 10px;
+    margin-top: 10px;
+    display: inline-block;
+}
+.toggle-group {
+    margin-top: 10px;
+}
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+}
