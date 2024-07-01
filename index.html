@@ -69,9 +69,9 @@
 
         var layout = {
             scene: {
-                xaxis: {range: [-10, 10]},
-                yaxis: {range: [-10, 10]},
-                zaxis: {range: [0, 20]}, // Убираем нижнюю часть
+                xaxis: {range: [-10, 10], autorange: false},
+                yaxis: {range: [-10, 10], autorange: false},
+                zaxis: {range: [0, 10], autorange: false} // Задаем фиксированный диапазон для оси Z
             }
         };
 
