@@ -23,28 +23,19 @@
             let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
             let arc = {x: [], y: [], z: []};
             
-            // Вычисление середины между p0 и p1
-            let mid_x = (p0[0] + p1[0]) / 2;
-            let mid_y = (p0[1] + p1[1]) / 2;
-            let mid_z = (p0[2] + p1[2]) / 2;
-        
-            // Вычисление точки на высоте height
-            let center_x = mid_x;
-            let center_y = mid_y;
-            let center_z = mid_z + height;
-        
             t.forEach(val => {
                 let angle = Math.PI * val;
         
-                // Касательные векторы от точки к центру
-                let tangent_x = (1 - val) * p0[0] + val * p1[0] - center_x;
-                let tangent_y = (1 - val) * p0[1] + val * p1[1] - center_y;
-                let tangent_z = -height * Math.sin(angle);
-        
-                // Добавление точки на дуге
-                arc.x.push(center_x + tangent_x * Math.cos(angle) - tangent_z * Math.sin(angle));
-                arc.y.push(center_y + tangent_y * Math.cos(angle));
-                arc.z.push(center_z + tangent_x * Math.sin(angle) + tangent_z * Math.cos(angle));
+                // Линейная интерполяция между p0 и p1 для x и y координат
+                let x = (1 - val) * p0[0] + val * p1[0];
+                let y = (1 - val) * p0[1] + val * p1[1];
+                
+                // Использование синусоида для z координаты для создания дуги
+                let z = height * Math.sin(angle);
+                
+                arc.x.push(x);
+                arc.y.push(y);
+                arc.z.push(z);
             });
         
             return arc;
