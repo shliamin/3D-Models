@@ -2,6 +2,7 @@
 
 import { updateModel } from './model.js';
 import { generateModel } from './server.js';
+import { generatePattern } from './server.js';
 
 document.getElementById('generateModelButton').onclick = generateModel;
 document.getElementById('width').onchange = updateModel;
