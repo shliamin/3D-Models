@@ -14,15 +14,15 @@
         <h1>Interactive Tent Model</h1>
         <div class="input-group">
             <label for="width">Width (cm):</label>
-            <input type="number" id="width" value="140" step="1" min="1" onchange="updateModel()">
+            <input type="number" id="width" value="140" step="1" min="1">
         </div>
         <div class="input-group">
             <label for="depth">Depth (cm):</label>
-            <input type="number" id="depth" value="230" step="1" min="1" onchange="updateModel()">
+            <input type="number" id="depth" value="230" step="1" min="1">
         </div>
         <div class="input-group">
             <label for="height">Height (cm):</label>
-            <input type="number" id="height" value="120" step="1" min="1" onchange="updateModel()">
+            <input type="number" id="height" value="120" step="1" min="1">
         </div>
         <div>
             <h2>Mathematical Formula</h2>
@@ -42,14 +42,14 @@
             <p id="surfaceArea">Surface area: 0 m²</p>
         </div>
         <div class="toggle-group">
-            <label><input type="checkbox" id="surface1" checked onchange="updateModel()"> Surface 1</label>
-            <label><input type="checkbox" id="surface2" checked onchange="updateModel()"> Surface 2</label>
+            <label><input type="checkbox" id="surface1" checked> Surface 1</label>
+            <label><input type="checkbox" id="surface2" checked> Surface 2</label>
         </div>
         <button id="generateModelButton">Generate Model</button>
         <div id="patternResults"></div>
     </div>
     <div class="model" id="tentModel" style="width: 100%; height: 700px;"></div>
     
-    <script src="index.js" type="module"></script>
+    <script type="module" src="index.js"></script>
 </body>
 </html>
