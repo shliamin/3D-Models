@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Tent Model</title>
+    <title>Interactive 3D Circles</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         body { margin: 0; }
@@ -15,48 +15,48 @@
     <script>
         var data = [];
 
-        // Создание первого круга
+        // Создание первого круга (вертикально относительно пола)
         var theta1 = [];
         var x1 = [];
-        var y1 = [];
+        var z1 = [];
         for (var i = 0; i <= 360; i++) {
             theta1.push(i);
             x1.push(Math.cos(i * Math.PI / 180) * 5);
-            y1.push(Math.sin(i * Math.PI / 180) * 5);
+            z1.push(Math.sin(i * Math.PI / 180) * 5);
         }
         var circle1 = {
             type: 'scatter3d',
             mode: 'lines',
             x: x1,
-            y: y1,
-            z: Array(theta1.length).fill(0),
+            y: Array(theta1.length).fill(0),
+            z: z1,
             line: {color: 'yellow', width: 6}
         };
         data.push(circle1);
 
-        // Создание второго круга
+        // Создание второго круга (перпендикулярно первому)
         var theta2 = [];
-        var x2 = [];
+        var y2 = [];
         var z2 = [];
         for (var i = 0; i <= 360; i++) {
             theta2.push(i);
-            x2.push(Math.cos(i * Math.PI / 180) * 5);
+            y2.push(Math.cos(i * Math.PI / 180) * 5);
             z2.push(Math.sin(i * Math.PI / 180) * 5);
         }
         var circle2 = {
             type: 'scatter3d',
             mode: 'lines',
-            x: x2,
-            y: Array(theta2.length).fill(5),
+            x: Array(theta2.length).fill(0),
+            y: y2,
             z: z2,
             line: {color: 'red', width: 6}
         };
         data.push(circle2);
 
-        // Создание плоскости для разрезания
+        // Создание плоскости для разрезания (перпендикулярной к кругам)
         var planeX = [-5, 5, 5, -5];
-        var planeY = [2.5, 2.5, 2.5, 2.5];
-        var planeZ = [-5, -5, 5, 5];
+        var planeY = [5, 5, -5, -5];
+        var planeZ = [0, 0, 0, 0];
         var plane = {
             type: 'mesh3d',
             x: planeX,
