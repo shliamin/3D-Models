@@ -18,21 +18,21 @@
     </div>
     <div id="tentModel" style="width: 100%; height: 600px;"></div>
     <script>
-        // Функция для создания дуги окружности
+        // Function to create a circular arc
         function circularArc(p0, p1, height, num_points=100) {
             let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
             let arc = {x: [], y: [], z: []};
             
-            // Вычисление среднего значения между p0 и p1
+            // Midpoint coordinates between p0 and p1
             let midX = (p0[0] + p1[0]) / 2;
             let midY = (p0[1] + p1[1]) / 2;
             
             t.forEach(val => {
                 let angle = Math.PI * val;
                 
-                // Вычисление координат дуги окружности
-                let x = midX + (p0[0] - midX) * Math.cos(angle) - (height / 2) * Math.sin(angle);
-                let y = midY + (p0[1] - midY) * Math.cos(angle) - (height / 2) * Math.sin(angle);
+                // Arc coordinates calculation
+                let x = midX + (p0[0] - midX) * Math.cos(angle);
+                let y = midY + (p0[1] - midY) * Math.cos(angle);
                 let z = height * Math.sin(angle);
                 
                 arc.x.push(x);
@@ -43,23 +43,23 @@
             return arc;
         }
 
-        // Функция для обновления модели палатки
+        // Function to update the tent model
         function updateModel() {
-            // Получение значений в сантиметрах и преобразование их в метры
+            // Get values in centimeters and convert to meters
             const width = parseFloat(document.getElementById('width').value) / 100;
             const depth = parseFloat(document.getElementById('depth').value) / 100;
             const height = parseFloat(document.getElementById('height').value) / 100;
 
-            // Координаты вершин палатки
+            // Tent vertices coordinates
             let vertices = [
-                [0, 0, 0],         // Нижний передний левый угол
-                [width, 0, 0],     // Нижний передний правый угол
-                [0, depth, 0],     // Нижний задний левый угол
-                [width, depth, 0], // Нижний задний правый угол
-                [width / 2, depth / 2, height]  // Верхняя центральная точка
+                [0, 0, 0],         // Bottom front left corner
+                [width, 0, 0],     // Bottom front right corner
+                [0, depth, 0],     // Bottom back left corner
+                [width, depth, 0], // Bottom back right corner
+                [width / 2, depth / 2, height]  // Top center point
             ];
 
-            // Рисуем дуги, пересекающиеся в вершине палатки
+            // Draw arcs intersecting at the tent's top vertex
             let arc1 = circularArc(vertices[0], vertices[3], height);
             let arc2 = circularArc(vertices[1], vertices[2], height);
 
@@ -103,15 +103,15 @@
                 scene: {
                     xaxis: {
                         title: 'Width',
-                        dtick: 0.1  // Шаг сетки по оси X 10 см
+                        dtick: 0.1  // Grid step for X axis 10 cm
                     },
                     yaxis: {
                         title: 'Depth',
-                        dtick: 0.1  // Шаг сетки по оси Y 10 см
+                        dtick: 0.1  // Grid step for Y axis 10 cm
                     },
                     zaxis: {
                         title: 'Height',
-                        dtick: 0.1  // Шаг сетки по оси Z 10 см
+                        dtick: 0.1  // Grid step for Z axis 10 cm
                     },
                     aspectratio: {x: width, y: depth, z: height}
                 },
@@ -126,7 +126,7 @@
             Plotly.newPlot('tentModel', data, layout);
         }
 
-        // Инициализация модели при загрузке страницы
+        // Initialize the model on page load
         updateModel();
     </script>
 </body>
