@@ -78,6 +78,8 @@
             <label><input type="checkbox" id="surface1" checked onchange="updateModel()"> Surface 1</label>
             <label><input type="checkbox" id="surface2" checked onchange="updateModel()"> Surface 2</label>
         </div>
+        <button onclick="generateModel()">Generate Model</button>
+        <div id="patternResults"></div>
     </div>
     <div class="model" id="tentModel" style="width: 100%; height: 700px;"></div>
     
@@ -325,6 +327,34 @@
 
         // Initialize the model on page load
         updateModel();
+
+        // Function to generate 3D model and 2D patterns
+        async function generateModel() {
+            const width = parseFloat(document.getElementById('width').value);
+            const depth = parseFloat(document.getElementById('depth').value);
+            const height = parseFloat(document.getElementById('height').value);
+
+            const response = await fetch('/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ width, depth, height })
+            });
+            
+            const data = await response.json();
+
+            // Display 2D patterns
+            const patternResults = document.getElementById('patternResults');
+            patternResults.innerHTML = `
+                <h2>2D Patterns</h2>
+                <h3>Base</h3>
+                <p>${JSON.stringify(data.patterns.base)}</p>
+                <h3>Side</h3>
+                <p>${JSON.stringify(data.patterns.side)}</p>
+                <a href="/download/tent.obj">Download 3D Model (OBJ)</a>
+            `;
+        }
     </script>
 </body>
 </html>
