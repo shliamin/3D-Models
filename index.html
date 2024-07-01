@@ -47,7 +47,7 @@
             type: 'scatter3d',
             mode: 'lines',
             x: Array(theta2.length).fill(0),
-            y: y2.filter(y => y >= 0), // Убираем нижнюю половину круга
+            y: y2,
             z: z2,
             line: {color: 'red', width: 6}
         };
