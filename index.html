@@ -213,6 +213,17 @@
                     type: 'scatter3d'
                 },
                 {
+                    x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
+                    y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
+                    z: [vertices[0][2], vertices[1][2], vertices[3][2], vertices[2][2], vertices[0][2]],
+                    mode: 'lines',
+                    line: {
+                        color: 'cyan',
+                        width: 5
+                    },
+                    type: 'scatter3d'
+                },
+                {
                     x: surface.x,
                     y: surface.y,
                     z: surface.z,
@@ -226,18 +237,15 @@
                 scene: {
                     xaxis: {
                         title: 'Width',
-                        dtick: 0.1,  // Grid step for X axis 10 cm
-                        range: [-(width * 0.5), width * 1.5]
+                        dtick: 0.1  // Grid step for X axis 10 cm
                     },
                     yaxis: {
                         title: 'Depth',
-                        dtick: 0.1,  // Grid step for Y axis 10 cm
-                        range: [-(depth * 0.5), depth * 1.5]
+                        dtick: 0.1  // Grid step for Y axis 10 cm
                     },
                     zaxis: {
                         title: 'Height',
-                        dtick: 0.1,  // Grid step for Z axis 10 cm
-                        range: [0, height * 2]
+                        dtick: 0.1  // Grid step for Z axis 10 cm
                     },
                     aspectratio: {x: width, y: depth, z: height}
                 },
