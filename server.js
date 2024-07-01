@@ -7,13 +7,11 @@ export async function generateModel() {
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
 
-    const surface1 = document.getElementById('surface1').checked ? interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([width, 0], [0, depth], height)) : null;
-    const surface2 = document.getElementById('surface2').checked ? interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([0, depth], [width, 0], height)) : null;
+    // Всегда генерируем данные для surface1 и surface2
+    const surface1 = interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([width, 0], [0, depth], height));
+    const surface2 = interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([0, depth], [width, 0], height));
 
     const payload = {
-        width,
-        depth,
-        height,
         surface1,
         surface2
     };
