@@ -22,14 +22,14 @@
         for (var i = 0; i <= 360; i++) {
             theta1.push(i);
             x1.push(Math.cos(i * Math.PI / 180) * 5);
-            z1.push(Math.sin(i * Math.PI / 180) * 5);
+            z1.push(Math.sin(i * Math.PI / 180) * 5 + 10); // Поднимаем на 10 вверх
         }
         var circle1 = {
             type: 'scatter3d',
             mode: 'lines',
             x: x1,
             y: Array(theta1.length).fill(0),
-            z: z1.filter(z => z >= 0), // Убираем нижнюю половину круга
+            z: z1.filter(z => z >= 10), // Убираем нижнюю половину круга
             line: {color: 'blue', width: 4}
         };
         data.push(circle1);
@@ -41,7 +41,7 @@
         for (var i = 0; i <= 360; i++) {
             theta2.push(i);
             y2.push(Math.cos(i * Math.PI / 180) * 5);
-            z2.push(Math.sin(i * Math.PI / 180) * 5);
+            z2.push(Math.sin(i * Math.PI / 180) * 5 + 10); // Поднимаем на 10 вверх
         }
         var circle2 = {
             type: 'scatter3d',
@@ -56,7 +56,7 @@
         // Создание пола
         var planeX = [-5, 5, 0, 0];
         var planeY = [0, 0, -5, 5];
-        var planeZ = [0, 0, 0, 0];
+        var planeZ = [10, 10, 10, 10]; // Поднимаем на 10 вверх
         var plane = {
             type: 'mesh3d',
             x: planeX,
@@ -71,7 +71,7 @@
             scene: {
                 xaxis: {range: [-10, 10]},
                 yaxis: {range: [-10, 10]},
-                zaxis: {range: [0, 20]}, // Убираем нижнюю часть
+                zaxis: {range: [0, 20]} // Убираем нижнюю часть
             }
         };
 
