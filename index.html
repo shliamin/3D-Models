@@ -19,31 +19,31 @@
     <div id="tentModel" style="width: 100%; height: 600px;"></div>
     <script>
         // Функция для создания дуги окружности
-        function circularArc(p0, p1, height, num_points=100) {
-            let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
-            let arc = {x: [], y: [], z: []};
-
-            // Вычисление среднего значения между p0 и p1
-            let midX = (p0[0] + p1[0]) / 2;
-            let midY = (p0[1] + p1[1]) / 2;
-
-            // Вычисление радиуса окружности, на которой лежит дуга
-            let radius = Math.sqrt(((p1[0] - p0[0]) / 2) ** 2 + height ** 2);
-
-            t.forEach(val => {
-                let angle = Math.PI * val;
-
-                // Вычисление координат дуги окружности
-                let x = midX + (p1[0] - p0[0]) / 2 * Math.cos(angle);
-                let y = midY;
-                let z = height * Math.sin(angle);
-
-                arc.x.push(x);
-                arc.y.push(y);
-                arc.z.push(z);
-            });
-
-            return arc;
+        function circularArc(p0, p1, height, num_points = 100) {
+            const points = [];
+            
+            // Вычисляем центр окружности и радиус
+            const midPoint = {
+                x: (p0.x + p1.x) / 2,
+                y: (p0.y + p1.y) / 2
+            };
+        
+            const distance = Math.sqrt((p1.x - p0.x) ** 2 + (p1.y - p0.y) ** 2);
+            const radius = Math.sqrt((distance / 2) ** 2 + height ** 2);
+        
+            // Вычисляем угол начала и конца дуги
+            const startAngle = Math.atan2(p0.y - midPoint.y, p0.x - midPoint.x);
+            const endAngle = Math.atan2(p1.y - midPoint.y, p1.x - midPoint.x);
+        
+            // Добавляем точки дуги
+            for (let i = 0; i <= num_points; i++) {
+                const angle = startAngle + (endAngle - startAngle) * (i / num_points);
+                const x = midPoint.x + radius * Math.cos(angle);
+                const y = midPoint.y + radius * Math.sin(angle);
+                points.push({ x, y });
+            }
+        
+            return points;
         }
 
         // Функция для обновления модели палатки
