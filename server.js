@@ -1,6 +1,8 @@
 // server.js
 
-async function generateModel() {
+import { interpolateSurface, circularArc } from './model.js';
+
+export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
