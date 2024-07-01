@@ -22,10 +22,15 @@
         function circularArc(p0, p1, height, num_points=100) {
             let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
             let arc = {x: [], y: [], z: []};
+            let centerX = (p0[0] + p1[0]) / 2;
+            let centerY = (p0[1] + p1[1]) / 2;
+            let radiusX = Math.abs(p0[0] - centerX);
+            let radiusY = Math.abs(p0[1] - centerY);
+            
             t.forEach(val => {
                 let angle = Math.PI * val;
-                arc.x.push((1 - val) * p0[0] + val * p1[0]);
-                arc.y.push((1 - val) * p0[1] + val * p1[1]);
+                arc.x.push(centerX + radiusX * Math.cos(angle));
+                arc.y.push(centerY + radiusY * Math.sin(angle));
                 arc.z.push(height * Math.sin(angle));
             });
             return arc;
