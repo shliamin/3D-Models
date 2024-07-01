@@ -211,6 +211,3 @@ export function updateModel() {
 
     Plotly.newPlot('tentModel', data, layout);
 }
-
-// Initialize the model on page load
-window.onload = updateModel;
