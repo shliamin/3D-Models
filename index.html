@@ -114,6 +114,46 @@
                 }
             ];
 
+            // Side walls (triangular surfaces)
+            let sideWall1 = {
+                type: 'mesh3d',
+                x: [vertices[0][0], vertices[3][0], vertices[4][0]],
+                y: [vertices[0][1], vertices[3][1], vertices[4][1]],
+                z: [vertices[0][2], vertices[3][2], vertices[4][2]],
+                opacity: 0.5,
+                color: 'orange'
+            };
+
+            let sideWall2 = {
+                type: 'mesh3d',
+                x: [vertices[1][0], vertices[2][0], vertices[4][0]],
+                y: [vertices[1][1], vertices[2][1], vertices[4][1]],
+                z: [vertices[1][2], vertices[2][2], vertices[4][2]],
+                opacity: 0.5,
+                color: 'orange'
+            };
+
+            // Front and back walls (rectangular surfaces)
+            let frontWall = {
+                type: 'mesh3d',
+                x: [vertices[0][0], vertices[1][0], vertices[4][0], vertices[4][0]],
+                y: [vertices[0][1], vertices[1][1], vertices[4][1], vertices[4][1]],
+                z: [vertices[0][2], vertices[1][2], vertices[4][2], vertices[4][2]],
+                opacity: 0.5,
+                color: 'green'
+            };
+
+            let backWall = {
+                type: 'mesh3d',
+                x: [vertices[2][0], vertices[3][0], vertices[4][0], vertices[4][0]],
+                y: [vertices[2][1], vertices[3][1], vertices[4][1], vertices[4][1]],
+                z: [vertices[2][2], vertices[3][2], vertices[4][2], vertices[4][2]],
+                opacity: 0.5,
+                color: 'green'
+            };
+
+            data.push(sideWall1, sideWall2, frontWall, backWall);
+
             let layout = {
                 scene: {
                     xaxis: {
