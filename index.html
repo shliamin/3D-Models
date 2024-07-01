@@ -29,7 +29,7 @@
             mode: 'lines',
             x: x1,
             y: Array(theta1.length).fill(0),
-            z: z1, // Убираем фильтрацию
+            z: z1.filter(z => z >= 0), // Убираем нижнюю половину круга
             line: {color: 'yellow', width: 6}
         };
         data.push(circle1);
@@ -47,7 +47,7 @@
             type: 'scatter3d',
             mode: 'lines',
             x: Array(theta2.length).fill(0),
-            y: y2, // Убираем фильтрацию
+            y: y2.filter(y => y >= 0), // Убираем нижнюю половину круга
             z: z2,
             line: {color: 'red', width: 6}
         };
@@ -71,7 +71,7 @@
             scene: {
                 xaxis: {range: [-10, 10]},
                 yaxis: {range: [-10, 10]},
-                zaxis: {range: [-5, 5]}, // Изменяем диапазон оси Z
+                zaxis: {range: [0, 10]}, // Убираем нижнюю часть
             }
         };
 
