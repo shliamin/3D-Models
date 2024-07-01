@@ -133,31 +133,6 @@
             return surface;
         }
 
-        // Function to extrapolite two arcs to create surface points
-        function extrapolateSurface(p0, p1, height, t_extrap, num_points=100) {
-            let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
-            let arc = {x: [], y: [], z: []};
-        
-            // Midpoint coordinates between p0 and p1
-            let midX = (p0[0] + p1[0]) / 2;
-            let midY = (p0[1] + p1[1]) / 2;
-        
-            t.forEach(val => {
-                let angle = Math.PI * val * t_extrap;
-        
-                // Arc coordinates calculation
-                let x = midX + (p0[0] - midX) * Math.cos(angle);
-                let y = midY + (p0[1] - midY) * Math.cos(angle);
-                let z = height * Math.sin(angle);
-        
-                arc.x.push(x);
-                arc.y.push(y);
-                arc.z.push(z);
-            });
-        
-            return arc;
-        }
-
         // Function to calculate the surface area of a surface
         function calculateSurfaceArea(surface, num_points=100) {
             let area = 0;
@@ -220,11 +195,11 @@
 
             // Interpolate to create surface points between arcs
             let surface1 = interpolateSurface(arc1, arc2);
-            let surface2a = interpolateSurface(arc3, arc4);
+            let surface2 = interpolateSurface(arc3, arc4);
 
             // Calculate surface areas
             let area1 = calculateSurfaceArea(surface1);
-            let area2a = calculateSurfaceArea(surface2a);
+            let area2 = calculateSurfaceArea(surface2);
 
             // Initialize total area
             let totalArea = 0;
@@ -244,11 +219,11 @@
                 });
             }
             if (document.getElementById('surface2').checked) {
-                totalArea += area2a;
+                totalArea += area2;
                 data.push({
-                    x: surface2a.x,
-                    y: surface2a.y,
-                    z: surface2a.z,
+                    x: surface2.x,
+                    y: surface2.y,
+                    z: surface2.z,
                     type: 'surface',
                     colorscale: [[0, 'rgba(255, 0, 0, 0.3)'], [1, 'rgba(255, 0, 0, 0.3)']],
                     opacity: 0.7,
@@ -349,22 +324,26 @@
 
             // Interpolate to create surface points between arcs
             let surface1 = interpolateSurface(arc1, arc2);
-            let surface2a = interpolateSurface(arc3, arc4);
+            let surface2 = interpolateSurface(arc3, arc4);
 
             // Function to flatten a 3D surface to 2D
             function flattenSurface(surface) {
                 let flattened = { x: [], y: [] };
 
                 for (let i = 0; i < surface.x.length; i++) {
+                    let xRow = [];
+                    let yRow = [];
                     for (let j = 0; j < surface.x[i].length; j++) {
                         let x = surface.x[i][j];
                         let y = surface.y[i][j];
                         let z = surface.z[i][j];
 
-                        // Flatten the surface by projecting along the z-axis
-                        flattened.x.push(x);
-                        flattened.y.push(Math.sqrt(y * y + z * z));
+                        // Flatten the surface by unfolding it in 2D
+                        xRow.push(x);
+                        yRow.push(Math.sqrt(y * y + z * z));
                     }
+                    flattened.x.push(xRow);
+                    flattened.y.push(yRow);
                 }
 
                 return flattened;
@@ -372,14 +351,14 @@
 
             // Flatten Surface 1 and Surface 2
             let flatSurface1 = flattenSurface(surface1);
-            let flatSurface2 = flattenSurface(surface2a);
+            let flatSurface2 = flattenSurface(surface2);
 
             // Plot 2D flattened surfaces
             let data = [
                 {
-                    x: flatSurface1.x.map(x => x * 100),
-                    y: flatSurface1.y.map(y => y * 100),
-                    mode: 'markers',
+                    x: flatSurface1.x.flat().map(x => x * 100),
+                    y: flatSurface1.y.flat().map(y => y * 100),
+                    mode: 'lines+markers',
                     type: 'scatter',
                     name: 'Surface 1',
                     marker: {
@@ -387,9 +366,9 @@
                     }
                 },
                 {
-                    x: flatSurface2.x.map(x => x * 100),
-                    y: flatSurface2.y.map(y => y * 100),
-                    mode: 'markers',
+                    x: flatSurface2.x.flat().map(x => x * 100),
+                    y: flatSurface2.y.flat().map(y => y * 100),
+                    mode: 'lines+markers',
                     type: 'scatter',
                     name: 'Surface 2',
                     marker: {
