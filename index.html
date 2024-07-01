@@ -8,13 +8,16 @@
 </head>
 <body>
     <h1>Interactive Tent Model</h1>
+    <div>
+        <label for="width">Width (m):</label>
+        <input type="number" id="width" value="1.4" step="0.1" min="0.1" onchange="updateModel()">
+        <label for="depth">Depth (m):</label>
+        <input type="number" id="depth" value="2.3" step="0.1" min="0.1" onchange="updateModel()">
+        <label for="height">Height (m):</label>
+        <input type="number" id="height" value="1.2" step="0.1" min="0.1" onchange="updateModel()">
+    </div>
     <div id="tentModel" style="width: 100%; height: 600px;"></div>
     <script>
-        // Размеры палатки
-        const height = 1.2;  // Высота палатки в метрах
-        const width = 1.4;   // Ширина палатки в метрах
-        const depth = 2.3;   // Глубина палатки в метрах
-
         // Функция для создания дуги окружности
         function circularArc(p0, p1, height, num_points=100) {
             let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
@@ -28,80 +31,90 @@
             return arc;
         }
 
-        // Координаты вершин палатки
-        let vertices = [
-            [0, 0, 0],         // Нижний передний левый угол
-            [width, 0, 0],     // Нижний передний правый угол
-            [0, depth, 0],     // Нижний задний левый угол
-            [width, depth, 0], // Нижний задний правый угол
-            [width/2, depth/2, height]  // Верхняя центральная точка
-        ];
+        // Функция для обновления модели палатки
+        function updateModel() {
+            const width = parseFloat(document.getElementById('width').value);
+            const depth = parseFloat(document.getElementById('depth').value);
+            const height = parseFloat(document.getElementById('height').value);
 
-        // Рисуем дуги, пересекающиеся в вершине палатки
-        let arc1 = circularArc(vertices[0], vertices[3], height);
-        let arc2 = circularArc(vertices[1], vertices[2], height);
+            // Координаты вершин палатки
+            let vertices = [
+                [0, 0, 0],         // Нижний передний левый угол
+                [width, 0, 0],     // Нижний передний правый угол
+                [0, depth, 0],     // Нижний задний левый угол
+                [width, depth, 0], // Нижний задний правый угол
+                [width/2, depth/2, height]  // Верхняя центральная точка
+            ];
 
-        let data = [
-            {
-                x: arc1.x,
-                y: arc1.y,
-                z: arc1.z,
-                mode: 'lines',
-                line: {
-                    color: 'blue',
-                    width: 5
-                },
-                type: 'scatter3d'
-            },
-            {
-                x: arc2.x,
-                y: arc2.y,
-                z: arc2.z,
-                mode: 'lines',
-                line: {
-                    color: 'blue',
-                    width: 5
-                },
-                type: 'scatter3d'
-            },
-            {
-                x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
-                y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
-                z: [vertices[0][2], vertices[1][2], vertices[3][2], vertices[2][2], vertices[0][2]],
-                mode: 'lines',
-                line: {
-                    color: 'cyan',
-                    width: 5
-                },
-                type: 'scatter3d'
-            }
-        ];
+            // Рисуем дуги, пересекающиеся в вершине палатки
+            let arc1 = circularArc(vertices[0], vertices[3], height);
+            let arc2 = circularArc(vertices[1], vertices[2], height);
 
-        let layout = {
-            scene: {
-                xaxis: {
-                    title: 'Width',
-                    dtick: 0.1  // Шаг сетки по оси X 10 см
+            let data = [
+                {
+                    x: arc1.x,
+                    y: arc1.y,
+                    z: arc1.z,
+                    mode: 'lines',
+                    line: {
+                        color: 'blue',
+                        width: 5
+                    },
+                    type: 'scatter3d'
                 },
-                yaxis: {
-                    title: 'Depth',
-                    dtick: 0.1  // Шаг сетки по оси Y 10 см
+                {
+                    x: arc2.x,
+                    y: arc2.y,
+                    z: arc2.z,
+                    mode: 'lines',
+                    line: {
+                        color: 'blue',
+                        width: 5
+                    },
+                    type: 'scatter3d'
                 },
-                zaxis: {
-                    title: 'Height',
-                    dtick: 0.1  // Шаг сетки по оси Z 10 см
-                },
-                aspectratio: {x: width, y: depth, z: height}
-            },
-            margin: {
-                l: 0,
-                r: 0,
-                b: 0,
-                t: 0
-            }
-        };
+                {
+                    x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
+                    y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
+                    z: [vertices[0][2], vertices[1][2], vertices[3][2], vertices[2][2], vertices[0][2]],
+                    mode: 'lines',
+                    line: {
+                        color: 'cyan',
+                        width: 5
+                    },
+                    type: 'scatter3d'
+                }
+            ];
 
-        Plotly.newPlot('tentModel', data, layout);
+            let layout = {
+                scene: {
+                    xaxis: {
+                        title: 'Width',
+                        dtick: 0.1  // Шаг сетки по оси X 10 см
+                    },
+                    yaxis: {
+                        title: 'Depth',
+                        dtick: 0.1  // Шаг сетки по оси Y 10 см
+                    },
+                    zaxis: {
+                        title: 'Height',
+                        dtick: 0.1  // Шаг сетки по оси Z 10 см
+                    },
+                    aspectratio: {x: width, y: depth, z: height}
+                },
+                margin: {
+                    l: 0,
+                    r: 0,
+                    b: 0,
+                    t: 0
+                }
+            };
+
+            Plotly.newPlot('tentModel', data, layout);
+        }
+
+        // Инициализация модели при загрузке страницы
+        updateModel();
     </script>
 </body>
 </html>
