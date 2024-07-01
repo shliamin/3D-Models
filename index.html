@@ -80,7 +80,8 @@
         </div>
     </div>
     <div class="model" id="tentModel" style="width: 100%; height: 700px;"></div>
-    
+    <div class="model" id="tentPatterns" style="width: 100%; height: 700px;"></div>
+
     <script>
         // Function to create a circular arc
         function circularArc(p0, p1, height, num_points=100) {
@@ -129,31 +130,6 @@
             }
             
             return surface;
-        }
-
-        // Function to extrapolite two arcs to create surface points
-        function extrapolateSurface(p0, p1, height, t_extrap, num_points=100) {
-            let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
-            let arc = {x: [], y: [], z: []};
-        
-            // Midpoint coordinates between p0 and p1
-            let midX = (p0[0] + p1[0]) / 2;
-            let midY = (p0[1] + p1[1]) / 2;
-        
-            t.forEach(val => {
-                let angle = Math.PI * val * t_extrap;
-        
-                // Arc coordinates calculation
-                let x = midX + (p0[0] - midX) * Math.cos(angle);
-                let y = midY + (p0[1] - midY) * Math.cos(angle);
-                let z = height * Math.sin(angle);
-        
-                arc.x.push(x);
-                arc.y.push(y);
-                arc.z.push(z);
-            });
-        
-            return arc;
         }
 
         // Function to calculate the surface area of a surface
@@ -218,11 +194,11 @@
 
             // Interpolate to create surface points between arcs
             let surface1 = interpolateSurface(arc1, arc2);
-            let surface2a = interpolateSurface(arc3, arc4);
+            let surface2 = interpolateSurface(arc3, arc4);
 
             // Calculate surface areas
             let area1 = calculateSurfaceArea(surface1);
-            let area2a = calculateSurfaceArea(surface2a);
+            let area2 = calculateSurfaceArea(surface2);
 
             // Initialize total area
             let totalArea = 0;
@@ -242,11 +218,11 @@
                 });
             }
             if (document.getElementById('surface2').checked) {
-                totalArea += area2a;
+                totalArea += area2;
                 data.push({
-                    x: surface2a.x,
-                    y: surface2a.y,
-                    z: surface2a.z,
+                    x: surface2.x,
+                    y: surface2.y,
+                    z: surface2.z,
                     type: 'surface',
                     colorscale: [[0, 'rgba(255, 0, 0, 0.3)'], [1, 'rgba(255, 0, 0, 0.3)']],
                     opacity: 0.7,
@@ -321,6 +297,83 @@
             };
 
             Plotly.newPlot('tentModel', data, layout);
+
+            // Create 2D patterns for tent surfaces
+            let patterns = [];
+            if (document.getElementById('surface1').checked) {
+                let pattern1 = {x: [], y: []};
+                for (let i = 0; i < arc1.x.length; i++) {
+                    pattern1.x.push(arc1.x[i]);
+                    pattern1.y.push(arc1.z[i]);
+                }
+                for (let i = arc2.x.length - 1; i >= 0; i--) {
+                    pattern1.x.push(arc2.x[i]);
+                    pattern1.y.push(arc2.z[i]);
+                }
+                patterns.push({
+                    x: pattern1.x,
+                    y: pattern1.y,
+                    mode: 'lines',
+                    fill: 'toself',
+                    name: 'Surface 1',
+                    line: {color: 'rgba(0, 255, 255, 0.7)'}
+                });
+            }
+            if (document.getElementById('surface2').checked) {
+                let pattern2 = {x: [], y: []};
+                for (let i = 0; i < arc3.x.length; i++) {
+                    pattern2.x.push(arc3.x[i]);
+                    pattern2.y.push(arc3.z[i]);
+                }
+                for (let i = arc4.x.length - 1; i >= 0; i--) {
+                    pattern2.x.push(arc4.x[i]);
+                    pattern2.y.push(arc4.z[i]);
+                }
+                patterns.push({
+                    x: pattern2.x,
+                    y: pattern2.y,
+                    mode: 'lines',
+                    fill: 'toself',
+                    name: 'Surface 2',
+                    line: {color: 'rgba(255, 0, 0, 0.7)'}
+                });
+            }
+
+            let patternLayout = {
+                title: '2D Tent Patterns',
+                xaxis: {
+                    title: 'Width (m)',
+                    zeroline: false
+                },
+                yaxis: {
+                    title: 'Height (m)',
+                    zeroline: false,
+                    scaleanchor: "x",
+                    scaleratio: 1
+                },
+                margin: {
+                    l: 50,
+                    r: 50,
+                    b: 50,
+                    t: 50
+                },
+                shapes: [
+                    {
+                        type: 'rect',
+                        x0: 0,
+                        y0: 0,
+                        x1: width,
+                        y1: height,
+                        line: {
+                            color: 'rgba(0, 0, 0, 0.3)',
+                            width: 1,
+                            dash: 'dot'
+                        }
+                    }
+                ]
+            };
+
+            Plotly.newPlot('tentPatterns', patterns, patternLayout);
         }
 
         // Initialize the model on page load
