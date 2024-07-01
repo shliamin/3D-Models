@@ -22,24 +22,27 @@
         function circularArc(p0, p1, height, num_points=100) {
             let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
             let arc = {x: [], y: [], z: []};
-            
+
             // Вычисление среднего значения между p0 и p1
             let midX = (p0[0] + p1[0]) / 2;
             let midY = (p0[1] + p1[1]) / 2;
-            
+
+            // Вычисление радиуса окружности, на которой лежит дуга
+            let radius = Math.sqrt(((p1[0] - p0[0]) / 2) ** 2 + height ** 2);
+
             t.forEach(val => {
                 let angle = Math.PI * val;
-                
+
                 // Вычисление координат дуги окружности
-                let x = midX + (p0[0] - midX) * Math.cos(angle) - (height / 2) * Math.sin(angle);
-                let y = midY + (p0[1] - midY) * Math.cos(angle) - (height / 2) * Math.sin(angle);
+                let x = midX + (p1[0] - p0[0]) / 2 * Math.cos(angle);
+                let y = midY;
                 let z = height * Math.sin(angle);
-                
+
                 arc.x.push(x);
                 arc.y.push(y);
                 arc.z.push(z);
             });
-        
+
             return arc;
         }
 
@@ -81,7 +84,7 @@
                     z: arc2.z,
                     mode: 'lines',
                     line: {
-                        color: 'blue',
+                        color: 'red',
                         width: 5
                     },
                     type: 'scatter3d'
