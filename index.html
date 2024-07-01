@@ -23,12 +23,16 @@
             let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
             let arc = {x: [], y: [], z: []};
             
+            // Вычисление среднего значения между p0 и p1
+            let midX = (p0[0] + p1[0]) / 2;
+            let midY = (p0[1] + p1[1]) / 2;
+            
             t.forEach(val => {
                 let angle = Math.PI * val;
                 
-                // Использование параметрического уравнения окружности для x, y, z координат
-                let x = (1 - val) * p0[0] + val * p1[0];
-                let y = (1 - val) * p0[1] + val * p1[1];
+                // Вычисление координат дуги окружности
+                let x = midX + (p0[0] - midX) * Math.cos(angle) - (height / 2) * Math.sin(angle);
+                let y = midY + (p0[1] - midY) * Math.cos(angle) - (height / 2) * Math.sin(angle);
                 let z = height * Math.sin(angle);
                 
                 arc.x.push(x);
