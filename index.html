@@ -74,51 +74,43 @@
                 [width / 2, depth / 2, height]  // Top center point
             ];
 
-            // Define faces using vertex indices
-            let faces = [
-                [0, 1, 4], // Front face
-                [1, 3, 4], // Right face
-                [3, 2, 4], // Back face
-                [2, 0, 4], // Left face
-                [0, 1, 3, 2] // Bottom face
-            ];
-
-            let x = [], y = [], z = [], i = [], j = [], k = [];
-
-            // Add vertices and faces for the tent model
-            vertices.forEach(v => {
-                x.push(v[0]);
-                y.push(v[1]);
-                z.push(v[2]);
-            });
-
-            faces.forEach(face => {
-                if (face.length === 3) {
-                    i.push(face[0]);
-                    j.push(face[1]);
-                    k.push(face[2]);
-                } else if (face.length === 4) {
-                    i.push(face[0]);
-                    j.push(face[1]);
-                    k.push(face[2]);
-
-                    i.push(face[2]);
-                    j.push(face[3]);
-                    k.push(face[0]);
-                }
-            });
+            // Draw arcs intersecting at the tent's top vertex
+            let arc1 = circularArc(vertices[0], vertices[3], height);
+            let arc2 = circularArc(vertices[1], vertices[2], height);
 
             let data = [
                 {
-                    x: x,
-                    y: y,
-                    z: z,
-                    i: i,
-                    j: j,
-                    k: k,
-                    type: 'mesh3d',
-                    opacity: 0.5,
-                    color: 'blue'
+                    x: arc1.x,
+                    y: arc1.y,
+                    z: arc1.z,
+                    mode: 'lines',
+                    line: {
+                        color: 'blue',
+                        width: 5
+                    },
+                    type: 'scatter3d'
+                },
+                {
+                    x: arc2.x,
+                    y: arc2.y,
+                    z: arc2.z,
+                    mode: 'lines',
+                    line: {
+                        color: 'blue',
+                        width: 5
+                    },
+                    type: 'scatter3d'
+                },
+                {
+                    x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
+                    y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
+                    z: [vertices[0][2], vertices[1][2], vertices[3][2], vertices[2][2], vertices[0][2]],
+                    mode: 'lines',
+                    line: {
+                        color: 'cyan',
+                        width: 5
+                    },
+                    type: 'scatter3d'
                 }
             ];
 
