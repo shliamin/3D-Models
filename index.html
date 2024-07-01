@@ -7,84 +7,75 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         body { margin: 0; }
-        #plot { width: 100%; height: 90vh; }
-        #controls { width: 100%; height: 10vh; text-align: center; padding: 10px; background-color: #f0f0f0; }
+        #plot { width: 100%; height: 100vh; }
     </style>
 </head>
 <body>
     <div id="plot"></div>
-    <div id="controls">
-        <label for="floorHeight">Floor Height:</label>
-        <input type="range" id="floorHeight" name="floorHeight" min="0" max="10" step="0.1" value="0">
-    </div>
     <script>
-        var floorHeight = 0;
+        var data = [];
 
-        function createCircle(radius, orientation, color) {
-            var theta = [];
-            var x = [];
-            var y = [];
-            var z = [];
-            for (var i = 0; i <= 360; i++) {
-                theta.push(i);
-                if (orientation === 'xy') {
-                    x.push(Math.cos(i * Math.PI / 180) * radius);
-                    y.push(Math.sin(i * Math.PI / 180) * radius);
-                    z.push(0);
-                } else if (orientation === 'yz') {
-                    x.push(0);
-                    y.push(Math.cos(i * Math.PI / 180) * radius);
-                    z.push(Math.sin(i * Math.PI / 180) * radius);
-                }
+        // Создание первого круга (вертикально относительно пола)
+        var theta1 = [];
+        var x1 = [];
+        var z1 = [];
+        for (var i = 0; i <= 360; i++) {
+            theta1.push(i);
+            x1.push(Math.cos(i * Math.PI / 180) * 5);
+            z1.push(Math.sin(i * Math.PI / 180) * 5);
+        }
+        var circle1 = {
+            type: 'scatter3d',
+            mode: 'lines',
+            x: x1,
+            y: Array(theta1.length).fill(0),
+            z: z1.filter(z => z >= 0), // Убираем нижнюю половину круга
+            line: {color: 'blue', width: 4}
+        };
+        data.push(circle1);
+
+        // Создание второго круга (перпендикулярно первому)
+        var theta2 = [];
+        var y2 = [];
+        var z2 = [];
+        for (var i = 0; i <= 360; i++) {
+            theta2.push(i);
+            y2.push(Math.cos(i * Math.PI / 180) * 5);
+            z2.push(Math.sin(i * Math.PI / 180) * 5);
+        }
+        var circle2 = {
+            type: 'scatter3d',
+            mode: 'lines',
+            x: Array(theta2.length).fill(0),
+            y: y2,
+            z: z2,
+            line: {color: 'blue', width: 4}
+        };
+        data.push(circle2);
+
+        // Создание пола
+        var planeX = [-5, 5, 0, 0];
+        var planeY = [0, 0, -5, 5];
+        var planeZ = [0, 0, 0, 0];
+        var plane = {
+            type: 'mesh3d',
+            x: planeX,
+            y: planeY,
+            z: planeZ,
+            opacity: 0.5,
+            color: 'blue'
+        };
+        data.push(plane);
+
+        var layout = {
+            scene: {
+                xaxis: {range: [-10, 10], autorange: false},
+                yaxis: {range: [-10, 10], autorange: false},
+                zaxis: {range: [0, 20], autorange: false} // Задаем фиксированный диапазон для оси Z
             }
-            return {
-                type: 'scatter3d',
-                mode: 'lines',
-                x: x,
-                y: y,
-                z: z.filter(zVal => zVal >= floorHeight),
-                line: { color: color, width: 4 }
-            };
-        }
+        };
 
-        function createFloor(height) {
-            var planeX = [-5, 5, 0, 0];
-            var planeY = [0, 0, -5, 5];
-            var planeZ = Array(4).fill(height);
-            return {
-                type: 'mesh3d',
-                x: planeX,
-                y: planeY,
-                z: planeZ,
-                opacity: 0.5,
-                color: 'blue'
-            };
-        }
-
-        function updatePlot() {
-            var data = [];
-            data.push(createCircle(5, 'xy', 'blue'));
-            data.push(createCircle(5, 'yz', 'blue'));
-            data.push(createFloor(floorHeight));
-
-            var layout = {
-                scene: {
-                    xaxis: { range: [-10, 10], autorange: false },
-                    yaxis: { range: [-10, 10], autorange: false },
-                    zaxis: { range: [0, 20], autorange: false }
-                }
-            };
-
-            Plotly.newPlot('plot', data, layout);
-        }
-
-        document.getElementById('floorHeight').addEventListener('input', function (event) {
-            floorHeight = parseFloat(event.target.value);
-            updatePlot();
-        });
-
-        // Initial plot
-        updatePlot();
+        Plotly.newPlot('plot', data, layout);
 
         window.addEventListener('resize', () => {
             Plotly.Plots.resize(document.getElementById('plot'));
