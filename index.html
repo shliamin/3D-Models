@@ -3,134 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Tent Model</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>3D Circles</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
 </head>
 <body>
-    <h1>Interactive Tent Model</h1>
-    <div>
-        <label for="width">Width (cm):</label>
-        <input type="number" id="width" value="140" step="1" min="1" onchange="updateModel()">
-        <label for="depth">Depth (cm):</label>
-        <input type="number" id="depth" value="230" step="1" min="1" onchange="updateModel()">
-        <label for="height">Height (cm):</label>
-        <input type="number" id="height" value="120" step="1" min="1" onchange="updateModel()">
-    </div>
-    <div id="tentModel" style="width: 100%; height: 600px;"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Функция для создания дуги окружности
-        function circularArc(p0, p1, height, num_points=100) {
-            let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
-            let arc = {x: [], y: [], z: []};
+        // Инициализация сцены, камеры и рендерера
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-            // Вычисление среднего значения между p0 и p1
-            let midX = (p0[0] + p1[0]) / 2;
-            let midY = (p0[1] + p1[1]) / 2;
+        // Создание первого круга
+        const geometry1 = new THREE.CircleGeometry(5, 32);
+        const material1 = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide });
+        const circle1 = new THREE.Mesh(geometry1, material1);
+        circle1.rotation.x = Math.PI / 2; // Поворот на 90 градусов
+        scene.add(circle1);
 
-            // Вычисление радиуса окружности, на которой лежит дуга
-            let radius = Math.sqrt(((p1[0] - p0[0]) / 2) ** 2 + height ** 2);
+        // Создание второго круга
+        const geometry2 = new THREE.CircleGeometry(5, 32);
+        const material2 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
+        const circle2 = new THREE.Mesh(geometry2, material2);
+        circle2.position.y = 5;
+        scene.add(circle2);
 
-            t.forEach(val => {
-                let angle = Math.PI * val;
+        // Создание плоскости для разрезания
+        const planeGeometry = new THREE.PlaneGeometry(10, 10);
+        const planeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide, transparent: true, opacity: 0.5 });
+        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.position.y = 2.5;
+        scene.add(plane);
 
-                // Вычисление координат дуги окружности
-                let x = midX + (p1[0] - p0[0]) / 2 * Math.cos(angle);
-                let y = midY;
-                let z = height * Math.sin(angle);
+        // Позиционирование камеры
+        camera.position.z = 10;
 
-                arc.x.push(x);
-                arc.y.push(y);
-                arc.z.push(z);
-            });
-
-            return arc;
+        // Анимация сцены
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
         }
+        animate();
 
-        // Функция для обновления модели палатки
-        function updateModel() {
-            // Получение значений в сантиметрах и преобразование их в метры
-            const width = parseFloat(document.getElementById('width').value) / 100;
-            const depth = parseFloat(document.getElementById('depth').value) / 100;
-            const height = parseFloat(document.getElementById('height').value) / 100;
-
-            // Координаты вершин палатки
-            let vertices = [
-                [0, 0, 0],         // Нижний передний левый угол
-                [width, 0, 0],     // Нижний передний правый угол
-                [0, depth, 0],     // Нижний задний левый угол
-                [width, depth, 0], // Нижний задний правый угол
-                [width / 2, depth / 2, height]  // Верхняя центральная точка
-            ];
-
-            // Рисуем дуги, пересекающиеся в вершине палатки
-            let arc1 = circularArc(vertices[0], vertices[3], height);
-            let arc2 = circularArc(vertices[1], vertices[2], height);
-
-            let data = [
-                {
-                    x: arc1.x,
-                    y: arc1.y,
-                    z: arc1.z,
-                    mode: 'lines',
-                    line: {
-                        color: 'blue',
-                        width: 5
-                    },
-                    type: 'scatter3d'
-                },
-                {
-                    x: arc2.x,
-                    y: arc2.y,
-                    z: arc2.z,
-                    mode: 'lines',
-                    line: {
-                        color: 'red',
-                        width: 5
-                    },
-                    type: 'scatter3d'
-                },
-                {
-                    x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
-                    y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
-                    z: [vertices[0][2], vertices[1][2], vertices[3][2], vertices[2][2], vertices[0][2]],
-                    mode: 'lines',
-                    line: {
-                        color: 'cyan',
-                        width: 5
-                    },
-                    type: 'scatter3d'
-                }
-            ];
-
-            let layout = {
-                scene: {
-                    xaxis: {
-                        title: 'Width',
-                        dtick: 0.1  // Шаг сетки по оси X 10 см
-                    },
-                    yaxis: {
-                        title: 'Depth',
-                        dtick: 0.1  // Шаг сетки по оси Y 10 см
-                    },
-                    zaxis: {
-                        title: 'Height',
-                        dtick: 0.1  // Шаг сетки по оси Z 10 см
-                    },
-                    aspectratio: {x: width, y: depth, z: height}
-                },
-                margin: {
-                    l: 0,
-                    r: 0,
-                    b: 0,
-                    t: 0
-                }
-            };
-
-            Plotly.newPlot('tentModel', data, layout);
-        }
-
-        // Инициализация модели при загрузке страницы
-        updateModel();
+        // Адаптация рендера к изменению размера окна
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
     </script>
 </body>
 </html>
