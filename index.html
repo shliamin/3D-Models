@@ -19,28 +19,33 @@
     <div id="tentModel" style="width: 100%; height: 600px;"></div>
     <script>
         // Функция для создания дуги окружности
-       function circularArc(p0, p1, height, num_points=100) {
-            let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
+        function circularArc(p0, p1, height, num_points=100) {
             let arc = {x: [], y: [], z: []};
-            
-            t.forEach(val => {
-                let angle = Math.PI * val;
-        
-                // Линейная интерполяция между p0 и p1 для x и y координат
-                let x = (1 - val) * p0[0] + val * p1[0];
-                let y = (1 - val) * p0[1] + val * p1[1];
+            let cx = (p0[0] + p1[0]) / 2;
+            let cy = (p0[1] + p1[1]) / 2;
+            let radius = Math.sqrt((p0[0] - p1[0]) ** 2 + (p0[1] - p1[1]) ** 2) / 2;
+
+            for (let i = 0; i < num_points; i++) {
+                let t = i / (num_points - 1);
+                let angle = Math.PI * t;
                 
-                // Использование синусоида для z координаты для создания дуги
+                let x = (1 - t) * p0[0] + t * p1[0];
+                let y = (1 - t) * p0[1] + t * p1[1];
                 let z = height * Math.sin(angle);
-                
-                arc.x.push(x);
-                arc.y.push(y);
+
+                // Calculate the actual arc position
+                let dx = x - cx;
+                let dy = y - cy;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let scale = radius / distance;
+
+                arc.x.push(cx + dx * scale);
+                arc.y.push(cy + dy * scale);
                 arc.z.push(z);
-            });
-        
+            }
+
             return arc;
         }
-
 
         // Функция для обновления модели палатки
         function updateModel() {
