@@ -131,6 +131,31 @@
             return surface;
         }
 
+        // Function to extrapolite two arcs to create surface points
+        function extrapolateSurface(p0, p1, height, t_extrap, num_points=100) {
+            let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
+            let arc = {x: [], y: [], z: []};
+        
+            // Midpoint coordinates between p0 and p1
+            let midX = (p0[0] + p1[0]) / 2;
+            let midY = (p0[1] + p1[1]) / 2;
+        
+            t.forEach(val => {
+                let angle = Math.PI * val * t_extrap;
+        
+                // Arc coordinates calculation
+                let x = midX + (p0[0] - midX) * Math.cos(angle);
+                let y = midY + (p0[1] - midY) * Math.cos(angle);
+                let z = height * Math.sin(angle);
+        
+                arc.x.push(x);
+                arc.y.push(y);
+                arc.z.push(z);
+            });
+        
+            return arc;
+        }
+
         // Function to calculate the surface area of a surface
         function calculateSurfaceArea(surface, num_points=100) {
             let area = 0;
@@ -193,7 +218,7 @@
 
             // Interpolate to create surface points between arcs
             let surface1 = interpolateSurface(arc1, arc2);
-            let surface2a = interpolateSurface(arc3, arc4);
+            let surface2a = extrapolateSurface(arc1, arc2);
 
             // Calculate surface areas
             let area1 = calculateSurfaceArea(surface1);
