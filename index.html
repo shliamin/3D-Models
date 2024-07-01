@@ -29,7 +29,7 @@
             mode: 'lines',
             x: x1,
             y: Array(theta1.length).fill(0),
-            z: z1.map(z => Math.abs(z)), // Используем абсолютные значения
+            z: z1.filter(z => z >= 0), // Убираем нижнюю половину круга
             line: {color: 'yellow', width: 6}
         };
         data.push(circle1);
@@ -47,7 +47,7 @@
             type: 'scatter3d',
             mode: 'lines',
             x: Array(theta2.length).fill(0),
-            y: y2.map(y => Math.abs(y)), // Используем абсолютные значения
+            y: y2.filter(y => y >= 0), // Убираем нижнюю половину круга
             z: z2,
             line: {color: 'red', width: 6}
         };
