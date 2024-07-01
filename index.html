@@ -7,7 +7,6 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
     <style>
         body {
             display: flex;
@@ -79,7 +78,6 @@
             <label><input type="checkbox" id="surface1" checked onchange="updateModel()"> Surface 1</label>
             <label><input type="checkbox" id="surface2" checked onchange="updateModel()"> Surface 2</label>
         </div>
-        <button onclick="generatePDF()">Generate PDF</button>
     </div>
     <div class="model" id="tentModel" style="width: 100%; height: 700px;"></div>
     
@@ -133,6 +131,69 @@
             return surface;
         }
 
+        // Function to extrapolite two arcs to create surface points
+        function extrapolateSurface(p0, p1, height, t_extrap, num_points=100) {
+            let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
+            let arc = {x: [], y: [], z: []};
+        
+            // Midpoint coordinates between p0 and p1
+            let midX = (p0[0] + p1[0]) / 2;
+            let midY = (p0[1] + p1[1]) / 2;
+        
+            t.forEach(val => {
+                let angle = Math.PI * val * t_extrap;
+        
+                // Arc coordinates calculation
+                let x = midX + (p0[0] - midX) * Math.cos(angle);
+                let y = midY + (p0[1] - midY) * Math.cos(angle);
+                let z = height * Math.sin(angle);
+        
+                arc.x.push(x);
+                arc.y.push(y);
+                arc.z.push(z);
+            });
+        
+            return arc;
+        }
+
+        // Function to calculate the surface area of a surface
+        function calculateSurfaceArea(surface, num_points=100) {
+            let area = 0;
+
+            for (let i = 0; i < num_points - 1; i++) {
+                for (let j = 0; j < num_points - 1; j++) {
+                    let x1 = surface.x[i][j];
+                    let y1 = surface.y[i][j];
+                    let z1 = surface.z[i][j];
+                    let x2 = surface.x[i + 1][j];
+                    let y2 = surface.y[i + 1][j];
+                    let z2 = surface.z[i + 1][j];
+                    let x3 = surface.x[i][j + 1];
+                    let y3 = surface.y[i][j + 1];
+                    let z3 = surface.z[i][j + 1];
+                    let x4 = surface.x[i + 1][j + 1];
+                    let y4 = surface.y[i + 1][j + 1];
+                    let z4 = surface.z[i + 1][j + 1];
+
+                    // Calculate area of two triangles forming a quadrilateral
+                    let area1 = 0.5 * Math.sqrt(
+                        Math.pow((y2 - y1)*(z3 - z1) - (z2 - z1)*(y3 - y1), 2) +
+                        Math.pow((z2 - z1)*(x3 - x1) - (x2 - x1)*(z3 - z1), 2) +
+                        Math.pow((x2 - x1)*(y3 - y1) - (y2 - y1)*(x3 - x1), 2)
+                    );
+                    let area2 = 0.5 * Math.sqrt(
+                        Math.pow((y3 - y4)*(z2 - z4) - (z3 - z4)*(y2 - y4), 2) +
+                        Math.pow((z3 - z4)*(x2 - x4) - (x3 - x4)*(z2 - z4), 2) +
+                        Math.pow((x3 - x4)*(y2 - y4) - (y3 - y4)*(x2 - x4), 2)
+                    );
+
+                    area += area1 + area2;
+                }
+            }
+
+            return area;
+        }
+
         // Function to update the tent model
         function updateModel() {
             // Get values in centimeters and convert to meters
@@ -152,24 +213,51 @@
             // Draw arcs intersecting at the tent's top vertex
             let arc1 = circularArc(vertices[0], vertices[3], height);
             let arc2 = circularArc(vertices[1], vertices[2], height);
+            let arc3 = circularArc(vertices[0], vertices[3], height);
+            let arc4 = circularArc(vertices[2], vertices[1], height);
 
             // Interpolate to create surface points between arcs
             let surface1 = interpolateSurface(arc1, arc2);
+            let surface2a = interpolateSurface(arc3, arc4);
+
+            // Calculate surface areas
+            let area1 = calculateSurfaceArea(surface1);
+            let area2a = calculateSurfaceArea(surface2a);
+
+            // Initialize total area
+            let totalArea = 0;
+
+            // Check which surfaces are enabled
+            let data = [];
+            if (document.getElementById('surface1').checked) {
+                totalArea += area1;
+                data.push({
+                    x: surface1.x,
+                    y: surface1.y,
+                    z: surface1.z,
+                    type: 'surface',
+                    colorscale: [[0, 'rgba(0, 255, 255, 0.3)'], [1, 'rgba(0, 255, 255, 0.3)']],
+                    opacity: 0.7,
+                    showscale: false
+                });
+            }
+            if (document.getElementById('surface2').checked) {
+                totalArea += area2a;
+                data.push({
+                    x: surface2a.x,
+                    y: surface2a.y,
+                    z: surface2a.z,
+                    type: 'surface',
+                    colorscale: [[0, 'rgba(255, 0, 0, 0.3)'], [1, 'rgba(255, 0, 0, 0.3)']],
+                    opacity: 0.7,
+                    showscale: false
+                });
+            }
 
             // Update total surface area
-            document.getElementById('surfaceArea').innerText = `Surface area: ${calculateSurfaceArea(surface1).toFixed(2)} m²`;
+            document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
 
             // Add arcs and edges
-            let data = [];
-            data.push({
-                x: surface1.x,
-                y: surface1.y,
-                z: surface1.z,
-                type: 'surface',
-                colorscale: [[0, 'rgba(0, 255, 255, 0.3)'], [1, 'rgba(0, 255, 255, 0.3)']],
-                opacity: 0.7,
-                showscale: false
-            });
             data.push({
                 x: arc1.x,
                 y: arc1.y,
@@ -233,103 +321,6 @@
             };
 
             Plotly.newPlot('tentModel', data, layout);
-        }
-
-        // Function to calculate the surface area of a surface
-        function calculateSurfaceArea(surface, num_points=100) {
-            let area = 0;
-
-            for (let i = 0; i < num_points - 1; i++) {
-                for (let j = 0; j < num_points - 1; j++) {
-                    let x1 = surface.x[i][j];
-                    let y1 = surface.y[i][j];
-                    let z1 = surface.z[i][j];
-                    let x2 = surface.x[i + 1][j];
-                    let y2 = surface.y[i + 1][j];
-                    let z2 = surface.z[i + 1][j];
-                    let x3 = surface.x[i][j + 1];
-                    let y3 = surface.y[i][j + 1];
-                    let z3 = surface.z[i][j + 1];
-                    let x4 = surface.x[i + 1][j + 1];
-                    let y4 = surface.y[i + 1][j + 1];
-                    let z4 = surface.z[i + 1][j + 1];
-
-                    // Calculate area of two triangles forming a quadrilateral
-                    let area1 = 0.5 * Math.sqrt(
-                        Math.pow((y2 - y1)*(z3 - z1) - (z2 - z1)*(y3 - y1), 2) +
-                        Math.pow((z2 - z1)*(x3 - x1) - (x2 - x1)*(z3 - z1), 2) +
-                        Math.pow((x2 - x1)*(y3 - y1) - (y2 - y1)*(x3 - x1), 2)
-                    );
-                    let area2 = 0.5 * Math.sqrt(
-                        Math.pow((y3 - y4)*(z2 - z4) - (z3 - z4)*(y2 - y4), 2) +
-                        Math.pow((z3 - z4)*(x2 - x4) - (x3 - x4)*(z2 - z4), 2) +
-                        Math.pow((x3 - x4)*(y2 - y4) - (y3 - y4)*(x2 - x4), 2)
-                    );
-
-                    area += area1 + area2;
-                }
-            }
-
-            return area;
-        }
-
-        // Function to generate a PDF of Surface1
-        async function generatePDF() {
-            const { jsPDF } = window.jspdf;
-
-            // Get values in centimeters and convert to meters
-            const width = parseFloat(document.getElementById('width').value) / 100;
-            const depth = parseFloat(document.getElementById('depth').value) / 100;
-            const height = parseFloat(document.getElementById('height').value) / 100;
-
-            // Tent vertices coordinates
-            let vertices = [
-                [0, 0, 0],         // Bottom front left corner
-                [width, 0, 0],     // Bottom front right corner
-                [0, depth, 0],     // Bottom back left corner
-                [width, depth, 0], // Bottom back right corner
-                [width / 2, depth / 2, height]  // Top center point
-            ];
-
-            // Draw arcs intersecting at the tent's top vertex
-            let arc1 = circularArc(vertices[0], vertices[3], height);
-            let arc2 = circularArc(vertices[1], vertices[2], height);
-
-            // Interpolate to create surface points between arcs
-            let surface1 = interpolateSurface(arc1, arc2);
-
-            // Convert 3D coordinates to 2D coordinates
-            let points2D = surface1.x.map((x, i) => [x, surface1.z[i]]);
-
-            // Create PDF
-            const doc = new jsPDF({
-                orientation: 'landscape',
-                unit: 'cm',
-                format: 'a4'
-            });
-
-            // Scale and translate points to fit into A4 paper size
-            const scale = 10 / Math.max(width, height); // Scale to fit 10 cm width
-            const translateX = 10; // Translate to the center of the page
-            const translateY = 7;
-
-            doc.setLineWidth(0.05);
-            points2D.forEach((point, i) => {
-                if (i > 0) {
-                    doc.line(
-                        points2D[i - 1][0] * scale + translateX,
-                        points2D[i - 1][1] * scale + translateY,
-                        point[0] * scale + translateX,
-                        point[1] * scale + translateY
-                    );
-                }
-            });
-
-            doc.text('Tent Surface 1 Pattern', 10, 1);
-            doc.text('Scale: 1:10', 10, 2);
-
-            // Save PDF
-            doc.save('Tent_Surface1_Pattern.pdf');
         }
 
         // Initialize the model on page load
