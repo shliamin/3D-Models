@@ -23,19 +23,18 @@
             let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
             let arc = {x: [], y: [], z: []};
 
-            // Находим середину между p0 и p1
+            // Вычисление среднего значения между p0 и p1
             let midX = (p0[0] + p1[0]) / 2;
             let midY = (p0[1] + p1[1]) / 2;
 
-            // Находим радиус дуги
-            let radius = Math.sqrt((p1[0] - midX)**2 + (p1[1] - midY)**2 + height**2);
+            // Пересчет радиуса для корректного построения дуги
+            let radius = Math.sqrt(Math.pow(p0[0] - midX, 2) + Math.pow(p0[1] - midY, 2));
+            let angleIncrement = Math.PI / (num_points - 1);
 
-            t.forEach(val => {
-                let angle = Math.PI * val;
-
-                // Используем параметрическое уравнение окружности для x, y, z координат
-                let x = midX + (p0[0] - midX) * Math.cos(angle) - (height / 2) * Math.sin(angle);
-                let y = midY + (p0[1] - midY) * Math.cos(angle) - (height / 2) * Math.sin(angle);
+            t.forEach((val, i) => {
+                let angle = i * angleIncrement;
+                let x = midX + radius * Math.cos(angle);
+                let y = midY + radius * Math.sin(angle);
                 let z = height * Math.sin(angle);
 
                 arc.x.push(x);
