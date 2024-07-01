@@ -78,9 +78,18 @@
 
         let layout = {
             scene: {
-                xaxis: {title: 'Width'},
-                yaxis: {title: 'Depth'},
-                zaxis: {title: 'Height'},
+                xaxis: {
+                    title: 'Width',
+                    dtick: 0.1  // Шаг сетки по оси X 10 см
+                },
+                yaxis: {
+                    title: 'Depth',
+                    dtick: 0.1  // Шаг сетки по оси Y 10 см
+                },
+                zaxis: {
+                    title: 'Height',
+                    dtick: 0.1  // Шаг сетки по оси Z 10 см
+                },
                 aspectratio: {x: width, y: depth, z: height}
             },
             margin: {
