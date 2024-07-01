@@ -88,7 +88,7 @@ function calculateSurfaceArea(surface, num_points=100) {
 }
 
 // Function to update the tent model
-function updateModel() {
+export function updateModel() {
     // Get values in centimeters and convert to meters
     const width = parseFloat(document.getElementById('width').value) / 100;
     const depth = parseFloat(document.getElementById('depth').value) / 100;
@@ -217,4 +217,4 @@ function updateModel() {
 }
 
 // Initialize the model on page load
-updateModel();
+window.onload = updateModel;
