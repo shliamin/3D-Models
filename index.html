@@ -78,10 +78,8 @@
             <label><input type="checkbox" id="surface1" checked onchange="updateModel()"> Surface 1</label>
             <label><input type="checkbox" id="surface2" checked onchange="updateModel()"> Surface 2</label>
         </div>
-        <button onclick="projectTo2D()">Show 2D Patterns</button>
     </div>
     <div class="model" id="tentModel" style="width: 100%; height: 700px;"></div>
-    <div class="model" id="projection2D" style="width: 100%; height: 700px;"></div>
     
     <script>
         // Function to create a circular arc
@@ -131,6 +129,31 @@
             }
             
             return surface;
+        }
+
+        // Function to extrapolite two arcs to create surface points
+        function extrapolateSurface(p0, p1, height, t_extrap, num_points=100) {
+            let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
+            let arc = {x: [], y: [], z: []};
+        
+            // Midpoint coordinates between p0 and p1
+            let midX = (p0[0] + p1[0]) / 2;
+            let midY = (p0[1] + p1[1]) / 2;
+        
+            t.forEach(val => {
+                let angle = Math.PI * val * t_extrap;
+        
+                // Arc coordinates calculation
+                let x = midX + (p0[0] - midX) * Math.cos(angle);
+                let y = midY + (p0[1] - midY) * Math.cos(angle);
+                let z = height * Math.sin(angle);
+        
+                arc.x.push(x);
+                arc.y.push(y);
+                arc.z.push(z);
+            });
+        
+            return arc;
         }
 
         // Function to calculate the surface area of a surface
@@ -195,11 +218,11 @@
 
             // Interpolate to create surface points between arcs
             let surface1 = interpolateSurface(arc1, arc2);
-            let surface2 = interpolateSurface(arc3, arc4);
+            let surface2a = interpolateSurface(arc3, arc4);
 
             // Calculate surface areas
             let area1 = calculateSurfaceArea(surface1);
-            let area2 = calculateSurfaceArea(surface2);
+            let area2a = calculateSurfaceArea(surface2a);
 
             // Initialize total area
             let totalArea = 0;
@@ -219,11 +242,11 @@
                 });
             }
             if (document.getElementById('surface2').checked) {
-                totalArea += area2;
+                totalArea += area2a;
                 data.push({
-                    x: surface2.x,
-                    y: surface2.y,
-                    z: surface2.z,
+                    x: surface2a.x,
+                    y: surface2a.y,
+                    z: surface2a.z,
                     type: 'surface',
                     colorscale: [[0, 'rgba(255, 0, 0, 0.3)'], [1, 'rgba(255, 0, 0, 0.3)']],
                     opacity: 0.7,
@@ -298,96 +321,6 @@
             };
 
             Plotly.newPlot('tentModel', data, layout);
-        }
-
-        // Function to project 3D surface to 2D
-        function projectTo2D() {
-            const width = parseFloat(document.getElementById('width').value);
-            const depth = parseFloat(document.getElementById('depth').value);
-            const height = parseFloat(document.getElementById('height').value);
-
-            // Tent vertices coordinates in meters
-            let vertices = [
-                [0, 0, 0],         // Bottom front left corner
-                [width, 0, 0],     // Bottom front right corner
-                [0, depth, 0],     // Bottom back left corner
-                [width, depth, 0], // Bottom back right corner
-                [width / 2, depth / 2, height]  // Top center point
-            ];
-
-            let data = [];
-
-            function flattenSurface(surface, label) {
-                let flattened = { x: [], y: [], text: [] };
-
-                for (let i = 0; i < surface.x.length; i++) {
-                    let xRow = [];
-                    let yRow = [];
-                    let textRow = [];
-                    for (let j = 0; j < surface.x[i].length; j++) {
-                        let x = surface.x[i][j] * 100; // Convert to cm
-                        let y = surface.y[i][j] * 100; // Convert to cm
-                        let z = surface.z[i][j] * 100; // Convert to cm
-
-                        xRow.push(x);
-                        yRow.push(y + z);
-                        textRow.push(`(${x.toFixed(1)}, ${(y + z).toFixed(1)}) cm`);
-                    }
-                    flattened.x.push(xRow);
-                    flattened.y.push(yRow);
-                    flattened.text.push(textRow);
-                }
-
-                data.push({
-                    x: flattened.x.flat(),
-                    y: flattened.y.flat(),
-                    mode: 'lines+markers+text',
-                    type: 'scatter',
-                    name: label,
-                    text: flattened.text.flat(),
-                    textposition: 'top center',
-                    marker: {
-                        color: label === 'Surface 1' ? 'rgba(0, 255, 255, 0.7)' : 'rgba(255, 0, 0, 0.7)'
-                    }
-                });
-            }
-
-            // Interpolate to create surface points between arcs
-            let arc1 = circularArc(vertices[0], vertices[3], height / 100);
-            let arc2 = circularArc(vertices[1], vertices[2], height / 100);
-            let surface1 = interpolateSurface(arc1, arc2);
-
-            let arc3 = circularArc(vertices[0], vertices[1], height / 100);
-            let arc4 = circularArc(vertices[2], vertices[3], height / 100);
-            let surface2 = interpolateSurface(arc3, arc4);
-
-            // Flatten and plot only the selected surfaces
-            if (document.getElementById('surface1').checked) {
-                flattenSurface(surface1, 'Surface 1');
-            }
-            if (document.getElementById('surface2').checked) {
-                flattenSurface(surface2, 'Surface 2');
-            }
-
-            let layout = {
-                xaxis: {
-                    title: 'X (cm)',
-                    dtick: 10
-                },
-                yaxis: {
-                    title: 'Y (cm)',
-                    dtick: 10
-                },
-                aspectratio: { x: 1, y: 1 },
-                margin: {
-                    l: 0,
-                    r: 0,
-                    b: 0,
-                    t: 0
-                }
-            };
-
-            Plotly.newPlot('projection2D', data, layout);
         }
 
         // Initialize the model on page load
