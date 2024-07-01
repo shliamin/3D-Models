@@ -3,83 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive 3D Circles</title>
+    <title>Interactive Tent Model</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <style>
-        body { margin: 0; }
-        #plot { width: 100%; height: 100vh; }
-    </style>
 </head>
 <body>
-    <div id="plot"></div>
+    <h1>Interactive Tent Model</h1>
+    <div>
+        <label for="width">Width (cm):</label>
+        <input type="number" id="width" value="140" step="1" min="1" onchange="updateModel()">
+        <label for="depth">Depth (cm):</label>
+        <input type="number" id="depth" value="230" step="1" min="1" onchange="updateModel()">
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" value="120" step="1" min="1" onchange="updateModel()">
+    </div>
+    <div id="tentModel" style="width: 100%; height: 600px;"></div>
     <script>
-        var data = [];
-
-        // Создание первого круга (вертикально относительно пола)
-        var theta1 = [];
-        var x1 = [];
-        var z1 = [];
-        for (var i = 0; i <= 360; i++) {
-            theta1.push(i);
-            x1.push(Math.cos(i * Math.PI / 180) * 5);
-            z1.push(Math.sin(i * Math.PI / 180) * 5);
+        // Функция для создания дуги окружности
+        function circularArc(p0, p1, height, num_points=100) {
+            let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
+            let arc = {x: [], y: [], z: []};
+            
+            // Вычисление среднего значения между p0 и p1
+            let midX = (p0[0] + p1[0]) / 2;
+            let midY = (p0[1] + p1[1]) / 2;
+            
+            t.forEach(val => {
+                let angle = Math.PI * val;
+                
+                // Вычисление координат дуги окружности
+                let x = midX + (p0[0] - midX) * Math.cos(angle) - (height / 2) * Math.sin(angle);
+                let y = midY + (p0[1] - midY) * Math.cos(angle) - (height / 2) * Math.sin(angle);
+                let z = height * Math.sin(angle);
+                
+                arc.x.push(x);
+                arc.y.push(y);
+                arc.z.push(z);
+            });
+        
+            return arc;
         }
-        var circle1 = {
-            type: 'scatter3d',
-            mode: 'lines',
-            x: x1,
-            y: Array(theta1.length).fill(0),
-            z: z1.filter(z => z >= 0), // Убираем нижнюю половину круга
-            line: {color: 'blue', width: 4}
-        };
-        data.push(circle1);
 
-        // Создание второго круга (перпендикулярно первому)
-        var theta2 = [];
-        var y2 = [];
-        var z2 = [];
-        for (var i = 0; i <= 360; i++) {
-            theta2.push(i);
-            y2.push(Math.cos(i * Math.PI / 180) * 5);
-            z2.push(Math.sin(i * Math.PI / 180) * 5);
+        // Функция для обновления модели палатки
+        function updateModel() {
+            // Получение значений в сантиметрах и преобразование их в метры
+            const width = parseFloat(document.getElementById('width').value) / 100;
+            const depth = parseFloat(document.getElementById('depth').value) / 100;
+            const height = parseFloat(document.getElementById('height').value) / 100;
+
+            // Координаты вершин палатки
+            let vertices = [
+                [0, 0, 0],         // Нижний передний левый угол
+                [width, 0, 0],     // Нижний передний правый угол
+                [0, depth, 0],     // Нижний задний левый угол
+                [width, depth, 0], // Нижний задний правый угол
+                [width / 2, depth / 2, height]  // Верхняя центральная точка
+            ];
+
+            // Рисуем дуги, пересекающиеся в вершине палатки
+            let arc1 = circularArc(vertices[0], vertices[3], height);
+            let arc2 = circularArc(vertices[1], vertices[2], height);
+
+            let data = [
+                {
+                    x: arc1.x,
+                    y: arc1.y,
+                    z: arc1.z,
+                    mode: 'lines',
+                    line: {
+                        color: 'blue',
+                        width: 5
+                    },
+                    type: 'scatter3d'
+                },
+                {
+                    x: arc2.x,
+                    y: arc2.y,
+                    z: arc2.z,
+                    mode: 'lines',
+                    line: {
+                        color: 'blue',
+                        width: 5
+                    },
+                    type: 'scatter3d'
+                },
+                {
+                    x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
+                    y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
+                    z: [vertices[0][2], vertices[1][2], vertices[3][2], vertices[2][2], vertices[0][2]],
+                    mode: 'lines',
+                    line: {
+                        color: 'cyan',
+                        width: 5
+                    },
+                    type: 'scatter3d'
+                }
+            ];
+
+            let layout = {
+                scene: {
+                    xaxis: {
+                        title: 'Width',
+                        dtick: 0.1  // Шаг сетки по оси X 10 см
+                    },
+                    yaxis: {
+                        title: 'Depth',
+                        dtick: 0.1  // Шаг сетки по оси Y 10 см
+                    },
+                    zaxis: {
+                        title: 'Height',
+                        dtick: 0.1  // Шаг сетки по оси Z 10 см
+                    },
+                    aspectratio: {x: width, y: depth, z: height}
+                },
+                margin: {
+                    l: 0,
+                    r: 0,
+                    b: 0,
+                    t: 0
+                }
+            };
+
+            Plotly.newPlot('tentModel', data, layout);
         }
-        var circle2 = {
-            type: 'scatter3d',
-            mode: 'lines',
-            x: Array(theta2.length).fill(0),
-            y: y2,
-            z: z2,
-            line: {color: 'blue', width: 4}
-        };
-        data.push(circle2);
 
-        // Создание пола
-        var planeX = [-5, 5, 0, 0];
-        var planeY = [0, 0, -5, 5];
-        var planeZ = [0, 0, 0, 0];
-        var plane = {
-            type: 'mesh3d',
-            x: planeX,
-            y: planeY,
-            z: planeZ,
-            opacity: 0.5,
-            color: 'blue'
-        };
-        data.push(plane);
-
-        var layout = {
-            scene: {
-                xaxis: {range: [-10, 10], autorange: false},
-                yaxis: {range: [-10, 10], autorange: false},
-                zaxis: {range: [0, 20], autorange: false} // Задаем фиксированный диапазон для оси Z
-            }
-        };
-
-        Plotly.newPlot('plot', data, layout);
-
-        window.addEventListener('resize', () => {
-            Plotly.Plots.resize(document.getElementById('plot'));
-        });
+        // Инициализация модели при загрузке страницы
+        updateModel();
     </script>
 </body>
 </html>
