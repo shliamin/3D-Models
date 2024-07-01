@@ -7,6 +7,8 @@ export async function generateModel() {
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
 
+    console.log('Current values:', { width, depth, height });
+
     const surface1 = interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([width, 0], [0, depth], height));
     const surface2 = interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([0, depth], [width, 0], height));
 
