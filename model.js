@@ -1,7 +1,6 @@
 // model.js
 
-// Function to create a circular arc
-function circularArc(p0, p1, height, num_points=100) {
+export function circularArc(p0, p1, height, num_points=100) {
     let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
     let arc = {x: [], y: [], z: []};
     
@@ -25,8 +24,7 @@ function circularArc(p0, p1, height, num_points=100) {
     return arc;
 }
 
-// Function to interpolate between two arcs to create surface points
-function interpolateSurface(arc1, arc2, num_points=100) {
+export function interpolateSurface(arc1, arc2, num_points=100) {
     let surface = {x: [], y: [], z: []};
 
     for (let i = 0; i < num_points; i++) {
@@ -49,8 +47,7 @@ function interpolateSurface(arc1, arc2, num_points=100) {
     return surface;
 }
 
-// Function to calculate the surface area of a surface
-function calculateSurfaceArea(surface, num_points=100) {
+export function calculateSurfaceArea(surface, num_points=100) {
     let area = 0;
 
     for (let i = 0; i < num_points - 1; i++) {
@@ -87,7 +84,6 @@ function calculateSurfaceArea(surface, num_points=100) {
     return area;
 }
 
-// Function to update the tent model
 export function updateModel() {
     // Get values in centimeters and convert to meters
     const width = parseFloat(document.getElementById('width').value) / 100;
