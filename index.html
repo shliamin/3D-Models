@@ -133,31 +133,6 @@
             return surface;
         }
 
-        // Function to extrapolite two arcs to create surface points
-        function extrapolateSurface(p0, p1, height, t_extrap, num_points=100) {
-            let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
-            let arc = {x: [], y: [], z: []};
-        
-            // Midpoint coordinates between p0 and p1
-            let midX = (p0[0] + p1[0]) / 2;
-            let midY = (p0[1] + p1[1]) / 2;
-        
-            t.forEach(val => {
-                let angle = Math.PI * val * t_extrap;
-        
-                // Arc coordinates calculation
-                let x = midX + (p0[0] - midX) * Math.cos(angle);
-                let y = midY + (p0[1] - midY) * Math.cos(angle);
-                let z = height * Math.sin(angle);
-        
-                arc.x.push(x);
-                arc.y.push(y);
-                arc.z.push(z);
-            });
-        
-            return arc;
-        }
-
         // Function to calculate the surface area of a surface
         function calculateSurfaceArea(surface, num_points=100) {
             let area = 0;
@@ -352,19 +327,15 @@
                 },
                 body: JSON.stringify(payload)
             });
-            
-            const data = await response.json();
 
-            // Display 2D patterns
-            const patternResults = document.getElementById('patternResults');
-            patternResults.innerHTML = `
-                <h2>2D Patterns</h2>
-                <h3>Base</h3>
-                <p>${JSON.stringify(data.patterns.base)}</p>
-                <h3>Side</h3>
-                <p>${JSON.stringify(data.patterns.side)}</p>
-                <a href="http://127.0.0.1:5001/download/tent.obj">Download 3D Model (OBJ)</a>
-            `;
+            // Create a link element to download the file
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'tent.obj';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     </script>
 </body>
