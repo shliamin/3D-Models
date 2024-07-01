@@ -334,12 +334,23 @@
             const depth = parseFloat(document.getElementById('depth').value);
             const height = parseFloat(document.getElementById('height').value);
 
+            const surface1 = document.getElementById('surface1').checked ? interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([width, 0], [0, depth], height)) : null;
+            const surface2 = document.getElementById('surface2').checked ? interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([0, depth], [width, 0], height)) : null;
+
+            const payload = {
+                width,
+                depth,
+                height,
+                surface1,
+                surface2
+            };
+
             const response = await fetch('http://127.0.0.1:5000/generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ width, depth, height })
+                body: JSON.stringify(payload)
             });
             
             const data = await response.json();
