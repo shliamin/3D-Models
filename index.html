@@ -58,6 +58,30 @@
             return arc;
         }
 
+        // Function to interpolate between two arcs to create surface points
+        function interpolateSurface(arc1, arc2, num_points=100) {
+            let surface = {x: [], y: [], z: []};
+
+            for (let i = 0; i < num_points; i++) {
+                let xRow = [];
+                let yRow = [];
+                let zRow = [];
+                
+                for (let j = 0; j < num_points; j++) {
+                    let t = j / (num_points - 1);
+                    xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
+                    yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
+                    zRow.push((1 - t) * arc1.z[i] + t * arc2.z[i]);
+                }
+                
+                surface.x.push(xRow);
+                surface.y.push(yRow);
+                surface.z.push(zRow);
+            }
+            
+            return surface;
+        }
+
         // Function to update the tent model
         function updateModel() {
             // Get values in centimeters and convert to meters
@@ -77,6 +101,9 @@
             // Draw arcs intersecting at the tent's top vertex
             let arc1 = circularArc(vertices[0], vertices[3], height);
             let arc2 = circularArc(vertices[1], vertices[2], height);
+
+            // Interpolate to create surface points between arcs
+            let surface = interpolateSurface(arc1, arc2);
 
             let data = [
                 {
@@ -111,6 +138,13 @@
                         width: 5
                     },
                     type: 'scatter3d'
+                },
+                {
+                    x: surface.x,
+                    y: surface.y,
+                    z: surface.z,
+                    type: 'surface',
+                    colorscale: 'Viridis'
                 }
             ];
 
