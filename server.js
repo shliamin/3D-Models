@@ -1,4 +1,4 @@
-import { interpolateSurface, circularArc } from './model.js';
+import { interpolateSurface, circularArc, interpolateSurfaceUntilIntersection } from './model.js';
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
@@ -7,12 +7,21 @@ export async function generateModel() {
 
     console.log('Current values for 3D Model:', { width, depth, height });
 
-    const surface1 = interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([width, 0], [0, depth], height));
-    const surface2 = interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([0, depth], [width, 0], height));
+    const arc1 = circularArc([0, 0], [width, depth], height);
+    const arc2 = circularArc([width, 0], [0, depth], height);
+    const arc3 = circularArc([0, 0], [width, depth], height);
+    const arc4 = circularArc([0, depth], [width, 0], height);
+
+    const surface1 = interpolateSurface(arc1, arc2);
+    const surface2 = interpolateSurface(arc3, arc4);
+    const surface3 = interpolateSurfaceUntilIntersection(arc1, arc2);
+    const surface4 = interpolateSurfaceUntilIntersection(arc3, arc4);
 
     const payload = {
         surface1,
-        surface2
+        surface2,
+        surface3,
+        surface4
     };
 
     try {
@@ -47,12 +56,21 @@ export async function generatePattern() {
 
     console.log('Current values for 2D Pattern:', { width, depth, height });
 
-    const surface1 = interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([width, 0], [0, depth], height));
-    const surface2 = interpolateSurface(circularArc([0, 0], [width, depth], height), circularArc([0, depth], [width, 0], height));
+    const arc1 = circularArc([0, 0], [width, depth], height);
+    const arc2 = circularArc([width, 0], [0, depth], height);
+    const arc3 = circularArc([0, 0], [width, depth], height);
+    const arc4 = circularArc([0, depth], [width, 0], height);
+
+    const surface1 = interpolateSurface(arc1, arc2);
+    const surface2 = interpolateSurface(arc3, arc4);
+    const surface3 = interpolateSurfaceUntilIntersection(arc1, arc2);
+    const surface4 = interpolateSurfaceUntilIntersection(arc3, arc4);
 
     const payload = {
         surface1,
-        surface2
+        surface2,
+        surface3,
+        surface4
     };
 
     try {
