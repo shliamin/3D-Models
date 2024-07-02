@@ -1,14 +1,15 @@
 // model.js
 
 
-// Function to find the first intersection point of two arcs
 function findIntersection(arc1, arc2, num_points=100) {
     for (let i = 0; i < num_points; i++) {
-        if (arc1.x[i] === arc2.x[i] && arc1.y[i] === arc2.y[i] && arc1.z[i] === arc2.z[i]) {
-            return i;
+        for (let j = 0; j < num_points; j++) {
+            if (arc1.x[i] === arc2.x[j] && arc1.y[i] === arc2.y[j] && arc1.z[i] === arc2.z[j]) {
+                return {i, j};
+            }
         }
     }
-    return -1; // Returns -1 if there is no intersection
+    return {i: -1, j: -1}; // Returns -1 if there is no intersection
 }
 
 // Function to interpolate between two arcs until the first intersection point
@@ -16,21 +17,21 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points=100) 
     let surface = {x: [], y: [], z: []};
 
     // Find the index of the intersection point
-    let intersectionIndex = findIntersection(arc1, arc2, num_points);
-    if (intersectionIndex === -1) {
-        intersectionIndex = num_points - 1; // Use all points if there is no intersection
+    let {i: intersectionIndex1, j: intersectionIndex2} = findIntersection(arc1, arc2, num_points);
+    if (intersectionIndex1 === -1 || intersectionIndex2 === -1) {
+        intersectionIndex1 = intersectionIndex2 = num_points - 1; // Use all points if there is no intersection
     }
 
-    for (let i = 0; i <= intersectionIndex; i++) {
+    for (let i = 0; i <= intersectionIndex1; i++) {
         let xRow = [];
         let yRow = [];
         let zRow = [];
         
-        for (let j = 0; j < num_points; j++) {
+        for (let j = 0; j <= intersectionIndex2; j++) {
             let t = j / (num_points - 1);
-            xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
-            yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
-            zRow.push((1 - t) * arc1.z[i] + t * arc2.z[i]);
+            xRow.push((1 - t) * arc1.x[i] + t * arc2.x[j]);
+            yRow.push((1 - t) * arc1.y[i] + t * arc2.y[j]);
+            zRow.push((1 - t) * arc1.z[i] + t * arc2.z[j]);
         }
         
         surface.x.push(xRow);
