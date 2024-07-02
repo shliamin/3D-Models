@@ -33,6 +33,7 @@ h3 {
 }
 .display-area {
     text-align: center;
+    justify-content: flex;
 }
 .surface-area {
     border: 1px solid #000;
