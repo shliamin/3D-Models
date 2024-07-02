@@ -4,7 +4,8 @@ export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
-    const enableRelaxation = document.getElementById('enableRelaxation').checked; // Assuming you have a checkbox for this
+    const enableRelaxationElement = document.getElementById('enableRelaxation');
+    const enableRelaxation = enableRelaxationElement ? enableRelaxationElement.checked : false; // Default to false if the element is not found
 
     console.log('Current values for 3D Model:', { width, depth, height, enableRelaxation });
 
@@ -62,7 +63,8 @@ export async function generatePattern() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
-    const enableRelaxation = document.getElementById('enableRelaxation').checked; // Assuming you have a checkbox for this
+    const enableRelaxationElement = document.getElementById('enableRelaxation');
+    const enableRelaxation = enableRelaxationElement ? enableRelaxationElement.checked : false; // Default to false if the element is not found
 
     console.log('Current values for 2D Pattern:', { width, depth, height, enableRelaxation });
 
