@@ -1,5 +1,46 @@
 // model.js
 
+
+// Function to find the first intersection point of two arcs
+function findIntersection(arc1, arc2, num_points=100) {
+    for (let i = 0; i < num_points; i++) {
+        if (arc1.x[i] === arc2.x[i] && arc1.y[i] === arc2.y[i] && arc1.z[i] === arc2.z[i]) {
+            return i;
+        }
+    }
+    return -1; // Returns -1 if there is no intersection
+}
+
+// Function to interpolate between two arcs until the first intersection point
+export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points=100) {
+    let surface = {x: [], y: [], z: []};
+
+    // Find the index of the intersection point
+    let intersectionIndex = findIntersection(arc1, arc2, num_points);
+    if (intersectionIndex === -1) {
+        intersectionIndex = num_points - 1; // Use all points if there is no intersection
+    }
+
+    for (let i = 0; i <= intersectionIndex; i++) {
+        let xRow = [];
+        let yRow = [];
+        let zRow = [];
+        
+        for (let j = 0; j < num_points; j++) {
+            let t = j / (num_points - 1);
+            xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
+            yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
+            zRow.push((1 - t) * arc1.z[i] + t * arc2.z[i]);
+        }
+        
+        surface.x.push(xRow);
+        surface.y.push(yRow);
+        surface.z.push(zRow);
+    }
+    
+    return surface;
+}
+
 export function circularArc(p0, p1, height, num_points=100) {
     let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
     let arc = {x: [], y: [], z: []};
