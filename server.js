@@ -40,7 +40,7 @@ export async function generateModel() {
         const blob = await response.blob();
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
-        link.download = 'tent.obj';
+        link.download = 'models.zip';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
