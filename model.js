@@ -226,7 +226,7 @@ export function updateModel() {
 
     // Update total surface area and arc lengths
     document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
-    document.getElementById('arcLength').innerText = `Arc length 1: ${arcLength1.toFixed(2)} m, Arc length 2: ${arcLength2.toFixed(2)} m`;
+    document.getElementById('arcLength').innerText = `Arcs length: ${arcLength1.toFixed(2)*2} m`;
 
     // Add arcs and edges
     data.push({
