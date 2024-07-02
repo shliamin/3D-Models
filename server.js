@@ -22,6 +22,9 @@ export async function generateModel() {
     const surface4 = interpolateSurfaceUntilIntersection(arc7, arc8);
 
     const payload = {
+        width,
+        depth,
+        height,
         surface1,
         surface2,
         surface3,
@@ -69,8 +72,9 @@ export async function generatePattern() {
     const surface4 = interpolateSurfaceUntilIntersection(arc7, arc8);
 
     const payload = {
-        surface1,
-        surface2,
+        width,
+        depth,
+        height,
         surface3,
         surface4
     };
