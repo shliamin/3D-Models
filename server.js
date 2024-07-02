@@ -11,11 +11,15 @@ export async function generateModel() {
     const arc2 = circularArc([width, 0], [0, depth], height);
     const arc3 = circularArc([0, 0], [width, depth], height);
     const arc4 = circularArc([0, depth], [width, 0], height);
+    const arc5 = halfCircularArc([0, 0], [width, depth], height);
+    const arc6 = halfCircularArc([width, 0], [0, depth], height);
+    const arc7 = halfCircularArc([0, 0], [width, depth], height);
+    const arc8 = halfCircularArc([0, depth], [width, 0], height);
 
     const surface1 = interpolateSurface(arc1, arc2);
     const surface2 = interpolateSurface(arc3, arc4);
-    const surface3 = interpolateSurfaceUntilIntersection(arc1, arc2);
-    const surface4 = interpolateSurfaceUntilIntersection(arc3, arc4);
+    const surface3 = interpolateSurfaceUntilIntersection(arc5, arc6);
+    const surface4 = interpolateSurfaceUntilIntersection(arc7, arc8);
 
     const payload = {
         surface1,
