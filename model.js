@@ -1,8 +1,19 @@
 // model.js
 
+// Function to calculate the length of an arc
+export function calculateArcLength(arc) {
+    let length = 0;
+    for (let i = 1; i < arc.x.length; i++) {
+        let dx = arc.x[i] - arc.x[i - 1];
+        let dy = arc.y[i] - arc.y[i - 1];
+        let dz = arc.z[i] - arc.z[i - 1];
+        length += Math.sqrt(dx * dx + dy * dy + dz * dz);
+    }
+    return length;
+}
 
 // Function to find the first intersection point of two arcs
-function findIntersection(arc1, arc2, num_points=100) {
+function findIntersection(arc1, arc2, num_points = 100) {
     for (let i = 0; i < num_points; i++) {
         if (arc1.x[i] === arc2.x[i] && arc1.y[i] === arc2.y[i] && arc1.z[i] === arc2.z[i]) {
             return i;
@@ -12,8 +23,8 @@ function findIntersection(arc1, arc2, num_points=100) {
 }
 
 // Function to interpolate between two arcs until the first intersection point
-export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points=100) {
-    let surface = {x: [], y: [], z: []};
+export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100) {
+    let surface = { x: [], y: [], z: [] };
 
     // Find the index of the intersection point
     let intersectionIndex = findIntersection(arc1, arc2, num_points);
@@ -41,9 +52,9 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points=100) 
     return surface;
 }
 
-export function circularArc(p0, p1, height, num_points=100) {
-    let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
-    let arc = {x: [], y: [], z: []};
+export function circularArc(p0, p1, height, num_points = 100) {
+    let t = Array.from({ length: num_points }, (_, i) => i / (num_points - 1));
+    let arc = { x: [], y: [], z: [] };
     
     // Midpoint coordinates between p0 and p1
     let midX = (p0[0] + p1[0]) / 2;
@@ -65,9 +76,9 @@ export function circularArc(p0, p1, height, num_points=100) {
     return arc;
 }
 
-export function halfCircularArc(p0, p1, height, num_points=100) {
-    let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
-    let arc = {x: [], y: [], z: []};
+export function halfCircularArc(p0, p1, height, num_points = 100) {
+    let t = Array.from({ length: num_points }, (_, i) => i / (num_points - 1));
+    let arc = { x: [], y: [], z: [] };
     
     // Midpoint coordinates between p0 and p1
     let midX = (p0[0] + p1[0]) / 2;
@@ -90,8 +101,8 @@ export function halfCircularArc(p0, p1, height, num_points=100) {
 }
 
 
-export function interpolateSurface(arc1, arc2, num_points=100) {
-    let surface = {x: [], y: [], z: []};
+export function interpolateSurface(arc1, arc2, num_points = 100) {
+    let surface = { x: [], y: [], z: [] };
 
     for (let i = 0; i < num_points; i++) {
         let xRow = [];
@@ -113,7 +124,7 @@ export function interpolateSurface(arc1, arc2, num_points=100) {
     return surface;
 }
 
-export function calculateSurfaceArea(surface, num_points=100) {
+export function calculateSurfaceArea(surface, num_points = 100) {
     let area = 0;
 
     for (let i = 0; i < num_points - 1; i++) {
@@ -133,14 +144,14 @@ export function calculateSurfaceArea(surface, num_points=100) {
 
             // Calculate area of two triangles forming a quadrilateral
             let area1 = 0.5 * Math.sqrt(
-                Math.pow((y2 - y1)*(z3 - z1) - (z2 - z1)*(y3 - y1), 2) +
-                Math.pow((z2 - z1)*(x3 - x1) - (x2 - x1)*(z3 - z1), 2) +
-                Math.pow((x2 - x1)*(y3 - y1) - (y2 - y1)*(x3 - x1), 2)
+                Math.pow((y2 - y1) * (z3 - z1) - (z2 - z1) * (y3 - y1), 2) +
+                Math.pow((z2 - z1) * (x3 - x1) - (x2 - x1) * (z3 - z1), 2) +
+                Math.pow((x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1), 2)
             );
             let area2 = 0.5 * Math.sqrt(
-                Math.pow((y3 - y4)*(z2 - z4) - (z3 - z4)*(y2 - y4), 2) +
-                Math.pow((z3 - z4)*(x2 - x4) - (x3 - x4)*(z2 - z4), 2) +
-                Math.pow((x3 - x4)*(y2 - y4) - (y3 - y4)*(x2 - x4), 2)
+                Math.pow((y3 - y4) * (z2 - z4) - (z3 - z4) * (y2 - y4), 2) +
+                Math.pow((z3 - z4) * (x2 - x4) - (x3 - x4) * (z2 - z4), 2) +
+                Math.pow((x3 - x4) * (y2 - y4) - (y3 - y4) * (x2 - x4), 2)
             );
 
             area += area1 + area2;
@@ -179,6 +190,10 @@ export function updateModel() {
     let area1 = calculateSurfaceArea(surface1);
     let area2a = calculateSurfaceArea(surface2a);
 
+    // Calculate arc lengths
+    let arcLength1 = calculateArcLength(arc1);
+    let arcLength2 = calculateArcLength(arc2);
+
     // Initialize total area
     let totalArea = 0;
 
@@ -209,8 +224,9 @@ export function updateModel() {
         });
     }
 
-    // Update total surface area
+    // Update total surface area and arc lengths
     document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
+    document.getElementById('arcLength').innerText = `Arc length 1: ${arcLength1.toFixed(2)} m, Arc length 2: ${arcLength2.toFixed(2)} m`;
 
     // Add arcs and edges
     data.push({
@@ -261,11 +277,11 @@ export function updateModel() {
                 title: 'Height',
                 dtick: 0.1  // Grid step for Z axis 10 cm
             },
-            aspectratio: {x: width, y: depth, z: height}
+            aspectratio: { x: width, y: depth, z: height }
         },
         legend: {
-            y: -0.2, 
-            yanchor: 'top' 
+            y: -0.2,
+            yanchor: 'top'
         },
         margin: {
             l: 0,
