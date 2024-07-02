@@ -1,4 +1,4 @@
-import { interpolateSurface, circularArc, interpolateSurfaceUntilIntersection } from './model.js';
+import { interpolateSurface, circularArc, halfCircularArc, interpolateSurfaceUntilIntersection } from './model.js';
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
