@@ -65,6 +65,31 @@ export function circularArc(p0, p1, height, num_points=100) {
     return arc;
 }
 
+export function halfCircularArc(p0, p1, height, num_points=100) {
+    let t = Array.from({length: num_points}, (_, i) => i / (num_points - 1));
+    let arc = {x: [], y: [], z: []};
+    
+    // Midpoint coordinates between p0 and p1
+    let midX = (p0[0] + p1[0]) / 2;
+    let midY = (p0[1] + p1[1]) / 2;
+    
+    t.forEach(val => {
+        let angle = (Math.PI / 2) * val;  // This ensures we only go from 0 to π/2 (half arc)
+        
+        // Arc coordinates calculation
+        let x = midX + (p0[0] - midX) * Math.cos(angle);
+        let y = midY + (p0[1] - midY) * Math.cos(angle);
+        let z = height * Math.sin(angle);
+        
+        arc.x.push(x);
+        arc.y.push(y);
+        arc.z.push(z);
+    });
+
+    return arc;
+}
+
+
 export function interpolateSurface(arc1, arc2, num_points=100) {
     let surface = {x: [], y: [], z: []};
 
