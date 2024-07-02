@@ -4,8 +4,9 @@ export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
+    const enableRelaxation = document.getElementById('enableRelaxation').checked; // Assuming you have a checkbox for this
 
-    console.log('Current values for 3D Model:', { width, depth, height });
+    console.log('Current values for 3D Model:', { width, depth, height, enableRelaxation });
 
     const arc1 = circularArc([0, 0], [width, depth], height);
     const arc2 = circularArc([width, 0], [0, depth], height);
@@ -28,7 +29,8 @@ export async function generateModel() {
         surface1,
         surface2,
         surface3,
-        surface4
+        surface4,
+        enable_relaxation: enableRelaxation
     };
 
     try {
@@ -60,8 +62,9 @@ export async function generatePattern() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
+    const enableRelaxation = document.getElementById('enableRelaxation').checked; // Assuming you have a checkbox for this
 
-    console.log('Current values for 2D Pattern:', { width, depth, height });
+    console.log('Current values for 2D Pattern:', { width, depth, height, enableRelaxation });
 
     const arc5 = halfCircularArc([0, 0], [width, depth], height);
     const arc6 = halfCircularArc([width, 0], [0, depth], height);
@@ -76,7 +79,8 @@ export async function generatePattern() {
         depth,
         height,
         surface3,
-        surface4
+        surface4,
+        enable_relaxation: enableRelaxation
     };
 
     try {
