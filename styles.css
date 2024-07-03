@@ -100,28 +100,30 @@ button.styled-button:active {
 }
 
 #generatePatternButton {
-    background: linear-gradient(45deg, #e0e0e0, #b3b3b3); 
+    background: linear-gradient(45deg, #e0e0e0, #b3b3b3); /* Серебристый градиент */
     font-weight: bold;
-    color: #333; 
-    text-shadow: none; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    border: 1px solid #ccc; 
+    color: #333; /* Темный текст */
+    text-shadow: none; /* Убираем текстовую тень */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    border: 1px solid #ccc; /* Тонкий градиентный бордюр */
+    position: relative;
+    overflow: hidden;
 }
 
 #generatePatternButton::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -75%;
-    width: 50%;
+    left: -100%;
+    width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: skewX(-45deg);
+    background: rgba(255, 255, 255, 0.2);
+    transform: skewX(-30deg);
     transition: left 0.5s ease;
 }
 
 #generatePatternButton:hover::before {
-    left: 125%;
+    left: 100%;
 }
 
 #generatePatternButton:hover {
