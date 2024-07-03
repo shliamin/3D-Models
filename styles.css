@@ -71,6 +71,7 @@ h3 {
     flex-direction: row;
     align-items: center;
     margin-bottom: 20px;
+    justify-contrnt: sapce-around;
 }
 
 button.styled-button {
