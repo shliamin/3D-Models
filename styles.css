@@ -33,7 +33,7 @@ h3 {
     display: inline-grid;
     justify-content: flex-start;
     margin-left: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 .info {
     display: inline-flex;
