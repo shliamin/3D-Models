@@ -6,7 +6,7 @@ body {
 
 .container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     height: 100vh; 
 }
 
@@ -28,7 +28,7 @@ body {
 
 .model {
     width: 100%;
-    height: 50%;
+    height: 60%; /* Уменьшите высоту, чтобы было место для изображений */
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
     margin-bottom: 20px;
@@ -47,7 +47,7 @@ body {
 }
 
 .image-container img {
-    max-width: 100%;
+    max-width: 45%;
     height: auto;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
@@ -129,12 +129,12 @@ button.styled-button:active {
 }
 
 #generatePatternButton {
-    background: linear-gradient(45deg, #e0e0e0, #b3b3b3); 
+    background: linear-gradient(45deg, #e0e0e0, #b3b3b3); /* Серебристый градиент */
     font-weight: bold;
-    color: #333; 
-    text-shadow: none; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    border: 1px solid #ccc; 
+    color: #333; /* Темный текст */
+    text-shadow: none; /* Убираем текстовую тень */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    border: 1px solid #ccc; /* Тонкий градиентный бордюр */
     position: relative;
     overflow: hidden;
 }
