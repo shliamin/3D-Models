@@ -30,7 +30,7 @@ h3 {
 }
 
 .input-group-container {
-    display: inline-table;
+    display: inline-grid;
     justify-content: flex-start;
     margin-left: 20px;
     margin-top: 20px;
@@ -40,6 +40,8 @@ h3 {
 }
 .input-group {
     margin-right: 20px;
+    max-width: 100px;
+    width: 100%;
 }
 .input-group-conteiner {
     margin-left: 20px;
