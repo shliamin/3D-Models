@@ -285,9 +285,9 @@ export function updateModel() {
                     z: 2
                 },
                 center: {
-                    x: 0.2,  // Move right (positive value)
+                    x: 0.5,  // Move right (positive value)
                     y: 0,
-                    z: -0.5 // Move down (negative value)
+                    z: 0.5 // Move down (negative value)
                 }
             }
         },
