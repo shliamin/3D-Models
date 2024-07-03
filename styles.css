@@ -99,10 +99,6 @@ button.styled-button:active {
     transform: translateY(0);
 }
 
-#generateModelButton {
-    background-color: #4CAF50;
-}
-
 #generatePatternButton {
     background: linear-gradient(45deg, #e0e0e0, #b3b3b3); 
     font-weight: bold;
@@ -115,21 +111,17 @@ button.styled-button:active {
 #generatePatternButton::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: rgba(255, 255, 255, 0.5);
-    transform: rotate(45deg);
-    transition: all 0.3s ease;
-    opacity: 0;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: skewX(-45deg);
+    transition: left 0.5s ease;
 }
 
 #generatePatternButton:hover::before {
-    top: -50%;
-    left: 100%;
-    transition: all 0.5s ease;
-    opacity: 1;
+    left: 125%;
 }
 
 #generatePatternButton:hover {
