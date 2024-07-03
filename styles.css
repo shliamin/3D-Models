@@ -56,7 +56,7 @@ h3 {
 
 .input-group {
     margin-bottom: 10px;
-    display: flex;
+    display: inline-flex;
 }
 
 .input-group label, .input-group input {
