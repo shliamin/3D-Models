@@ -97,6 +97,35 @@ button.styled-button:active {
     transform: translateY(0);
 }
 
+.product-description {
+    color: #666; 
+    margin: 20px 0; 
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+.product-description h3 {
+    color: #333; 
+    margin-bottom: 10px;
+}
+
+.product-description p,
+.product-description ul {
+    margin: 10px 0;
+    line-height: 1.6; 
+}
+
+.product-description ul {
+    padding-left: 20px;
+}
+
+.product-description ul li {
+    margin-bottom: 10px;
+}
+
+
 @media (max-width: 768px) {
     body {
         flex-direction: column;
