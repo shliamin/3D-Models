@@ -287,7 +287,7 @@ export function updateModel() {
                 center: {
                 x: 0,
                 y: 0,
-                z: +0.2 // Adjust this value to move the model up or down
+                z: -0.3 // Adjust this value to move the model up or down
                 }
             }
         },
