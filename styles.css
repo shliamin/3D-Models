@@ -6,6 +6,7 @@ body {
 
 .container {
     display: flex;
+    flex-direction: column;
     height: 100vh; 
 }
 
@@ -20,15 +21,43 @@ body {
     flex: 2;
     padding: 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    overflow-y: auto;
 }
 
 .model {
     width: 100%;
-    height: 100%;
+    height: 50%;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 20px;
+}
+
+.images-description {
+    width: 100%;
+    text-align: center;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px;
+}
+
+.images-description p {
+    color: #666;
+    font-size: 1em;
+    margin: 0;
 }
 
 h1, h3 {
@@ -100,12 +129,12 @@ button.styled-button:active {
 }
 
 #generatePatternButton {
-    background: linear-gradient(45deg, #e0e0e0, #b3b3b3); /* Серебристый градиент */
+    background: linear-gradient(45deg, #e0e0e0, #b3b3b3); 
     font-weight: bold;
-    color: #333; /* Темный текст */
-    text-shadow: none; /* Убираем текстовую тень */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень */
-    border: 1px solid #ccc; /* Тонкий градиентный бордюр */
+    color: #333; 
+    text-shadow: none; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ccc; 
     position: relative;
     overflow: hidden;
 }
@@ -157,4 +186,33 @@ button.styled-button:active {
 
 .product-description ul li {
     margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .main-content {
+        padding: 10px;
+    }
+
+    .model {
+        height: 300px;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .styled-button {
+        width: 100%;
+        max-width: none;
+        margin: 10px 0;
+    }
+
+    .image-container {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
