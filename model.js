@@ -281,7 +281,7 @@ export function updateModel() {
             camera: {
                 eye: {
                     x: 2, // Adjust these values to zoom out
-                    y: 2,
+                    y: 1,
                     z: 2
                 }
             }
