@@ -15,11 +15,15 @@
         <h3>Efim Shliamin</h3>
         <div class="info">    
             <div class="display-area-container">
-                    <div class="surface-area">
-                        <h2>Surface Area</h2>
-                        <p id="surfaceArea">Surface area: 0 m²</p>
-                    </div>
+                <div class="surface-area">
+                    <h2>Surface Area</h2>
+                    <p id="surfaceArea">Surface area: 0 m²</p>
                 </div>
+                <div class="toggle-group">
+                    <label><input type="checkbox" id="surface1" checked> Surface 1</label>
+                    <label><input type="checkbox" id="surface2" checked> Surface 2</label>
+                </div>
+            </div>
             <div class="input-group-container">
                 <div class="input-group">
                     <label for="width">Width (cm):</label>
@@ -52,10 +56,6 @@
             \]</p>
         </div>
         
-        <div class="toggle-group">
-            <label><input type="checkbox" id="surface1" checked> Surface 1</label>
-            <label><input type="checkbox" id="surface2" checked> Surface 2</label>
-        </div>
         <div class="buttons">
             <button id="generateModelButton" class="styled-button">Generate 3D Models (OBJ) 3$</button>
             <div>
