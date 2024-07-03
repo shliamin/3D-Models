@@ -34,11 +34,16 @@ h3 {
     justify-content: flex-start;
     margin-bottom: 20px;
 }
-
+.info {
+    display: inline-flex;
+}
 .input-group {
     margin-right: 20px;
 }
-
+.input-group-conteiner {
+    margin-left: 40px;
+    display: block;
+}
 .display-area-container {
     display: flex;
     justify-content: flex-start;
