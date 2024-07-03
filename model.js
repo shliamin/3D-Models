@@ -226,7 +226,7 @@ export function updateModel() {
 
     // Update total surface area and arc lengths
     document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
-    document.getElementById('arcLength').innerText = `Arcs length: ${arcLength1.toFixed(2)*2} m`;
+    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
     // Add arcs and edges
     data.push({
@@ -277,7 +277,14 @@ export function updateModel() {
                 title: 'Height',
                 dtick: 0.1  // Grid step for Z axis 10 cm
             },
-            aspectratio: { x: width, y: depth, z: height }
+            aspectratio: { x: width, y: depth, z: height },
+            camera: {
+                eye: {
+                    x: 2, // Adjust these values to zoom out
+                    y: 2,
+                    z: 2
+                }
+            }
         },
         legend: {
             y: -0.2,
@@ -293,3 +300,4 @@ export function updateModel() {
 
     Plotly.newPlot('tentModel', data, layout);
 }
+
