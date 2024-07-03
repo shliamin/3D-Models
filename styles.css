@@ -30,9 +30,10 @@ h3 {
 }
 
 .input-group-container {
-    display: inline-grid;
+    display: inline-table;
     justify-content: flex-start;
     margin-left: 20px;
+    margin-top: 20px;
 }
 .info {
     display: inline-flex;
