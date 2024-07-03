@@ -287,7 +287,7 @@ export function updateModel() {
                 center: {
                     x: 0.5,  // Move right (positive value)
                     y: 0,
-                    z: 0.5 // Move down (negative value)
+                    z: 0.1 // Move down (negative value)
                 }
             }
         },
