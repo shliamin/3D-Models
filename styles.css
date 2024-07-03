@@ -1,90 +1,88 @@
 body {
-    display: flex;
-    flex-wrap: wrap;
     font-family: 'Helvetica', 'Arial', sans-serif;
-}
-
-h1 {
     margin: 0;
     padding: 0;
-    font-size: 2em;
+}
+
+.container {
+    display: flex;
+    height: 100vh; /* Высота экрана */
+}
+
+.sidebar {
+    flex: 1;
+    padding: 20px;
+    background-color: #f8f8f8; /* Светлый фон для панели управления */
+    overflow-y: auto; /* Скроллинг для длинного контента */
+}
+
+.main-content {
+    flex: 2;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.model {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Легкая тень */
+}
+
+h1, h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 1.5em;
     color: #333;
 }
 
 h3 {
+    margin-top: 10px;
     font-size: 1em;
     color: #003366;
-    margin-top: 5px; 
 }
 
-.content {
-    flex: 1;
-    padding: 10px;
-    min-width: 300px;
-}
-
-.model {
-    flex: 2;
-    padding: 10px;
-    min-width: 300px;
+.info {
+    margin-bottom: 20px;
 }
 
 .input-group-container {
-    display: inline-grid;
-    justify-content: flex-start;
-    margin-left: 20px;
-    margin-top: 10px;
+    margin-top: 20px;
 }
-.info {
-    display: inline-flex;
-}
+
 .input-group {
-    margin-right: 20px;
-    max-width: 100px;
+    margin-bottom: 10px;
+}
+
+.input-group label, .input-group input {
+    display: block;
     width: 100%;
-}
-.input-group-conteiner {
-    margin-left: 20px;
-    display: block;
-}
-.display-area-container {
-    display: block;
-    justify-content: flex-start;
-}
-
-.surface-area {
-    border: 1px solid #000;
-    padding: 10px;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.toggle-group {
-    margin-top: 10px;
-    text-align: center;
-    margin-bottom: 20px;
-    display: inline-grid;
+    max-width: 200px;
+    margin-bottom: 5px;
 }
 
 .buttons {
-    text-align: center;
-    margin-bottom: 30px;
     display: flex;
-    flex-direction: column; /* По умолчанию кнопки расположены вертикально */
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 button.styled-button {
+    width: 100%;
+    max-width: 250px;
     background-color: transparent;
     color: #333;
     border: 1px solid #ccc;
-    padding: 15px 32px;
+    padding: 10px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
+    margin: 10px 0;
     cursor: pointer;
-    border-radius: 10px;
+    border-radius: 5px;
     transition: background-color 0.3s, transform 0.3s;
 }
 
@@ -99,7 +97,7 @@ button.styled-button:active {
 
 .product-description {
     color: #666; 
-    margin: 20px 0; 
+    margin-top: 20px; 
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px; 
@@ -123,21 +121,4 @@ button.styled-button:active {
 
 .product-description ul li {
     margin-bottom: 10px;
-}
-
-
-@media (max-width: 768px) {
-    body {
-        flex-direction: column;
-    }
-}
-
-@media (min-width: 768px) {
-    .buttons {
-        flex-direction: row; /* На десктопной версии кнопки расположены горизонтально */
-    }
-
-    .buttons button {
-        margin-right: 10px; /* Добавляем промежуток между кнопками */
-    }
 }
