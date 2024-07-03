@@ -4,10 +4,8 @@ export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
-    const enableRelaxationElement = document.getElementById('enableRelaxation');
-    const enableRelaxation = enableRelaxationElement ? enableRelaxationElement.checked : false; // Default to false if the element is not found
 
-    console.log('Current values for 3D Model:', { width, depth, height, enableRelaxation });
+    console.log('Current values for 3D Model:', { width, depth, height });
 
     const arc1 = circularArc([0, 0], [width, depth], height);
     const arc2 = circularArc([width, 0], [0, depth], height);
@@ -31,7 +29,7 @@ export async function generateModel() {
         surface2,
         surface3,
         surface4,
-        enable_relaxation: enableRelaxation
+        enable_relaxation: true // Always enable relaxation
     };
 
     try {
@@ -63,10 +61,8 @@ export async function generatePattern() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
-    const enableRelaxationElement = document.getElementById('enableRelaxation');
-    const enableRelaxation = enableRelaxationElement ? enableRelaxationElement.checked : false; // Default to false if the element is not found
 
-    console.log('Current values for 2D Pattern:', { width, depth, height, enableRelaxation });
+    console.log('Current values for 2D Pattern:', { width, depth, height });
 
     const arc5 = halfCircularArc([0, 0], [width, depth], height);
     const arc6 = halfCircularArc([width, 0], [0, depth], height);
@@ -82,7 +78,7 @@ export async function generatePattern() {
         height,
         surface3,
         surface4,
-        enable_relaxation: enableRelaxation
+        enable_relaxation: true // Always enable relaxation
     };
 
     try {
