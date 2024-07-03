@@ -14,6 +14,12 @@
         <h1>Interactive Tent Model</h1>
         <h3>Efim Shliamin</h3>
         <div class="input-group-container">
+            <div class="display-area-container">
+                <div class="surface-area">
+                    <h2>Surface Area</h2>
+                    <p id="surfaceArea">Surface area: 0 m²</p>
+                </div>
+            </div>
             <div class="input-group">
                 <label for="width">Width (cm):</label>
                 <input type="number" id="width" value="140" step="1" min="1">
@@ -43,12 +49,7 @@
             z = \text{height} \cdot \sin(\pi \cdot t)
             \]</p>
         </div>
-        <div class="display-area-container">
-            <div class="surface-area">
-                <h2>Surface Area</h2>
-                <p id="surfaceArea">Surface area: 0 m²</p>
-            </div>
-        </div>
+        
         <div class="toggle-group">
             <label><input type="checkbox" id="surface1" checked> Surface 1</label>
             <label><input type="checkbox" id="surface2" checked> Surface 2</label>
