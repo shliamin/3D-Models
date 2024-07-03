@@ -97,7 +97,7 @@ export async function generatePattern() {
         const blob = await response.blob();
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
-        link.download = 'pattern.pdf';
+        link.download = 'pattern.zip';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
