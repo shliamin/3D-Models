@@ -45,7 +45,7 @@ h3 {
     display: block;
 }
 .display-area-container {
-    display: flex;
+    display: block;
     justify-content: flex-start;
 }
 
