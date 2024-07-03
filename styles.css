@@ -30,31 +30,24 @@ h3 {
 }
 
 .input-group-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px; /* Расстояние между кнопками ввода */
+    display: inline-table;
+    justify-content: flex-start;
+    margin-left: 20px;
     margin-top: 20px;
-    flex-wrap: wrap; /* Для мобильной версии */
 }
-
 .info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: inline-flex;
 }
-
 .input-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
+    margin-right: 20px;
 }
-
+.input-group-conteiner {
+    margin-left: 20px;
+    display: block;
+}
 .display-area-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: block;
+    justify-content: flex-start;
 }
 
 .surface-area {
@@ -91,7 +84,6 @@ button.styled-button {
     cursor: pointer;
     border-radius: 10px;
     transition: background-color 0.3s, transform 0.3s;
-    width: 200px; /* Устанавливаем одинаковую ширину для кнопок */
 }
 
 button.styled-button:hover {
