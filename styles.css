@@ -22,48 +22,48 @@ h3 {
     padding: 10px;
     min-width: 300px;
 }
+
 .model {
     flex: 2;
     padding: 10px;
     min-width: 300px;
 }
+
+.input-group-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
 .input-group {
-    margin-bottom: 10px;
-    text-align: center;
+    margin-right: 20px;
 }
-.display-area {
-    text-align: center;
-    justify-content: flex;
+
+.display-area-container {
+    display: flex;
+    justify-content: flex-start;
 }
+
 .surface-area {
     border: 1px solid #000;
     padding: 10px;
     margin-top: 10px;
-    display: inline-block;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
 }
-.arc-length {
-    border: 1px solid #000;
-    padding: 10px;
-    margin-top: 10px;
-    display: inline-block;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-}
+
 .toggle-group {
     margin-top: 10px;
     text-align: center;
     margin-bottom: 20px;
 }
+
 .buttons {
     text-align: center;
     margin-bottom: 30px;
     display: flex;
     flex-direction: column; /* По умолчанию кнопки расположены вертикально */
 }
+
 button.styled-button {
     background-color: transparent;
     color: #333;
@@ -78,47 +78,15 @@ button.styled-button {
     border-radius: 10px;
     transition: background-color 0.3s, transform 0.3s;
 }
+
 button.styled-button:hover {
     background-color: #f0f0f0;
     transform: translateY(-2px);
 }
+
 button.styled-button:active {
     transform: translateY(0);
 }
-.btn-11 {
-  border: none;
-  background: rgb(251,33,117);
-    background: linear-gradient(0deg, rgba(251,33,117,1) 0%, rgba(234,76,137,1) 100%);
-    color: #fff;
-    overflow: hidden;
-}
-.btn-11:hover {
-    text-decoration: none;
-    color: #fff;
-}
-.btn-11:before {
-    position: absolute;
-    content: '';
-    display: inline-block;
-    top: -180px;
-    left: 0;
-    width: 30px;
-    height: 100%;
-    background-color: #fff;
-    animation: shiny-btn1 3s ease-in-out infinite;
-}
-.btn-11:hover{
-  opacity: .7;
-}
-.btn-11:active{
-  box-shadow:  4px 4px 6px 0 rgba(255,255,255,.3),
-              -4px -4px 6px 0 rgba(116, 125, 136, .2), 
-    inset -4px -4px 6px 0 rgba(255,255,255,.2),
-    inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
-}
-
-
-
 
 @media (max-width: 768px) {
     body {
