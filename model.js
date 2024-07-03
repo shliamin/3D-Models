@@ -283,6 +283,11 @@ export function updateModel() {
                     x: 2, // Adjust these values to zoom out
                     y: 1,
                     z: 2
+                },
+                center: {
+                x: 0,
+                y: 0,
+                z: +0.2 // Adjust this value to move the model up or down
                 }
             }
         },
