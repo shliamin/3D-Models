@@ -36,6 +36,11 @@ body {
     max-width: 100%;
 }
 
+#desktop-only {
+    width: 100%;
+    height: auto;
+}
+
 
 .images-description {
     display: flex;
