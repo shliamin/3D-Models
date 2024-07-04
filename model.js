@@ -263,7 +263,7 @@ export function updateModel() {
         type: 'scatter3d'
     });
 
-       let layout = {
+    let layout = {
         scene: {
             xaxis: {
                 title: 'Width',
@@ -302,6 +302,7 @@ export function updateModel() {
             t: 0
         }
     };
-    
+
     Plotly.newPlot('tentModel', data, layout);
 }
+
