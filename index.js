@@ -1,5 +1,3 @@
-// index.js
-
 import { updateModel } from './model.js';
 import { generateModel } from './server.js';
 import { generatePattern } from './server.js';
@@ -12,13 +10,10 @@ document.getElementById('height').onchange = updateModel;
 document.getElementById('surface1').onchange = updateModel;
 document.getElementById('surface2').onchange = updateModel;
 
-// Initialize the model on page load for desktop only
 window.onload = () => {
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
     if (!isMobile) {
-        document.getElementById('tentModel').style.width = '100%'; 
-        document.getElementById('tentModel').style.height = '80vh'; 
         updateModel();
     } else {
         document.querySelector('.mobile-message').style.display = 'block';
