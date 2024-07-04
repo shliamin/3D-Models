@@ -221,7 +221,7 @@ button.styled-button:active {
         text-align: center;
         color: #666;
     }
-    .mobile-message h3 {
+    .mobile-message h1, .mobile-message h3 {
         color: #333;
         margin-bottom: 10px;
     }
@@ -232,6 +232,7 @@ button.styled-button:active {
     }
     .image-container-mobile {
         display: flex;
+        flex-direction: row;
         gap: 10px;
         margin-bottom: 10px;
     }
