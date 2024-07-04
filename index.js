@@ -17,6 +17,8 @@ window.onload = () => {
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
     if (!isMobile) {
+        document.getElementById('tentModel').style.width = '100%'; 
+        document.getElementById('tentModel').style.height = '80vh'; 
         updateModel();
     } else {
         document.querySelector('.mobile-message').style.display = 'block';
