@@ -194,6 +194,10 @@ button.styled-button:active {
     margin-bottom: 10px;
 }
 
+.mobile-message {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
@@ -204,7 +208,15 @@ button.styled-button:active {
     }
 
     .model {
-        height: 300px;
+        display: none; /* Hide 3D model on mobile devices */
+    }
+
+    .mobile-message {
+        display: block; /* Show message for mobile devices */
+        text-align: center;
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 20px;
     }
 
     .buttons {
