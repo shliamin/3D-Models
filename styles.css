@@ -229,15 +229,18 @@ button.styled-button:active {
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 100%;
     }
     .image-container-mobile {
         display: flex;
         flex-direction: row;
         gap: 10px;
         margin-bottom: 10px;
+        width: 100%;
+        justify-content: center;
     }
     .image-container-mobile img {
-        max-width: 50px; 
+        max-width: 50px; /* Уменьшаем размер изображений */
         height: auto;
         border: 1px solid #ccc;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -246,7 +249,9 @@ button.styled-button:active {
     .image-text-mobile {
         text-align: center;
         margin-top: 10px;
+        max-width: 90%;
     }
 }
+
 
 
