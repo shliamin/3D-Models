@@ -207,45 +207,21 @@ button.styled-button:active {
 }
 
 @media (max-width: 768px) {
-    .container {
-        flex-direction: column;
+    .container > * {
+        display: none;
     }
-
-    .main-content {
-        padding: 10px;
-    }
-
-    .model {
-        display: none; /* Hide 3D model on mobile devices */
-    }
-
     .mobile-message {
-        display: block; /* Show message for mobile devices */
+        display: block;
+        margin: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         text-align: center;
+        color: #666;
+    }
+    .mobile-message h3 {
         color: #333;
-        font-size: 1.2em;
-        margin-bottom: 20px;
-    }
-
-    .buttons {
-        flex-direction: column;
-    }
-
-    .styled-button {
-        width: 100%;
-        max-width: none;
-        margin: 10px 0;
-    }
-
-    .image-container {
-        flex-direction: column;
-        gap: 10px;
-        margin-right: 0; 
-    }
-
-    .images-description {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+        margin-bottom: 10px;
     }
 }
