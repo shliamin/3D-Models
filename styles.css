@@ -24,23 +24,15 @@ body {
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
-    width: 100%;
 }
 
 .model {
     width: 100%;
     height: 80vh; 
     border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    max-width: 100%;
 }
-
-#desktop-only {
-    width: 100%;
-    height: auto;
-}
-
 
 .images-description {
     display: flex;
@@ -202,6 +194,10 @@ button.styled-button:active {
     margin-bottom: 10px;
 }
 
+.desktop-only {
+    display: block;
+}
+
 .mobile-message {
     display: none;
 }
@@ -216,15 +212,7 @@ button.styled-button:active {
     }
 
     .model {
-        display: none; /* Hide 3D model on mobile devices */
-    }
-
-    .mobile-message {
-        display: block; /* Show message for mobile devices */
-        text-align: center;
-        color: #333;
-        font-size: 1.2em;
-        margin-bottom: 20px;
+        height: 300px;
     }
 
     .buttons {
@@ -244,8 +232,14 @@ button.styled-button:active {
     }
 
     .images-description {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+        display: none;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-message {
+        display: block;
     }
 }
