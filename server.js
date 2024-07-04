@@ -32,6 +32,9 @@ export async function generateModel() {
         enable_relaxation: true // Always enable relaxation
     };
 
+    
+    document.getElementById('spinner').style.display = 'block';
+
     try {
         const response = await fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/generate', {
             method: 'POST',
@@ -54,6 +57,9 @@ export async function generateModel() {
         document.body.removeChild(link);
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
+    } finally {
+        
+        document.getElementById('spinner').style.display = 'none';
     }
 }
 
@@ -81,6 +87,9 @@ export async function generatePattern() {
         enable_relaxation: true // Always enable relaxation
     };
 
+    
+    document.getElementById('spinner').style.display = 'block';
+
     try {
         const response = await fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/generate_pattern', {
             method: 'POST',
@@ -103,5 +112,8 @@ export async function generatePattern() {
         document.body.removeChild(link);
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
+    } finally {
+        
+        document.getElementById('spinner').style.display = 'none';
     }
 }
