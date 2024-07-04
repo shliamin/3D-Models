@@ -247,7 +247,7 @@ button.styled-button:active {
         border-radius: 8px;
     }
     .image-text-mobile {
-        text-align: center;
+        text-align: left;
         margin-top: 10px;
         max-width: 90%;
     }
