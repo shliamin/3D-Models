@@ -240,7 +240,7 @@ button.styled-button:active {
         justify-content: center;
     }
     .image-container-mobile img {
-        max-width: 250px; 
+        max-width: 150px; 
         height: auto;
         border: 1px solid #ccc;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
