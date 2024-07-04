@@ -12,5 +12,13 @@ document.getElementById('height').onchange = updateModel;
 document.getElementById('surface1').onchange = updateModel;
 document.getElementById('surface2').onchange = updateModel;
 
-// Initialize the model on page load
-window.onload = updateModel;
+// Initialize the model on page load for desktop only
+window.onload = () => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+    if (!isMobile) {
+        updateModel();
+    } else {
+        document.querySelector('.mobile-message').style.display = 'block';
+    }
+};
