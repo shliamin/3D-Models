@@ -1,3 +1,5 @@
+// static/js/server.js
+
 import { interpolateSurface, circularArc, halfCircularArc, interpolateSurfaceUntilIntersection } from './model.js';
 
 export async function generateModel() {
@@ -32,7 +34,7 @@ export async function generateModel() {
         enable_relaxation: true // Always enable relaxation
     };
 
-    
+    // 
     document.getElementById('spinner').style.display = 'block';
 
     try {
@@ -58,7 +60,7 @@ export async function generateModel() {
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     } finally {
-        
+        // 
         document.getElementById('spinner').style.display = 'none';
     }
 }
@@ -87,7 +89,7 @@ export async function generatePattern() {
         enable_relaxation: true // Always enable relaxation
     };
 
-    
+    // 
     document.getElementById('spinner').style.display = 'block';
 
     try {
@@ -113,7 +115,7 @@ export async function generatePattern() {
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     } finally {
-        
+        // 
         document.getElementById('spinner').style.display = 'none';
     }
 }
