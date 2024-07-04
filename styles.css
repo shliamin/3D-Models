@@ -26,12 +26,6 @@ body {
     overflow-y: auto;
 }
 
-#desktop-only {
-    width: 100%;
-    height: auto;
-}
-
-
 .model {
     width: 100%;
     height: 80vh; 
@@ -42,23 +36,23 @@ body {
 
 .images-description {
     display: flex;
-    width: 100%;
     align-items: center;
     text-align: left;
+    width: 100%;
 }
 
 .image-container {
     display: flex;
     flex-shrink: 0;
     gap: 20px;
-    margin-right: 20px; 
+    margin-right: 20px;
 }
 
 .image-container img {
-    max-width: 100px; 
+    max-width: 100px;
     height: auto;
     border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
 
@@ -208,6 +202,11 @@ button.styled-button:active {
     display: none;
 }
 
+#desktop-only {
+    width: 100%;
+    height: auto;
+}
+
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
@@ -218,7 +217,7 @@ button.styled-button:active {
     }
 
     .model {
-        height: 300px;
+        display: none; /* Скрываем 3D модель на мобильных устройствах */
     }
 
     .buttons {
@@ -234,7 +233,7 @@ button.styled-button:active {
     .image-container {
         flex-direction: column;
         gap: 10px;
-        margin-right: 0; 
+        margin-right: 0;
     }
 
     .images-description {
