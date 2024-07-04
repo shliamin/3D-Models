@@ -304,5 +304,16 @@ export function updateModel() {
     };
 
     Plotly.newPlot('tentModel', data, layout);
-}
 
+    // Canvas example with willReadFrequently attribute
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+    // Example drawing on the canvas
+    ctx.fillStyle = 'red';
+    ctx.fillRect(0, 0, 100, 100);
+
+    // Example using getImageData
+    const imageData = ctx.getImageData(0, 0, 100, 100);
+    console.log(imageData);
+}
