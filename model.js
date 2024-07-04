@@ -263,7 +263,7 @@ export function updateModel() {
         type: 'scatter3d'
     });
 
-       let layout = {
+    let layout = {
         scene: {
             xaxis: {
                 title: 'Width',
@@ -280,14 +280,14 @@ export function updateModel() {
             aspectratio: { x: width, y: depth, z: height },
             camera: {
                 eye: {
-                    x: 2, // Adjust these values to zoom out
-                    y: 1,
-                    z: 2
+                    x: 1.2, // Adjust these values to zoom in
+                    y: 0.6,
+                    z: 1.2
                 },
                 center: {
-                    x: 0.5,  // Move right (positive value)
+                    x: 0,  // Center the model
                     y: 0,
-                    z: 0.1 // Move down (negative value)
+                    z: 0 
                 }
             }
         },
@@ -302,7 +302,6 @@ export function updateModel() {
             t: 0
         }
     };
-    
+
     Plotly.newPlot('tentModel', data, layout);
 }
-
