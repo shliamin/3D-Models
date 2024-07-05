@@ -15,7 +15,7 @@ An interactive 3D tent model visualizer using three.js, allowing users to input 
  Clone the repository:
  
  ```sh
-    git clone https://github.com/yourusername/Interactive-Tent-Model.git
+    git clone https://github.com/shliamin/Interactive-Tent-Model.git
     cd Interactive-Tent-Model
  ```
 
