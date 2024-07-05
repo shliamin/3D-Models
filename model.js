@@ -1,4 +1,4 @@
-import { linspace, calculateArcLength, createArcs } from './model-utils.js';
+import { linspace, calculateArcLength } from './model-utils.js';
 
 // model.js
 
