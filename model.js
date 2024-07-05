@@ -8,16 +8,13 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Находим максимальное измерение для создания квадратной сетки
-    const maxDim = Math.max(width, depth);
-
-    // Координаты вершин палатки для квадратной сетки
+    // Координаты вершин палатки
     let vertices = [
         [0, 0, 0],                       // Нижний передний левый угол
-        [maxDim, 0, 0],                  // Нижний передний правый угол
-        [0, maxDim, 0],                  // Нижний задний левый угол
-        [maxDim, maxDim, 0],             // Нижний задний правый угол
-        [maxDim / 2, maxDim / 2, height] // Верхняя центральная точка
+        [width, 0, 0],                   // Нижний передний правый угол
+        [0, depth, 0],                   // Нижний задний левый угол
+        [width, depth, 0],               // Нижний задний правый угол
+        [width / 2, depth / 2, height]   // Верхняя центральная точка
     ];
 
     // Создание арок
@@ -75,22 +72,22 @@ export function updateModel() {
             xaxis: {
                 title: 'Width',
                 dtick: 0.1, // Шаг сетки по оси X 10 см
-                range: [minX, maxX]
+                range: [0, width]
             },
             yaxis: {
                 title: 'Depth',
                 dtick: 0.1, // Шаг сетки по оси Y 10 см
-                range: [minY, maxY]
+                range: [0, depth]
             },
             zaxis: {
                 title: 'Height',
                 dtick: 0.1, // Шаг сетки по оси Z 10 см
-                range: [minZ, maxZ]
+                range: [0, height]
             },
             aspectratio: {
-                x: (maxX - minX) / maxDim, 
-                y: (maxY - minY) / maxDim, 
-                z: (maxZ - minZ) / maxDim
+                x: width / maxDim,
+                y: depth / maxDim,
+                z: height / maxDim
             },
             camera: {
                 eye: {
