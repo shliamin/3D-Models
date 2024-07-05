@@ -175,24 +175,32 @@ export function linspace(start, stop, num) {
     return arr;
 }
 
-export function generateSemiEllipse(a, b, numPoints) {
-    var xValues = linspace(-a, a, numPoints);
-    var yValues = [];
+export function generateSemiEllipse3DFromPoints(startPoint, endPoint, apexPoint, numPoints) {
+    var a = Math.abs(endPoint.x - startPoint.x) / 2;
+    var b = Math.abs(endPoint.y - startPoint.y) / 2;
+    var c = apexPoint.z;
+    
+    var centerX = (startPoint.x + endPoint.x) / 2;
+    var centerY = (startPoint.y + endPoint.y) / 2;
+    
+    var xValues = linspace(startPoint.x, endPoint.x, numPoints);
+    var yValues = linspace(startPoint.y, endPoint.y, numPoints);
+    var zValuesUpper = [];
+    
     for (var i = 0; i < xValues.length; i++) {
-        var x = xValues[i];
-        var y = b * Math.sqrt(1 - (x * x) / (a * a));
-        yValues.push(y);
+        for (var j = 0; j < yValues.length; j++) {
+            var x = xValues[i] - centerX;
+            var y = yValues[j] - centerY;
+            var zSquared = c * c * (1 - (x * x) / (a * a) - (y * y) / (b * b));
+            
+            if (zSquared >= 0) {  
+                var z = Math.sqrt(zSquared);
+                zValuesUpper.push({x: xValues[i], y: yValues[j], z: z});
+            }
+        }
     }
-
-    // Create arrays for the full ellipse
-    var fullXValues = xValues.concat(xValues.slice(1, -1).reverse());
-    var fullYValues = yValues.concat(yValues.slice(1, -1).map(y => -y));
-
-    // Shift the ellipse vertex to the center of the coordinate system
-    var centerY = b;
-    fullYValues = fullYValues.map(y => y - centerY);
-
-    return { x: fullXValues, y: fullYValues };
+    
+    return zValuesUpper;
 }
 
 // Function to calculate the diagonals of the base
