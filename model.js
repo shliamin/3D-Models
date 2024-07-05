@@ -4,9 +4,9 @@ import { linspace, calculateArcLength, calculateSurfaceArea, findIntersection, i
 
 export function updateModel() {
     // Get values in centimeters and convert to meters
-    const width = parseFloat(document.getElementById('width').value) / 100;
-    const depth = parseFloat(document.getElementById('depth').value) / 100;
-    const height = parseFloat(document.getElementById('height').value) / 100;
+    const width = parseFloat(document.getElementById('width').value) / 10;
+    const depth = parseFloat(document.getElementById('depth').value) / 10;
+    const height = parseFloat(document.getElementById('height').value) / 10;
 
     var canvas = document.createElement('canvas');
     canvas.width = '100%';
@@ -148,15 +148,18 @@ data.push({
 let layout = {
     scene: {
         xaxis: {
-            title: 'Width',  
+            title: 'Width',
+            range: [0, 120],  
             dtick: 10  
         },
         yaxis: {
-            title: 'Depth',  
+            title: 'Depth',
+            range: [0, 120],  
             dtick: 10
         },
         zaxis: {
-            title: 'Height', 
+            title: 'Height',
+            range: [0, 120],  
             dtick: 10
         },
         aspectratio: { x: width, y: depth, z: height },
@@ -187,5 +190,3 @@ let layout = {
 
 Plotly.newPlot('tentModel', data, layout);
 }
-
-
