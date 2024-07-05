@@ -115,7 +115,9 @@ export async function generatePattern() {
 
 async function checkTaskStatus(taskId) {
     try {
+        console.log(`Checking status for task ID: ${taskId}`);
         const response = await fetch(`https://interactive-tent-0697ab02fbe0.herokuapp.com/status/${taskId}`);
+        console.log(`Status response for task ID ${taskId}: ${response.status}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
