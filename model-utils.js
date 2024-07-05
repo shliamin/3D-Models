@@ -176,16 +176,14 @@ export function linspace(start, stop, num) {
 }
 
 export function generateSemiEllipse(a, b, numPoints) {
-    var xValues = linspace(-a, a, numPoints);
-    var yValuesUpper = [];
+    var xValues = linspace(0, a, numPoints); 
+    var yValues = [];
     for (var i = 0; i < xValues.length; i++) {
         var x = xValues[i];
         var y = b * Math.sqrt(1 - (x * x) / (a * a));
-        if (y >= 0) {  //  (y >= 0)
-            yValuesUpper.push(y);
-        }
+        yValues.push(y);
     }
-    return { x: xValues, y: yValuesUpper };
+    return { x: xValues, y: yValues };
 }
 
 // Function to calculate the diagonals of the base
