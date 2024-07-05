@@ -55,7 +55,7 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100
     return surface;
 }
 
-function calculateSemiAxes(p0, p1, p2, p3) {
+export function calculateSemiAxes(p0, p1, p2, p3) {
     let length = Math.sqrt(Math.pow(p1[0] - p0[0], 2) + Math.pow(p1[1] - p0[1], 2));
     let width = Math.sqrt(Math.pow(p3[0] - p0[0], 2) + Math.pow(p3[1] - p0[1], 2));
 
