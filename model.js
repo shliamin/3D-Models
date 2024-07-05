@@ -173,27 +173,31 @@ let layout = {
     scene: {
         xaxis: {
             title: 'Width',
-            dtick: 0.1  // Grid step for X axis 10 cm
+            dtick: 0.1 // Шаг сетки по оси X 10 см
         },
         yaxis: {
             title: 'Depth',
-            dtick: 0.1  // Grid step for Y axis 10 cm
+            dtick: 0.1 // Шаг сетки по оси Y 10 см
         },
         zaxis: {
             title: 'Height',
-            dtick: 0.1  // Grid step for Z axis 10 cm
+            dtick: 0.1 // Шаг сетки по оси Z 10 см
         },
-        aspectratio: { x: width, y: depth, z: height },
+        aspectratio: {
+            x: width / Math.max(width, depth, height),
+            y: depth / Math.max(width, depth, height),
+            z: height / Math.max(width, depth, height)
+        },
         camera: {
             eye: {
-                x: 2, // Adjust these values to zoom out
+                x: 2, // Отрегулируйте эти значения для отдаления камеры
                 y: 1,
                 z: 2
             },
             center: {
-                x: 0.5,  // Move right (positive value)
+                x: 0.5, // Сдвинуть вправо (положительное значение)
                 y: 0,
-                z: 0.1 // Move down (negative value)
+                z: 0.1 // Сдвинуть вниз (отрицательное значение)
             }
         }
     },
