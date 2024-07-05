@@ -8,26 +8,46 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Находим максимальное измерение для определения пропорций
-    const maxDim = Math.max(width, depth, height);
+    // Функция для создания линейного интервала
+    function linspace(start, stop, num) {
+        const arr = [];
+        const step = (stop - start) / (num - 1);
+        for (let i = 0; i < num; i++) {
+            arr.push(start + step * i);
+        }
+        return arr;
+    }
 
-    // Координаты вершин палатки
-    let vertices = [
-        [0, 0, 0],                       // Нижний передний левый угол
-        [width, 0, 0],                   // Нижний передний правый угол
-        [0, depth, 0],                   // Нижний задний левый угол
-        [width, depth, 0],               // Нижний задний правый угол
-        [width / 2, depth / 2, height]   // Верхняя центральная точка
-    ];
+    // Определяем параметры для построения арок
+    const x = linspace(0, depth, 100);
+    const theta = linspace(-Math.PI / 2, Math.PI / 2, 100);
 
-    // Создание арок на основе размеров сетки
-    let arc1 = perfectArc([0, 0, 0], [width, depth, 0], height);
-    let arc2 = perfectArc([width, 0, 0], [0, depth, 0], height);
+    // Создаем арки
+    const y_fine = theta.map(t => width * Math.sin(t));
+    const z_fine = theta.map(t => height * Math.cos(t));
+
+    const arc1 = {
+        x: x,
+        y: y_fine,
+        z: z_fine,
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
+
+    const arc2 = {
+        x: x,
+        y: y_fine.map(y => -y),
+        z: z_fine,
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
 
     // Масштабирование осей на основе крайних точек арок
-    const allX = arc1.x.concat(arc2.x);
-    const allY = arc1.y.concat(arc2.y);
-    const allZ = arc1.z.concat(arc2.z);
+    const allX = x.concat(x);
+    const allY = y_fine.concat(y_fine.map(y => -y));
+    const allZ = z_fine.concat(z_fine);
 
     const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
@@ -37,35 +57,15 @@ export function updateModel() {
     const maxZ = Math.max(...allZ);
 
     // Вычисление длин арок
-    let arcLength1 = calculateArcLength(arc1);
-    let arcLength2 = calculateArcLength(arc2);
+    let arcLength1 = calculateArcLength({ x: arc1.x, y: arc1.y, z: arc1.z });
+    let arcLength2 = calculateArcLength({ x: arc2.x, y: arc2.y, z: arc2.z });
 
     // Инициализация данных для графика
     let data = [];
 
     // Добавление арок на график
-    data.push({
-        x: arc1.x,
-        y: arc1.y,
-        z: arc1.z,
-        mode: 'lines',
-        line: {
-            color: 'blue',
-            width: 5
-        },
-        type: 'scatter3d'
-    });
-    data.push({
-        x: arc2.x,
-        y: arc2.y,
-        z: arc2.z,
-        mode: 'lines',
-        line: {
-            color: 'blue',
-            width: 5
-        },
-        type: 'scatter3d'
-    });
+    data.push(arc1);
+    data.push(arc2);
 
     // Обновление длин арок
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
@@ -73,14 +73,14 @@ export function updateModel() {
     let layout = {
         scene: {
             xaxis: {
-                title: 'Width',
+                title: 'Depth',
                 dtick: 0.1, // Шаг сетки по оси X 10 см
-                range: [0, width]
+                range: [0, depth]
             },
             yaxis: {
-                title: 'Depth',
+                title: 'Width',
                 dtick: 0.1, // Шаг сетки по оси Y 10 см
-                range: [0, depth]
+                range: [-width, width]
             },
             zaxis: {
                 title: 'Height',
@@ -88,9 +88,9 @@ export function updateModel() {
                 range: [0, height]
             },
             aspectratio: {
-                x: width / maxDim,
-                y: depth / maxDim,
-                z: height / maxDim
+                x: depth / Math.max(depth, width, height),
+                y: width / Math.max(depth, width, height),
+                z: height / Math.max(depth, width, height)
             },
             camera: {
                 eye: {
