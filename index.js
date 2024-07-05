@@ -10,6 +10,11 @@ document.getElementById('height').onchange = updateModel;
 document.getElementById('surface1').onchange = updateModel;
 document.getElementById('surface2').onchange = updateModel;
 
+document.getElementById('patternForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    await generatePattern();
+});
+
 window.onload = () => {
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
