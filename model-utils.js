@@ -155,12 +155,18 @@ export function linspace(start, stop, num) {
 }
 
 // Function to create a single arc
-export function createArc(width, depth, height) {
+export function createArc(width, depth, height, reverse = false) {
     const y = linspace(0, depth, 100);
     const theta = linspace(0, Math.PI, 100);
 
     const x_fine = theta.map(t => width / 2 * Math.cos(t));
     const z_fine = theta.map(t => height * Math.sin(t));
+
+    // Reverse the coordinates if needed
+    if (reverse) {
+        x_fine.reverse();
+        z_fine.reverse();
+    }
 
     const arc = {
         x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
