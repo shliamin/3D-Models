@@ -8,21 +8,33 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Находим максимальное измерение, чтобы сделать сетку квадратной
+    // Находим максимальное измерение для создания квадратной сетки
     const maxDim = Math.max(width, depth);
 
-    // Координаты вершин палатки, масштабированные для равной сетки
+    // Координаты вершин палатки для квадратной сетки
     let vertices = [
-        [0, 0, 0],                      // Нижний передний левый угол
-        [maxDim, 0, 0],                 // Нижний передний правый угол
-        [0, maxDim, 0],                 // Нижний задний левый угол
-        [maxDim, maxDim, 0],            // Нижний задний правый угол
+        [0, 0, 0],                       // Нижний передний левый угол
+        [maxDim, 0, 0],                  // Нижний передний правый угол
+        [0, maxDim, 0],                  // Нижний задний левый угол
+        [maxDim, maxDim, 0],             // Нижний задний правый угол
         [maxDim / 2, maxDim / 2, height] // Верхняя центральная точка
     ];
 
     // Создание арок
     let arc1 = perfectArc(vertices[0], vertices[3], height);
     let arc2 = perfectArc(vertices[1], vertices[2], height);
+
+    // Масштабирование осей на основе крайних точек арок
+    const allX = arc1.x.concat(arc2.x);
+    const allY = arc1.y.concat(arc2.y);
+    const allZ = arc1.z.concat(arc2.z);
+
+    const minX = Math.min(...allX);
+    const maxX = Math.max(...allX);
+    const minY = Math.min(...allY);
+    const maxY = Math.max(...allY);
+    const minZ = Math.min(...allZ);
+    const maxZ = Math.max(...allZ);
 
     // Вычисление длин арок
     let arcLength1 = calculateArcLength(arc1);
@@ -63,22 +75,22 @@ export function updateModel() {
             xaxis: {
                 title: 'Width',
                 dtick: 0.1, // Шаг сетки по оси X 10 см
-                range: [0, maxDim] // Установите диапазон по оси X
+                range: [minX, maxX]
             },
             yaxis: {
                 title: 'Depth',
                 dtick: 0.1, // Шаг сетки по оси Y 10 см
-                range: [0, maxDim] // Установите диапазон по оси Y
+                range: [minY, maxY]
             },
             zaxis: {
                 title: 'Height',
                 dtick: 0.1, // Шаг сетки по оси Z 10 см
-                range: [0, height] // Установите диапазон по оси Z
+                range: [minZ, maxZ]
             },
             aspectratio: {
-                x: maxDim / height, // Установим фиксированные значения для пропорций
-                y: maxDim / height,
-                z: 1
+                x: (maxX - minX) / maxDim, 
+                y: (maxY - minY) / maxDim, 
+                z: (maxZ - minZ) / maxDim
             },
             camera: {
                 eye: {
