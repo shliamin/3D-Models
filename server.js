@@ -1,6 +1,6 @@
 // static/js/server.js
 
-import { interpolateSurface, calculateSemiAxes, circularArc, halfCircularArc, interpolateSurfaceUntilIntersection } from './model.js';
+import { interpolateSurface, circularArc, halfCircularArc, interpolateSurfaceUntilIntersection } from './model.js';
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
@@ -9,17 +9,14 @@ export async function generateModel() {
 
     console.log('Current values for 3D Model:', { width, depth, height });
 
-    // Calculate semi-major and semi-minor axes
-    let { a, b } = calculateSemiAxes([[0, 0], [width, 0], [0, depth], [width, depth]]);
-
-    const arc1 = circularArc([0, 0], [width, depth], height, a, b);
-    const arc2 = circularArc([width, 0], [0, depth], height, a, b);
-    const arc3 = circularArc([0, 0], [width, depth], height, a, b);
-    const arc4 = circularArc([0, depth], [width, 0], height, a, b);
-    const arc5 = halfCircularArc([0, 0], [width, depth], height, a, b);
-    const arc6 = halfCircularArc([width, 0], [0, depth], height, a, b);
-    const arc7 = halfCircularArc([0, 0], [width, depth], height, a, b);
-    const arc8 = halfCircularArc([0, depth], [width, 0], height, a, b);
+    const arc1 = circularArc([0, 0], [width, depth], height);
+    const arc2 = circularArc([width, 0], [0, depth], height);
+    const arc3 = circularArc([0, 0], [width, depth], height);
+    const arc4 = circularArc([0, depth], [width, 0], height);
+    const arc5 = halfCircularArc([0, 0], [width, depth], height);
+    const arc6 = halfCircularArc([width, 0], [0, depth], height);
+    const arc7 = halfCircularArc([0, 0], [width, depth], height);
+    const arc8 = halfCircularArc([0, depth], [width, 0], height);
 
     const surface1 = interpolateSurface(arc1, arc2);
     const surface2 = interpolateSurface(arc3, arc4);
@@ -37,7 +34,7 @@ export async function generateModel() {
         enable_relaxation: true // Always enable relaxation
     };
 
-    // Display spinner
+    // 
     document.getElementById('spinner').style.display = 'block';
 
     try {
@@ -63,7 +60,7 @@ export async function generateModel() {
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     } finally {
-        // Hide spinner
+        // 
         document.getElementById('spinner').style.display = 'none';
     }
 }
@@ -75,13 +72,10 @@ export async function generatePattern() {
 
     console.log('Current values for 2D Pattern:', { width, depth, height });
 
-    // Calculate semi-major and semi-minor axes
-    let { a, b } = calculateSemiAxes([[0, 0], [width, 0], [0, depth], [width, depth]]);
-
-    const arc5 = halfCircularArc([0, 0], [width, depth], height, a, b);
-    const arc6 = halfCircularArc([width, 0], [0, depth], height, a, b);
-    const arc7 = halfCircularArc([0, 0], [width, depth], height, a, b);
-    const arc8 = halfCircularArc([0, depth], [width, 0], height, a, b);
+    const arc5 = halfCircularArc([0, 0], [width, depth], height);
+    const arc6 = halfCircularArc([width, 0], [0, depth], height);
+    const arc7 = halfCircularArc([0, 0], [width, depth], height);
+    const arc8 = halfCircularArc([0, depth], [width, 0], height);
 
     const surface3 = interpolateSurfaceUntilIntersection(arc5, arc6);
     const surface4 = interpolateSurfaceUntilIntersection(arc7, arc8);
@@ -95,7 +89,7 @@ export async function generatePattern() {
         enable_relaxation: true // Always enable relaxation
     };
 
-    // Display spinner
+    // 
     document.getElementById('spinner').style.display = 'block';
 
     try {
@@ -121,7 +115,7 @@ export async function generatePattern() {
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     } finally {
-        // Hide spinner
+        // 
         document.getElementById('spinner').style.display = 'none';
     }
 }
