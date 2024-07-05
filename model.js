@@ -135,6 +135,25 @@ export function updateModel() {
     };
 
     Plotly.newPlot('tentModel', data, layout);
+
+    // Интеграция GeoGebra
+    let ggbApplet = new GGBApplet({
+        "appName": "classic",
+        "width": 600,
+        "height": 400,
+        "showToolBar": true,
+        "showAlgebraInput": true,
+        "showMenuBar": true
+    }, true);
+
+    window.addEventListener("load", function () {
+        ggbApplet.inject('ggbApplet');
+
+        ggbApplet.evalCommand(`A = (${x1}, ${y1})`);
+        ggbApplet.evalCommand(`B = (${x2}, ${y2})`);
+        ggbApplet.evalCommand(`C = (${x3}, ${y3})`);
+        ggbApplet.evalCommand(`circumcircle = Circumcircle(A, B, C)`);
+    });
 }
 
 // Функция для создания линейного интервала
