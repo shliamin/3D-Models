@@ -9,8 +9,21 @@ export function updateModel() {
     const height = parseFloat(document.getElementById('height').value) / 100;
 
     var canvas = document.createElement('canvas');
+    canvas.width = 500;
+    canvas.height = 500;
     var context = canvas.getContext('2d', { willReadFrequently: true });
 
+    // Drawing something on the canvas
+    context.fillStyle = 'lightblue';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.fillStyle = 'red';
+    context.beginPath();
+    context.arc(250, 250, 100, 0, Math.PI * 2, true);
+    context.fill();
+
+    // Adding canvas to the DOM
+    document.body.appendChild(canvas);
 
     // Tent vertices coordinates
     let vertices = [
