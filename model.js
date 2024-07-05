@@ -3,57 +3,41 @@ import { linspace, calculateArcLength, calculateSurfaceArea, findIntersection, i
 // model.js
 
 export function updateModel() {
-    // Get values in centimeters and convert to meters
+    // Get values в сантиметрах и конвертировать в метры
     const width = parseFloat(document.getElementById('width').value) / 100;
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Tent vertices coordinates
+    // Координаты вершин палатки
     let vertices = [
-        [0, 0, 0],         // Bottom front left corner
-        [width, 0, 0],     // Bottom front right corner
-        [0, depth, 0],     // Bottom back left corner
-        [width, depth, 0], // Bottom back right corner
-        [width / 2, depth / 2, height]  // Top center point
+        [0, 0, 0],         // Нижний передний левый угол
+        [width, 0, 0],     // Нижний передний правый угол
+        [0, depth, 0],     // Нижний задний левый угол
+        [width, depth, 0], // Нижний задний правый угол
+        [width / 2, depth / 2, height]  // Верхняя центральная точка
     ];
 
-    // Draw arcs intersecting at the tent's top vertex
-    let arc1 = perfectArc(vertices[0], vertices[3], height);
-    let arc2 = perfectArc(vertices[1], vertices[2], height);
+    // Функция для создания арки
+    function createArc(start, end, top) {
+        const t = linspace(0, 1, 100);
+        const arcX = t.map(v => (1 - v) * start[0] + v * end[0]);
+        const arcY = t.map(v => (1 - v) * start[1] + v * end[1]);
+        const arcZ = t.map(v => 4 * height * v * (1 - v)); // Параболическая арка
+        return { x: arcX, y: arcY, z: arcZ };
+    }
 
-    // Interpolate to create surface points between arcs
-    let surface1 = interpolateSurface(arc1, arc2);
+    // Создание арок
+    let arc1 = createArc(vertices[0], vertices[3], height);
+    let arc2 = createArc(vertices[1], vertices[2], height);
 
-    // Calculate surface areas
-    let area1 = calculateSurfaceArea(surface1);
-
-    // Calculate arc lengths
+    // Вычисление длин арок
     let arcLength1 = calculateArcLength(arc1);
     let arcLength2 = calculateArcLength(arc2);
 
-    // Initialize total area
-    let totalArea = 0;
-
-    // Check which surfaces are enabled
+    // Инициализация данных для графика
     let data = [];
-    if (document.getElementById('surface1').checked) {
-        totalArea += area1;
-        data.push({
-            x: surface1.x,
-            y: surface1.y,
-            z: surface1.z,
-            type: 'surface',
-            colorscale: [[0, 'rgba(0, 255, 255, 0.3)'], [1, 'rgba(0, 255, 255, 0.3)']],
-            opacity: 0.7,
-            showscale: false
-        });
-    }
 
-    // Update total surface area and arc lengths
-    document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
-    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
-
-    // Add arcs only
+    // Добавление арок на график
     data.push({
         x: arc1.x,
         y: arc1.y,
@@ -76,6 +60,9 @@ export function updateModel() {
         },
         type: 'scatter3d'
     });
+
+    // Обновление длин арок
+    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
     let layout = {
         scene: {
