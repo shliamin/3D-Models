@@ -8,22 +8,6 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    var canvas = document.createElement('canvas');
-    canvas.width = '100%';
-    canvas.height = '100%';
-    var context = canvas.getContext('2d', { willReadFrequently: true });
-
-    // Drawing something on the canvas
-    context.fillStyle = 'lightblue';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-    context.fillStyle = 'red';
-    context.beginPath();
-    context.arc(250, 250, 100, 0, Math.PI * 2, true);
-    context.fill();
-
-    // Adding canvas to the DOM
-    document.body.appendChild(canvas);
 
     // Tent vertices coordinates
 let vertices = [
@@ -36,9 +20,9 @@ let vertices = [
 
 // Draw arcs intersecting at the tent's top vertex
 let arc1 = perfectArc(vertices[0], vertices[4], height);
-let arc2 = perfectArc(vertices[1], vertices[4], height);
-let arc3 = perfectArc(vertices[2], vertices[4], height);
-let arc4 = perfectArc(vertices[3], vertices[4], height);
+let arc2 = perfectArc(vertices[1], vertices[3], height);
+let arc3 = perfectArc(vertices[0], vertices[4], height);
+let arc4 = perfectArc(vertices[3], vertices[1], height);
 
 // Interpolate to create surface points between arcs
 let surface1 = interpolateSurface(arc1, arc2);
