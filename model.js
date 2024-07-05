@@ -12,10 +12,10 @@ import {
 // model.js
 
 export function updateModel() {
-    // Get values in centimeters and convert to meters
-    const width = parseFloat(document.getElementById('width').value) / 100;
-    const depth = parseFloat(document.getElementById('depth').value) / 100;
-    const height = parseFloat(document.getElementById('height').value) / 100;
+    // Get values in centimeters
+    const width = parseFloat(document.getElementById('width').value);
+    const depth = parseFloat(document.getElementById('depth').value);
+    const height = parseFloat(document.getElementById('height').value);
 
     // Validate input values
     if (isNaN(width) || isNaN(depth) || isNaN(height)) {
@@ -41,7 +41,7 @@ export function updateModel() {
 
     context.fillStyle = 'red';
     context.beginPath();
-    context.arc(250, 250, 100, 0, Math.PI * 2, true);
+    context.arc(250, 250, 100, 0, Math.PI * 2, true); // Drawing a red circle as a placeholder
     context.fill();
 
     // Tent vertices coordinates
@@ -104,54 +104,25 @@ export function updateModel() {
     }
 
     // Update total surface area and arc lengths
-    document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
-    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2 + arcLength3 + arcLength4).toFixed(2)} m`;
+    document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} cm²`;
+    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2 + arcLength3 + arcLength4).toFixed(2)} cm`;
 
     // Add arcs and edges
-    data.push({
-        x: arc1.x,
-        y: arc1.y,
-        z: arc1.z,
-        mode: 'lines',
-        line: {
-            color: 'blue',
-            width: 5
-        },
-        type: 'scatter3d'
+    const arcs = [arc1, arc2, arc3, arc4];
+    arcs.forEach((arc) => {
+        data.push({
+            x: arc.x,
+            y: arc.y,
+            z: arc.z,
+            mode: 'lines',
+            line: {
+                color: 'blue',
+                width: 5
+            },
+            type: 'scatter3d'
+        });
     });
-    data.push({
-        x: arc2.x,
-        y: arc2.y,
-        z: arc2.z,
-        mode: 'lines',
-        line: {
-            color: 'blue',
-            width: 5
-        },
-        type: 'scatter3d'
-    });
-    data.push({
-        x: arc3.x,
-        y: arc3.y,
-        z: arc3.z,
-        mode: 'lines',
-        line: {
-            color: 'blue',
-            width: 5
-        },
-        type: 'scatter3d'
-    });
-    data.push({
-        x: arc4.x,
-        y: arc4.y,
-        z: arc4.z,
-        mode: 'lines',
-        line: {
-            color: 'blue',
-            width: 5
-        },
-        type: 'scatter3d'
-    });
+
     data.push({
         x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
         y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
@@ -164,9 +135,9 @@ export function updateModel() {
         type: 'scatter3d'
     });
 
-    const allX = [...arc1.x, ...arc2.x, ...arc3.x, ...arc4.x];
-    const allY = [...arc1.y, ...arc2.y, ...arc3.y, ...arc4.y];
-    const allZ = [...arc1.z, ...arc2.z, ...arc3.z, ...arc4.z];
+    const allX = arcs.flatMap(arc => arc.x);
+    const allY = arcs.flatMap(arc => arc.y);
+    const allZ = arcs.flatMap(arc => arc.z);
 
     const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
@@ -180,18 +151,18 @@ export function updateModel() {
         scene: {
             xaxis: {
                 title: 'Width',
-                range: [minX - 0.1, maxX + 0.1],  // Adding a margin for better visualization
-                dtick: 0.1  // 10 cm ticks
+                range: [minX - 10, maxX + 10],  // Adding a margin for better visualization
+                dtick: 10  // 10 cm ticks
             },
             yaxis: {
                 title: 'Depth',
-                range: [minY - 0.1, maxY + 0.1],  // Adding a margin for better visualization
-                dtick: 0.1  // 10 cm ticks
+                range: [minY - 10, maxY + 10],  // Adding a margin for better visualization
+                dtick: 10  // 10 cm ticks
             },
             zaxis: {
                 title: 'Height',
-                range: [minZ - 0.1, maxZ + 0.1],  // Adding a margin for better visualization
-                dtick: 0.1  // 10 cm ticks
+                range: [minZ - 10, maxZ + 10],  // Adding a margin for better visualization
+                dtick: 10  // 10 cm ticks
             },
             aspectratio: { x: width, y: depth, z: height },
             camera: {
