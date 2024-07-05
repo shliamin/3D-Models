@@ -195,28 +195,4 @@ export function updateModel() {
     document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 }
-index.js
 
-
-
-javascript
-Copy code
-import { updateModel } from './model.js';
-
-document.getElementById('generateModelButton').onclick = updateModel;
-document.getElementById('generatePatternButton').onclick = updateModel;
-document.getElementById('width').onchange = updateModel;
-document.getElementById('depth').onchange = updateModel;
-document.getElementById('height').onchange = updateModel;
-document.getElementById('surface1').onchange = updateModel;
-document.getElementById('surface2').onchange = updateModel;
-
-window.onload = () => {
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-    if (!isMobile) {
-        updateModel();
-    } else {
-        document.querySelector('.mobile-message').style.display = 'block';
-    }
-};
