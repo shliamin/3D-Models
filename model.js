@@ -40,8 +40,8 @@ export function updateModel() {
 
 
     // Generate semi-ellipses for both diagonals
-    const semiEllipse1 = generateSemiEllipse(point1, point3, apexPoint, 100);
-    const semiEllipse2 = generateSemiEllipse(point2, point4, apexPoint, 100);
+    //const semiEllipse1 = generateSemiEllipse(point1, point3, apexPoint, 100);
+    //const semiEllipse2 = generateSemiEllipse(point2, point4, apexPoint, 100);
     
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
