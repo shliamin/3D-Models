@@ -1,4 +1,4 @@
-import { linspace, calculateArcLength, calculateSurfaceArea, findIntersection, interpolateSurface, perfectArc, halfPerfectArc, interpolateSurfaceUntilIntersection } from './model-utils.js';
+import { linspace, calculateArcLength, calculateSurfaceArea, findIntersection, interpolateSurface, perfectArc, halfPerfectArc, addLine, interpolateSurfaceUntilIntersection } from './model-utils.js';
 
 // model.js
 
@@ -73,101 +73,10 @@ document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.to
 document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2 + arcLength3 + arcLength4).toFixed(2)} m`;
 
 // Add arcs and edges
-data.push({
-    x: arc1.x,
-    y: arc1.y,
-    z: arc1.z,
-    mode: 'lines',
-    line: {
-        color: 'blue',
-        width: 5
-    },
-    type: 'scatter3d'
-});
-data.push({
-    x: arc2.x,
-    y: arc2.y,
-    z: arc2.z,
-    mode: 'lines',
-    line: {
-        color: 'blue',
-        width: 5
-    },
-    type: 'scatter3d'
-});
-data.push({
-    x: arc3.x,
-    y: arc3.y,
-    z: arc3.z,
-    mode: 'lines',
-    line: {
-        color: 'blue',
-        width: 5
-    },
-    type: 'scatter3d'
-});
-data.push({
-    x: arc4.x,
-    y: arc4.y,
-    z: arc4.z,
-    mode: 'lines',
-    line: {
-        color: 'blue',
-        width: 5
-    },
-    type: 'scatter3d'
-});
-
-data.push({
-    x: [vertices[0][0], vertices[1][0]],
-    y: [vertices[0][1], vertices[1][1]],
-    z: [vertices[0][2], vertices[1][2]],
-    mode: 'lines',
-    line: {
-        color: 'red',
-        width: 5
-    },
-    type: 'scatter3d'
-});
-
-
-data.push({
-    x: [vertices[0][0], vertices[2][0]],
-    y: [vertices[0][1], vertices[2][1]],
-    z: [vertices[0][2], vertices[2][2]],
-    mode: 'lines',
-    line: {
-        color: 'blue',
-        width: 5
-    },
-    type: 'scatter3d'
-});
-
-
-data.push({
-    x: [vertices[2][0], vertices[3][0]],
-    y: [vertices[2][1], vertices[3][1]],
-    z: [vertices[2][2], vertices[3][2]],
-    mode: 'lines',
-    line: {
-        color: 'green',
-        width: 5
-    },
-    type: 'scatter3d'
-});
-
-
-data.push({
-    x: [vertices[3][0], vertices[1][0]],
-    y: [vertices[3][1], vertices[1][1]],
-    z: [vertices[3][2], vertices[1][2]],
-    mode: 'lines',
-    line: {
-        color: 'yellow',
-        width: 5
-    },
-    type: 'scatter3d'
-});
+addLine(vertices[0], vertices[1], 'blue');   
+addLine(vertices[0], vertices[2], 'blue');  
+addLine(vertices[2], vertices[3], 'blue'); 
+addLine(vertices[3], vertices[1], 'blue');
 
 let layout = {
     scene: {
