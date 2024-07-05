@@ -149,15 +149,15 @@ let layout = {
     scene: {
         xaxis: {
             title: 'Width',
-            dtick: 0.1  // Grid step for X axis 10 cm
+            dtick: 1  // Grid step for X axis 10 cm
         },
         yaxis: {
             title: 'Depth',
-            dtick: 0.1  // Grid step for Y axis 10 cm
+            dtick: 1  // Grid step for Y axis 10 cm
         },
         zaxis: {
             title: 'Height',
-            dtick: 0.1  // Grid step for Z axis 10 cm
+            dtick: 1  // Grid step for Z axis 10 cm
         },
         aspectratio: { x: width, y: depth, z: height },
         camera: {
