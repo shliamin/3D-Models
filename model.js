@@ -183,15 +183,14 @@ export function updateModel() {
     // Tent vertices coordinates
     let vertices = [
         [0, 0, 0],         // Bottom front left corner
-        [width, 0, 0],     // Bottom front right corner
-        [0, depth, 0],     // Bottom back left corner
-        [width, depth, 0], // Bottom back right corner
-        [width / 2, depth / 2, height]  // Top center point
+        [depth, 0, 0],     // Bottom front right corner
+        [0, width, 0],     // Bottom back left corner
+        [depth, width, 0], // Bottom back right corner
     ];
 
     let { a, b } = calculateSemiAxes(vertices[0], vertices[1], vertices[2], vertices[3]);
-    console.log(a,b);
-    
+    console.log(a, b);
+
     // Draw arcs intersecting at the tent's top vertex
     let arc1 = circularArc(vertices[0], vertices[3], height, a, b);
     let arc2 = circularArc(vertices[1], vertices[2], height, a, b);
@@ -200,11 +199,11 @@ export function updateModel() {
 
     // Interpolate to create surface points between arcs
     let surface1 = interpolateSurface(arc1, arc2);
-    let surface2a = interpolateSurface(arc3, arc4);
+    let surface2 = interpolateSurface(arc3, arc4);
 
     // Calculate surface areas
     let area1 = calculateSurfaceArea(surface1);
-    let area2a = calculateSurfaceArea(surface2a);
+    let area2 = calculateSurfaceArea(surface2);
 
     // Calculate arc lengths
     let arcLength1 = calculateArcLength(arc1);
@@ -228,11 +227,11 @@ export function updateModel() {
         });
     }
     if (document.getElementById('surface2').checked) {
-        totalArea += area2a;
+        totalArea += area2;
         data.push({
-            x: surface2a.x,
-            y: surface2a.y,
-            z: surface2a.z,
+            x: surface2.x,
+            y: surface2.y,
+            z: surface2.z,
             type: 'surface',
             colorscale: [[0, 'rgba(255, 0, 0, 0.3)'], [1, 'rgba(255, 0, 0, 0.3)']],
             opacity: 0.7,
@@ -321,3 +320,4 @@ export function updateModel() {
 
     Plotly.newPlot('tentModel', data, layout);
 }
+
