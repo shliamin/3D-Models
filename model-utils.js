@@ -166,7 +166,7 @@ export function createArc(width, depth, height) {
 }
 
 
-function linspace(start, stop, num) {
+export function linspace(start, stop, num) {
     const arr = [];
     const step = (stop - start) / (num - 1);
     for (let i = 0; i < num; i++) {
