@@ -8,6 +8,9 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
+    // Находим максимальное измерение для определения пропорций
+    const maxDim = Math.max(width, depth, height);
+
     // Координаты вершин палатки
     let vertices = [
         [0, 0, 0],                       // Нижний передний левый угол
