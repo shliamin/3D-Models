@@ -166,15 +166,25 @@ export function createArc(width, depth, height) {
 }
 
 
-export function generateSemiEllipse(a, b) {
-    var xValues = [];
+function linspace(start, stop, num) {
+    const arr = [];
+    const step = (stop - start) / (num - 1);
+    for (let i = 0; i < num; i++) {
+        arr.push(start + step * i);
+    }
+    return arr;
+}
+
+export function generateSemiEllipse(a, b, numPoints) {
+    var xValues = linspace(-a, a, numPoints);
     var yValuesUpper = [];
-    for (var x = -a; x <= a; x += 1) {
+    for (var i = 0; i < xValues.length; i++) {
+        var x = xValues[i];
         var y = b * Math.sqrt(1 - (x * x) / (a * a));
-        if (y >= 0) {  // higher than floor (y >= 0)
-            xValues.push(x);
+        if (y >= 0) {  //  (y >= 0)
             yValuesUpper.push(y);
         }
     }
     return { x: xValues, y: yValuesUpper };
 }
+
