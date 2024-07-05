@@ -1,10 +1,4 @@
-// Импортируем необходимые функции
-import {
-    calculateArcLength,
-    interpolateSurface,
-    calculateSurfaceArea,
-    createArc,
-} from './model-utils.js';
+import { calculateArcLength } from './model-utils.js';
 
 // model.js
 
@@ -24,15 +18,36 @@ export function updateModel() {
         return arr;
     }
 
+    // Определяем параметры для построения арок
+    const y = linspace(0, depth, 100);
+    const theta = linspace(0, Math.PI, 100);
+
     // Создаем арки
-    const arc1 = createArc(width, depth, height);
-    const arc2 = createArc(width, depth, height);
-    arc2.x = arc2.x.map(x => -x); // Инвертируем координаты x для второй арки
+    const x_fine = theta.map(t => width / 2 * Math.cos(t));
+    const z_fine = theta.map(t => height * Math.sin(t));
+
+    const arc1 = {
+        x: x_fine,
+        y: y,
+        z: z_fine,
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
+
+    const arc2 = {
+        x: x_fine.map(x => -x),
+        y: y,
+        z: z_fine,
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
 
     // Масштабирование осей на основе крайних точек арок
-    const allX = arc1.x.concat(arc2.x);
-    const allY = arc1.y.concat(arc2.y);
-    const allZ = arc1.z.concat(arc2.z);
+    const allX = x_fine.concat(x_fine.map(x => -x));
+    const allY = y.concat(y);
+    const allZ = z_fine.concat(z_fine);
 
     const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
@@ -42,14 +57,8 @@ export function updateModel() {
     const maxZ = Math.max(...allZ);
 
     // Вычисление длин арок
-    let arcLength1 = calculateArcLength(arc1);
-    let arcLength2 = calculateArcLength(arc2);
-
-    // Интерполяция поверхности между арками
-    const surface = interpolateSurface(arc1, arc2);
-
-    // Вычисление площади поверхности
-    let surfaceArea = calculateSurfaceArea(surface);
+    let arcLength1 = calculateArcLength({ x: arc1.x, y: arc1.y, z: arc1.z });
+    let arcLength2 = calculateArcLength({ x: arc2.x, y: arc2.y, z: arc2.z });
 
     // Инициализация данных для графика
     let data = [];
@@ -58,19 +67,8 @@ export function updateModel() {
     data.push(arc1);
     data.push(arc2);
 
-    // Добавление поверхности на график
-    data.push({
-        x: surface.x,
-        y: surface.y,
-        z: surface.z,
-        type: 'surface',
-        colorscale: 'Viridis',
-        opacity: 0.8
-    });
-
-    // Обновление длин арок и площади поверхности
+    // Обновление длин арок
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
-    document.getElementById('surfaceArea').innerText = `Surface area: ${surfaceArea.toFixed(2)} m²`;
 
     let layout = {
         scene: {
