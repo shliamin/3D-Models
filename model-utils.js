@@ -1,9 +1,3 @@
-// Define linspace function similar to numeric.linspace
-export function linspace(start, end, num) {
-    const step = (end - start) / (num - 1);
-    return Array.from({ length: num }, (_, i) => start + (i * step));
-}
-
 // Function to calculate the length of an arc
 export function calculateArcLength(arc) {
     let length = 0;
@@ -55,45 +49,6 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100
     
     return surface;
 }
-
-export function perfectArc(startCoord, endCoord, height, num_points = 100) {
-    // Extract coordinates
-    const [x0, y0, z0] = startCoord;
-    const [x2, y2, z2] = endCoord;
-
-    // Calculate width based on y-coordinates of start and end
-    const width = Math.abs(y2 - y0);
-
-    // Generate theta values
-    const theta = linspace(-Math.PI / 2, Math.PI / 2, num_points);
-
-    // Generate x values linearly between the start and end x-coordinates
-    const x = linspace(x0, x2, num_points);
-
-    // Generate y and z values using sine and cosine functions
-    const y = theta.map(t => width * Math.sin(t));
-    const z = theta.map(t => height * Math.cos(t));
-
-    // Define the arc with adjusted coordinates
-    let arc = {
-        x: x,
-        y: y.map((yi, i) => yi + (y0 + y2) / 2), // center the y values between y0 and y2
-        z: z.map((zi, i) => zi + z0) // shift z values by the initial z0
-    };
-
-    // Find minimum values for each coordinate to shift all points to positive
-    const minX = Math.min(...arc.x);
-    const minY = Math.min(...arc.y);
-    const minZ = Math.min(...arc.z);
-
-    // Shift all coordinates to make them positive
-    arc.x = arc.x.map(xi => xi - minX);
-    arc.y = arc.y.map(yi => yi - minY);
-    arc.z = arc.z.map(zi => zi - minZ);
-
-    return arc;
-}
-
 
 
 export function halfPerfectArc(startCoord, endCoord, height, num_points = 100) {
@@ -173,4 +128,43 @@ export function calculateSurfaceArea(surface, num_points = 100) {
     return area;
 }
 
+
+// Function to create a linear interval
+уxport function linspace(start, stop, num) {
+    const arr = [];
+    const step = (stop - start) / (num - 1);
+    for (let i = 0; i < num; i++) {
+        arr.push(start + step * i);
+    }
+    return arr;
+}
+
+// Function to create arcs
+export function createArcs(width, depth, height) {
+    const y = linspace(0, depth, 100);
+    const theta = linspace(0, Math.PI, 100);
+
+    const x_fine = theta.map(t => width / 2 * Math.cos(t));
+    const z_fine = theta.map(t => height * Math.sin(t));
+
+    const arc1 = {
+        x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
+        y: y,
+        z: z_fine.map(z => Math.abs(z)), // Ensure positive coordinates
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
+
+    const arc2 = {
+        x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
+        y: y,
+        z: z_fine.map(z => Math.abs(z)), // Ensure positive coordinates
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
+
+    return { arc1, arc2 };
+}
 
