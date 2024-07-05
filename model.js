@@ -17,7 +17,7 @@ export function updateModel() {
         [width / 2, depth / 2, height]  // Верхняя центральная точка
     ];
 
-    // Создание арок
+    // Создание арок от угла к углу через верхнюю точку
     let arc1 = perfectArc(vertices[0], vertices[3], height);
     let arc2 = perfectArc(vertices[1], vertices[2], height);
 
@@ -60,17 +60,17 @@ export function updateModel() {
             xaxis: {
                 title: 'Width',
                 dtick: 0.1, // Шаг сетки по оси X 10 см
-                range: [0, Math.max(width, depth, height)]
+                range: [0, width] // Установите диапазон по оси X
             },
             yaxis: {
                 title: 'Depth',
                 dtick: 0.1, // Шаг сетки по оси Y 10 см
-                range: [0, Math.max(width, depth, height)]
+                range: [0, depth] // Установите диапазон по оси Y
             },
             zaxis: {
                 title: 'Height',
                 dtick: 0.1, // Шаг сетки по оси Z 10 см
-                range: [0, Math.max(width, depth, height)]
+                range: [0, height] // Установите диапазон по оси Z
             },
             aspectratio: {
                 x: 1, // Установим фиксированные значения для пропорций
