@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from './libs/three.js-master/build/three.module.js';
 
 // Define linspace function
 function linspace(start, end, num) {
