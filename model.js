@@ -182,12 +182,12 @@ export function updateModel() {
     // Draw arcs intersecting at the tent's top vertex
     let arc1 = perfectArc(vertices[0], vertices[3], height);
     let arc2 = perfectArc(vertices[1], vertices[2], height);
-    let arc3 = perfectArc(vertices[0], vertices[3], height);
+    let arc3 = perfectArc(vertices[3], vertices[0], height);
     let arc4 = perfectArc(vertices[2], vertices[1], height);
 
     // Interpolate to create surface points between arcs
     let surface1 = interpolateSurface(arc1, arc2);
-    let surface2a = interpolateSurface(arc2, arc1);
+    let surface2a = interpolateSurface(arc3, arc4);
 
     // Calculate surface areas
     let area1 = calculateSurfaceArea(surface1);
