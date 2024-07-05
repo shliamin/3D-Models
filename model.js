@@ -1,4 +1,4 @@
-import { calculateArcLength, generateSemiEllipse, calculateDiagonals, linspace } from './model-utils.js';
+import { calculateArcLength, generateSemiEllipse3DFromPoints, calculateDiagonals, linspace } from './model-utils.js';
 
 export function updateModel() {
     // Convert values from centimeters to meters
@@ -6,15 +6,42 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    console.log(`Width: ${width}, Depth: ${depth}, Height: ${height}`);
+    // Calculate the four corners of the tent's base
+    const point1 = {
+        x: -width / 2,
+        y: -depth / 2,
+        z: 0
+    };
+    
+    const point2 = {
+        x: width / 2,
+        y: -depth / 2,
+        z: 0
+    };
+    
+    const point3 = {
+        x: width / 2,
+        y: depth / 2,
+        z: 0
+    };
+    
+    const point4 = {
+        x: -width / 2,
+        y: depth / 2,
+        z: 0
+    };
 
-    // Calculate the diagonals
-    const [diagonal1, diagonal2] = calculateDiagonals(width, depth);
-    console.log(`Diagonals: ${diagonal1}, ${diagonal2}`);
+    // Calculate the apex point at the top center of the tent
+    const apexPoint = {
+        x: 0,
+        y: 0,
+        z: height
+    };
+
 
     // Generate semi-ellipses for both diagonals
-    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
-    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
+    const semiEllipse1 = generateSemiEllipse(point1, point3, apexPoint, 100);
+    const semiEllipse2 = generateSemiEllipse(point2, point4, apexPoint, 100);
     
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
