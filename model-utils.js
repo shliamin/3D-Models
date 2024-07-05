@@ -144,15 +144,6 @@ export function calculateSurfaceArea(surface, num_points = 100) {
 }
 
 
-// Function to create a linear interval
-export function linspace(start, stop, num) {
-    const arr = [];
-    const step = (stop - start) / (num - 1);
-    for (let i = 0; i < num; i++) {
-        arr.push(start + step * i);
-    }
-    return arr;
-}
 
 // Function to create a single arc
 export function createArc(width, depth, height) {
