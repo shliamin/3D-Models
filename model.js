@@ -22,8 +22,9 @@ export function updateModel() {
     const y = linspace(0, depth, 100);
     const theta = linspace(0, Math.PI, 100);
 
-    // Создаем арки
-    const x_fine = theta.map(t => width / 2 * Math.cos(t));
+    // Создаем арки и смещаем X координаты, чтобы они были положительными
+    const x_offset = width / 2;
+    const x_fine = theta.map(t => x_offset + (width / 2 * Math.cos(t)));
     const z_fine = theta.map(t => height * Math.sin(t));
 
     const arc1 = {
@@ -36,7 +37,7 @@ export function updateModel() {
     };
 
     const arc2 = {
-        x: x_fine.map(x => -x),
+        x: x_fine.map(x => width - (x - x_offset)),
         y: y,
         z: z_fine,
         type: 'scatter3d',
@@ -45,7 +46,7 @@ export function updateModel() {
     };
 
     // Масштабирование осей на основе крайних точек арок
-    const allX = x_fine.concat(x_fine.map(x => -x));
+    const allX = x_fine.concat(arc2.x);
     const allY = y.concat(y);
     const allZ = z_fine.concat(z_fine);
 
