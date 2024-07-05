@@ -13,9 +13,9 @@ export function createScene() {
     container.appendChild(renderer.domElement);
 
     window.addEventListener('resize', () => {
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
     });
 
     const ambientLight = new THREE.AmbientLight(0x404040);
