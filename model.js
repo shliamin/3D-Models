@@ -255,9 +255,9 @@ export function updateModel() {
         type: 'scatter3d'
     });
     data.push({
-        x: [arc1.x[0], arc1.x[arc1.x.length - 1], arc2.x[arc2.x.length - 1], arc2.x[0], arc1.x[0]],
-        y: [arc1.y[0], arc1.y[arc1.y.length - 1], arc2.y[arc2.y.length - 1], arc2.y[0], arc1.y[0]],
-        z: [arc1.z[0], arc1.z[arc1.z.length - 1], arc2.z[arc2.z.length - 1], arc2.z[0], arc1.z[0]],
+        x: [arc1.x[0], arc2.x[0], arc2.x[arc2.x.length - 1], arc1.x[arc1.x.length - 1], arc1.x[0]],
+        y: [arc1.y[0], arc2.y[0], arc2.y[arc2.y.length - 1], arc1.y[arc1.y.length - 1], arc1.y[0]],
+        z: [arc1.z[0], arc2.z[0], arc2.z[arc2.z.length - 1], arc1.z[arc1.z.length - 1], arc1.z[0]],
         mode: 'lines',
         line: {
             color: 'blue',
@@ -265,6 +265,7 @@ export function updateModel() {
         },
         type: 'scatter3d'
     });
+
 
 
 
