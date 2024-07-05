@@ -7,7 +7,9 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    const { arc1, arc2 } = createArcs(width, depth, height);
+    // Create two different arcs
+    const arc1 = createArc(width, depth, height, false);
+    const arc2 = createArc(width, depth, height, true);
 
     const allX = arc1.x.concat(arc2.x);
     const allY = arc1.y.concat(arc2.y);
