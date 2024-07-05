@@ -25,7 +25,7 @@ export function updateModel() {
         return;
     }
 
-    / Create arcs
+    // Create arcs
     const arc1 = {
         x: x_fine1,
         y: y,
@@ -88,7 +88,7 @@ export function updateModel() {
                 range: [minZ, maxZ]
             },
             aspectratio: {
-                x: length / Math.max(width, depth, height),
+                x: width / Math.max(width, depth, height),
                 y: depth / Math.max(width, depth, height),
                 z: height / Math.max(width, depth, height)
             },
