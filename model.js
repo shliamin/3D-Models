@@ -5,7 +5,7 @@ let ggbApplet;
 function initializeGeoGebra() {
     ggbApplet = new GGBApplet({
         "appName": "classic3d",
-        "width": 800,
+        "width": 100%,
         "height": 600,
         "showToolBar": true,
         "showAlgebraInput": true,
