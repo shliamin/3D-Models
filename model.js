@@ -95,60 +95,11 @@ export function updateModel() {
     // Обновление длин арок
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
-    let layout = {
-        scene: {
-            xaxis: {
-                title: 'Width',
-                dtick: 0.1, // Шаг сетки по оси X 10 см
-                range: [minX, maxX]
-            },
-            yaxis: {
-                title: 'Depth',
-                dtick: 0.1, // Шаг сетки по оси Y 10 см
-                range: [0, depth]
-            },
-            zaxis: {
-                title: 'Height',
-                dtick: 0.1, // Шаг сетки по оси Z 10 см
-                range: [minZ, maxZ]
-            },
-            aspectratio: {
-                x: width / Math.max(width, depth, height),
-                y: depth / Math.max(width, depth, height),
-                z: height / Math.max(width, depth, height)
-            },
-            camera: {
-                eye: {
-                    x: 2, // Отрегулируйте эти значения для отдаления камеры
-                    y: 1,
-                    z: 2
-                },
-                center: {
-                    x: 0.5, // Сдвинуть вправо (положительное значение)
-                    y: 0,
-                    z: 0.1 // Сдвинуть вниз (отрицательное значение)
-                }
-            }
-        },
-        legend: {
-            y: -0.2,
-            yanchor: 'top'
-        },
-        margin: {
-            l: 0,
-            r: 0,
-            b: 0,
-            t: 0
-        }
-    };
-
-    Plotly.newPlot('tentModel', data, layout);
-
     // Интеграция GeoGebra
     let ggbApplet = new GGBApplet({
         "appName": "classic",
-        "width": 600,
-        "height": 400,
+        "width": 800,
+        "height": 600,
         "showToolBar": true,
         "showAlgebraInput": true,
         "showMenuBar": true
