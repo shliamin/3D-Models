@@ -19,17 +19,16 @@ export function updateModel() {
     }
 
     // Определяем параметры для построения арок
-    const x = linspace(0, width, 100);
-    const z = linspace(0, depth, 100);
+    const y = linspace(0, depth, 100);
     const theta = linspace(0, Math.PI, 100);
 
     // Создаем арки
-    const y_fine = theta.map(t => height * Math.sin(t));
-    const z_fine = theta.map(t => height * Math.cos(t));
+    const x_fine = theta.map(t => width / 2 * Math.cos(t));
+    const z_fine = theta.map(t => height * Math.sin(t));
 
     const arc1 = {
-        x: x,
-        y: y_fine,
+        x: x_fine,
+        y: y,
         z: z_fine,
         type: 'scatter3d',
         mode: 'lines',
@@ -37,18 +36,18 @@ export function updateModel() {
     };
 
     const arc2 = {
-        x: x,
-        y: y_fine,
-        z: z_fine.map(z => -z),
+        x: x_fine.map(x => -x),
+        y: y,
+        z: z_fine,
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
 
     // Масштабирование осей на основе крайних точек арок
-    const allX = x.concat(x);
-    const allY = y_fine.concat(y_fine);
-    const allZ = z_fine.concat(z_fine.map(z => -z));
+    const allX = x_fine.concat(x_fine.map(x => -x));
+    const allY = y.concat(y);
+    const allZ = z_fine.concat(z_fine);
 
     const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
@@ -76,22 +75,22 @@ export function updateModel() {
             xaxis: {
                 title: 'Width',
                 dtick: 0.1, // Шаг сетки по оси X 10 см
-                range: [0, width]
+                range: [minX, maxX]
             },
             yaxis: {
-                title: 'Height',
+                title: 'Depth',
                 dtick: 0.1, // Шаг сетки по оси Y 10 см
-                range: [0, height]
+                range: [0, depth]
             },
             zaxis: {
-                title: 'Depth',
+                title: 'Height',
                 dtick: 0.1, // Шаг сетки по оси Z 10 см
-                range: [-depth, depth]
+                range: [minZ, maxZ]
             },
             aspectratio: {
                 x: width / Math.max(width, depth, height),
-                y: height / Math.max(width, depth, height),
-                z: depth / Math.max(width, depth, height)
+                y: depth / Math.max(width, depth, height),
+                z: height / Math.max(width, depth, height)
             },
             camera: {
                 eye: {
