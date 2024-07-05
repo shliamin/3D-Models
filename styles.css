@@ -7,14 +7,14 @@ body {
 .container {
     display: flex;
     flex-direction: row;
-    height: 100vh; 
+    height: 100vh;
 }
 
 .sidebar {
     flex: 1;
     padding: 20px;
-    background-color: #f8f8f8; 
-    overflow-y: auto; 
+    background-color: #f8f8f8;
+    overflow-y: auto;
 }
 
 .main-content {
@@ -28,10 +28,15 @@ body {
 
 .model {
     width: 100%;
-    height: 80vh; 
+    height: 80vh;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+}
+
+#tentModel {
+    width: 100%;
+    height: 100%;
 }
 
 .images-description {
@@ -135,12 +140,12 @@ button.styled-button:active {
 }
 
 #generatePatternButton {
-    background: linear-gradient(45deg, #e0e0e0, #b3b3b3); 
+    background: linear-gradient(45deg, #e0e0e0, #b3b3b3);
     font-weight: bold;
-    color: #333; 
-    text-shadow: none; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    border: 1px solid #ccc; 
+    color: #333;
+    text-shadow: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
     position: relative;
     overflow: hidden;
 }
@@ -162,28 +167,28 @@ button.styled-button:active {
 }
 
 #generatePatternButton:hover {
-    background: linear-gradient(45deg, #b3b3b3, #e0e0e0); 
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
+    background: linear-gradient(45deg, #b3b3b3, #e0e0e0);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .product-description {
-    color: #666; 
-    margin-top: 20px; 
+    color: #666;
+    margin-top: 20px;
     padding: 20px;
     background-color: #f9f9f9;
-    border-radius: 8px; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .product-description h3 {
-    color: #333; 
+    color: #333;
     margin-bottom: 10px;
 }
 
 .product-description p,
 .product-description ul {
     margin: 10px 0;
-    line-height: 1.6; 
+    line-height: 1.6;
 }
 
 .product-description ul {
@@ -208,18 +213,18 @@ button.styled-button:active {
 }
 
 #spinner {
-            display: none;
-            width: 50px;
-            height: 50px;
-            border: 5px solid lightgray;
-            border-top: 5px solid blue;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000; /* Ensure it is above other content */
+    display: none;
+    width: 50px;
+    height: 50px;
+    border: 5px solid lightgray;
+    border-top: 5px solid blue;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
 }
 
 @keyframes spin {
@@ -228,20 +233,19 @@ button.styled-button:active {
 }
 
 #progress {
-            display: none;
-            width: 0;
-            height: 30px;
-            background-color: lightblue;
-            text-align: center;
-            line-height: 30px;
-            color: black;
-            position: fixed;
-            top: 60%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
+    display: none;
+    width: 0;
+    height: 30px;
+    background-color: lightblue;
+    text-align: center;
+    line-height: 30px;
+    color: black;
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
 }
-
 
 @media (max-width: 768px) {
     .container > * {
@@ -276,7 +280,7 @@ button.styled-button:active {
         justify-content: center;
     }
     .image-container-mobile img {
-        max-width: 150px; 
+        max-width: 150px;
         height: auto;
         border: 1px solid #ccc;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -288,6 +292,3 @@ button.styled-button:active {
         max-width: 90%;
     }
 }
-
-
-
