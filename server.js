@@ -12,15 +12,14 @@ export async function generateModel() {
     // Calculate semi-major and semi-minor axes
     let { a, b } = calculateSemiAxes([[0, 0], [width, 0], [0, depth], [width, depth]]);
 
-    // Update arcs to draw them correctly
     const arc1 = circularArc([0, 0], [width, depth], height, a, b);
     const arc2 = circularArc([width, 0], [0, depth], height, a, b);
-    const arc3 = circularArc([0, 0], [0, depth], height, a, b);
-    const arc4 = circularArc([width, 0], [width, depth], height, a, b);
-    const arc5 = halfCircularArc([0, 0], [0, depth], height, a, b);
-    const arc6 = halfCircularArc([width, 0], [width, depth], height, a, b);
-    const arc7 = halfCircularArc([0, 0], [0, depth], height, a, b);
-    const arc8 = halfCircularArc([width, 0], [width, depth], height, a, b);
+    const arc3 = circularArc([0, 0], [width, depth], height, a, b);
+    const arc4 = circularArc([0, depth], [width, 0], height, a, b);
+    const arc5 = halfCircularArc([0, 0], [width, depth], height, a, b);
+    const arc6 = halfCircularArc([width, 0], [0, depth], height, a, b);
+    const arc7 = halfCircularArc([0, 0], [width, depth], height, a, b);
+    const arc8 = halfCircularArc([0, depth], [width, 0], height, a, b);
 
     const surface1 = interpolateSurface(arc1, arc2);
     const surface2 = interpolateSurface(arc3, arc4);
