@@ -41,32 +41,7 @@ let arcLength4 = calculateArcLength(arc4);
 // Initialize total area
 let totalArea = 0;
 
-// Check which surfaces are enabled
-let data = [];
-if (document.getElementById('surface1').checked) {
-    totalArea += area1;
-    data.push({
-        x: surface1.x,
-        y: surface1.y,
-        z: surface1.z,
-        type: 'surface',
-        colorscale: [[0, 'rgba(0, 255, 255, 0.3)'], [1, 'rgba(0, 255, 255, 0.3)']],
-        opacity: 0.7,
-        showscale: false
-    });
-}
-if (document.getElementById('surface2').checked) {
-    totalArea += area2;
-    data.push({
-        x: surface2.x,
-        y: surface2.y,
-        z: surface2.z,
-        type: 'surface',
-        colorscale: [[0, 'rgba(255, 0, 0, 0.3)'], [1, 'rgba(255, 0, 0, 0.3)']],
-        opacity: 0.7,
-        showscale: false
-    });
-}
+
 
 // Update total surface area and arc lengths
 document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
@@ -118,5 +93,5 @@ let layout = {
     }
 };
 
-Plotly.newPlot('tentModel', data, layout);
+Plotly.newPlot('tentModel', layout);
 }
