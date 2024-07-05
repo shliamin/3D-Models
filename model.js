@@ -1,91 +1,84 @@
 import { linspace, calculateArcLength, perfectArc } from './model-utils.js';
 
-// model.js
-
-export function updateModel() {
-    // Получение значений в сантиметрах и конвертация в метры
-    const width = parseFloat(document.getElementById('width').value) / 100;
-    const depth = parseFloat(document.getElementById('depth').value) / 100;
-    const height = parseFloat(document.getElementById('height').value) / 100;
-
-    // Функция для создания линейного интервала
-    function linspace(start, stop, num) {
-        const arr = [];
-        const step = (stop - start) / (num - 1);
-        for (let i = 0; i < num; i++) {
-            arr.push(start + step * i);
-        }
-        return arr;
+// Function to create a linear interval
+function linspace(start, stop, num) {
+    const arr = [];
+    const step = (stop - start) / (num - 1);
+    for (let i = 0; i < num; i++) {
+        arr.push(start + step * i);
     }
+    return arr;
+}
 
-    // Определяем параметры для построения арок
+// Function to create arcs
+function createArcs(width, depth, height) {
     const y = linspace(0, depth, 100);
     const theta = linspace(0, Math.PI, 100);
 
-    // Создаем арки
     const x_fine = theta.map(t => width / 2 * Math.cos(t));
     const z_fine = theta.map(t => height * Math.sin(t));
 
     const arc1 = {
-        x: x_fine,
+        x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
         y: y,
-        z: z_fine,
+        z: z_fine.map(z => Math.abs(z)), // Ensure positive coordinates
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
 
     const arc2 = {
-        x: x_fine.map(x => -x),
+        x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
         y: y,
-        z: z_fine,
+        z: z_fine.map(z => Math.abs(z)), // Ensure positive coordinates
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
 
-    // Масштабирование осей на основе крайних точек арок
-    const allX = x_fine.concat(x_fine.map(x => -x));
-    const allY = y.concat(y);
-    const allZ = z_fine.concat(z_fine);
+    return { arc1, arc2 };
+}
 
-    const minX = Math.min(...allX);
+// model.js
+
+export function updateModel() {
+    const width = parseFloat(document.getElementById('width').value) / 100;
+    const depth = parseFloat(document.getElementById('depth').value) / 100;
+    const height = parseFloat(document.getElementById('height').value) / 100;
+
+    const { arc1, arc2 } = createArcs(width, depth, height);
+
+    const allX = arc1.x.concat(arc2.x);
+    const allY = arc1.y.concat(arc2.y);
+    const allZ = arc1.z.concat(arc2.z);
+
     const maxX = Math.max(...allX);
-    const minY = Math.min(...allY);
     const maxY = Math.max(...allY);
-    const minZ = Math.min(...allZ);
     const maxZ = Math.max(...allZ);
 
-    // Вычисление длин арок
     let arcLength1 = calculateArcLength({ x: arc1.x, y: arc1.y, z: arc1.z });
     let arcLength2 = calculateArcLength({ x: arc2.x, y: arc2.y, z: arc2.z });
 
-    // Инициализация данных для графика
-    let data = [];
+    let data = [arc1, arc2];
 
-    // Добавление арок на график
-    data.push(arc1);
-    data.push(arc2);
-
-    // Обновление длин арок
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
     let layout = {
         scene: {
             xaxis: {
                 title: 'Width',
-                dtick: 0.1, // Шаг сетки по оси X 10 см
-                range: [minX, maxX]
+                dtick: 0.1,
+                range: [0, maxX]
             },
             yaxis: {
                 title: 'Depth',
-                dtick: 0.1, // Шаг сетки по оси Y 10 см
-                range: [0, depth]
+                dtick: 0.1,
+                range: [0, maxY]
             },
             zaxis: {
                 title: 'Height',
-                dtick: 0.1, // Шаг сетки по оси Z 10 см
-                range: [minZ, maxZ]
+                dtick: 0.1,
+                range: [0, maxZ]
             },
             aspectratio: {
                 x: width / Math.max(width, depth, height),
@@ -94,14 +87,14 @@ export function updateModel() {
             },
             camera: {
                 eye: {
-                    x: 2, // Отрегулируйте эти значения для отдаления камеры
+                    x: 2,
                     y: 1,
                     z: 2
                 },
                 center: {
-                    x: 0.5, // Сдвинуть вправо (положительное значение)
+                    x: 0.5,
                     y: 0,
-                    z: 0.1 // Сдвинуть вниз (отрицательное значение)
+                    z: 0.1
                 }
             }
         },
