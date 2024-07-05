@@ -22,9 +22,9 @@ export function updateModel() {
     const y = linspace(0, depth, 100);
     const theta = linspace(0, Math.PI, 100);
 
-    // Создаем арки в положительных координатах
-    const x_fine = theta.map(t => Math.abs(width / 2 * Math.cos(t)));
-    const z_fine = theta.map(t => Math.abs(height * Math.sin(t)));
+    // Создаем арки
+    const x_fine = theta.map(t => width / 2 * Math.cos(t));
+    const z_fine = theta.map(t => height * Math.sin(t));
 
     const arc1 = {
         x: x_fine,
@@ -36,18 +36,18 @@ export function updateModel() {
     };
 
     const arc2 = {
-        x: x_fine,
+        x: x_fine.map(x => -x),
         y: y,
         z: z_fine,
         type: 'scatter3d',
         mode: 'lines',
-        line: { color: 'red', width: 5 }
+        line: { color: 'blue', width: 5 }
     };
 
     // Масштабирование осей на основе крайних точек арок
-    const allX = x_fine;
+    const allX = x_fine.concat(x_fine.map(x => -x));
     const allY = y.concat(y);
-    const allZ = z_fine;
+    const allZ = z_fine.concat(z_fine);
 
     const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
@@ -75,7 +75,7 @@ export function updateModel() {
             xaxis: {
                 title: 'Width',
                 dtick: 0.1, // Шаг сетки по оси X 10 см
-                range: [0, maxX]
+                range: [minX, maxX]
             },
             yaxis: {
                 title: 'Depth',
@@ -85,7 +85,7 @@ export function updateModel() {
             zaxis: {
                 title: 'Height',
                 dtick: 0.1, // Шаг сетки по оси Z 10 см
-                range: [0, maxZ]
+                range: [minZ, maxZ]
             },
             aspectratio: {
                 x: width / Math.max(width, depth, height),
