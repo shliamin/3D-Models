@@ -1,9 +1,9 @@
-import { linspace, calculateArcLength, calculateSurfaceArea, findIntersection, interpolateSurface, perfectArc, halfPerfectArc, interpolateSurfaceUntilIntersection } from './model-utils.js';
+import { linspace, calculateArcLength, perfectArc } from './model-utils.js';
 
 // model.js
 
 export function updateModel() {
-    // Get values в сантиметрах и конвертировать в метры
+    // Получение значений в сантиметрах и конвертация в метры
     const width = parseFloat(document.getElementById('width').value) / 100;
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
@@ -17,18 +17,9 @@ export function updateModel() {
         [width / 2, depth / 2, height]  // Верхняя центральная точка
     ];
 
-    // Функция для создания арки
-    function createArc(start, end, top) {
-        const t = linspace(0, 1, 100);
-        const arcX = t.map(v => (1 - v) * start[0] + v * end[0]);
-        const arcY = t.map(v => (1 - v) * start[1] + v * end[1]);
-        const arcZ = t.map(v => 4 * height * v * (1 - v)); // Параболическая арка
-        return { x: arcX, y: arcY, z: arcZ };
-    }
-
-    // Создание арок
-    let arc1 = createArc(vertices[0], vertices[3], height);
-    let arc2 = createArc(vertices[1], vertices[2], height);
+    // Создание арок, проходящих через верхнюю точку
+    let arc1 = perfectArc(vertices[0], vertices[3], height);
+    let arc2 = perfectArc(vertices[1], vertices[2], height);
 
     // Вычисление длин арок
     let arcLength1 = calculateArcLength(arc1);
