@@ -18,8 +18,8 @@ export function updateModel() {
     ];
 
     // Создание арок, проходящих через верхнюю точку
-    let arc1 = perfectArc(vertices[0], vertices[3], height);
-    let arc2 = perfectArc(vertices[1], vertices[2], height);
+    let arc1 = perfectArc(vertices[0], vertices[3], vertices[4]);
+    let arc2 = perfectArc(vertices[1], vertices[2], vertices[4]);
 
     // Вычисление длин арок
     let arcLength1 = calculateArcLength(arc1);
