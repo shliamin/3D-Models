@@ -20,6 +20,9 @@ socket.on('task_status', (data) => {
     }
 });
 
+document.getElementById('generateModelButton').addEventListener('click', generateModel);
+document.getElementById('generatePatternButton').addEventListener('click', generatePattern);
+
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
