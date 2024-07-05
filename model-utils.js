@@ -172,3 +172,17 @@ export function calculateSurfaceArea(surface, num_points = 100) {
 
     return area;
 }
+
+export function addLine(vertex1, vertex2, color) {
+    data.push({
+        x: [vertex1[0], vertex2[0]],
+        y: [vertex1[1], vertex2[1]],
+        z: [vertex1[2], vertex2[2]],
+        mode: 'lines',
+        line: {
+            color: color,
+            width: 5
+        },
+        type: 'scatter3d'
+    });
+}
