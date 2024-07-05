@@ -7,6 +7,34 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
+    function createArcs(width, depth, height) {
+    const y = linspace(0, depth, 100);
+    const theta = linspace(0, Math.PI, 100);
+
+    const x_fine = theta.map(t => width / 2 * Math.cos(t));
+    const z_fine = theta.map(t => height * Math.sin(t));
+
+    const arc1 = {
+        x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
+        y: y,
+        z: z_fine.map(z => Math.abs(z)), // Ensure positive coordinates
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
+
+    const arc2 = {
+        x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
+        y: y,
+        z: z_fine.map(z => Math.abs(z)), // Ensure positive coordinates
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
+
+    return { arc1, arc2 };
+}
+
     const { arc1, arc2 } = createArcs(width, depth, height);
 
     const allX = arc1.x.concat(arc2.x);
