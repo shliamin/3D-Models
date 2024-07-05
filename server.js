@@ -65,6 +65,7 @@ export async function generateModel() {
     }
 }
 
+// server.js
 export async function generatePattern() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
@@ -104,6 +105,7 @@ export async function generatePattern() {
 
         const data = await response.json();
         const taskId = data.task_id;
+        console.log(`Task ID: ${taskId}`);
 
         // Start checking the task status
         await checkTaskStatus(taskId);
