@@ -1,6 +1,6 @@
 // static/js/server.js
 
-import { interpolateSurface, circularArc, halfCircularArc, interpolateSurfaceUntilIntersection } from './model.js';
+import { interpolateSurface, perfectArc, halfPerfectArc, interpolateSurfaceUntilIntersection } from './model.js';
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
@@ -9,14 +9,14 @@ export async function generateModel() {
 
     console.log('Current values for 3D Model:', { width, depth, height });
 
-    const arc1 = circularArc([0, 0], [width, depth], height);
-    const arc2 = circularArc([width, 0], [0, depth], height);
-    const arc3 = circularArc([0, 0], [width, depth], height);
-    const arc4 = circularArc([0, depth], [width, 0], height);
-    const arc5 = halfCircularArc([0, 0], [width, depth], height);
-    const arc6 = halfCircularArc([width, 0], [0, depth], height);
-    const arc7 = halfCircularArc([0, 0], [width, depth], height);
-    const arc8 = halfCircularArc([0, depth], [width, 0], height);
+    const arc1 = perfectArc([0, 0], [width, depth], height);
+    const arc2 = perfectArc([width, 0], [0, depth], height);
+    const arc3 = perfectArc([0, 0], [width, depth], height);
+    const arc4 = perfectArc([0, depth], [width, 0], height);
+    const arc5 = halfPerfectArc([0, 0], [width, depth], height);
+    const arc6 = halfPerfectArc([width, 0], [0, depth], height);
+    const arc7 = halfPerfectArc([0, 0], [width, depth], height);
+    const arc8 = halfPerfectArc([0, depth], [width, 0], height);
 
     const surface1 = interpolateSurface(arc1, arc2);
     const surface2 = interpolateSurface(arc3, arc4);
@@ -72,10 +72,10 @@ export async function generatePattern() {
 
     console.log('Current values for 2D Pattern:', { width, depth, height });
 
-    const arc5 = halfCircularArc([0, 0], [width, depth], height);
-    const arc6 = halfCircularArc([width, 0], [0, depth], height);
-    const arc7 = halfCircularArc([0, 0], [width, depth], height);
-    const arc8 = halfCircularArc([0, depth], [width, 0], height);
+    const arc5 = halfPerfectArc([0, 0], [width, depth], height);
+    const arc6 = halfPerfectArc([width, 0], [0, depth], height);
+    const arc7 = halfPerfectArc([0, 0], [width, depth], height);
+    const arc8 = halfPerfectArc([0, depth], [width, 0], height);
 
     const surface3 = interpolateSurfaceUntilIntersection(arc5, arc6);
     const surface4 = interpolateSurfaceUntilIntersection(arc7, arc8);
