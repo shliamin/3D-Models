@@ -7,13 +7,13 @@ export function updateModel() {
     const height = parseFloat(document.getElementById('height').value) / 100;
 
     // Validate input values
-    if (isNaN(length) || isNaN(depth) || isNaN(height)) {
+    if (isNaN(width) || isNaN(depth) || isNaN(height)) {
         console.error("Invalid input values.");
         return;
     }
 
     // Calculate the diagonals
-    const [diagonal1, diagonal2] = calculateDiagonals(length, depth);
+    const [diagonal1, diagonal2] = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
@@ -116,9 +116,9 @@ export function updateModel() {
                 range: [minZ, maxZ]
             },
             aspectratio: {
-                x: length / Math.max(length, depth, height),
-                y: depth / Math.max(length, depth, height),
-                z: height / Math.max(length, depth, height)
+                x: width / Math.max(width, depth, height),
+                y: depth / Math.max(width, depth, height),
+                z: height / Math.max(width, depth, height)
             },
             camera: {
                 eye: {
