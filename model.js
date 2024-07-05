@@ -270,45 +270,45 @@ export function updateModel() {
 
 
 
-    let layout = {
-        scene: {
-            xaxis: {
-                title: 'Width',
-                dtick: 0.1  // Grid step for X axis 10 cm
+   let layout = {
+    scene: {
+        xaxis: {
+            title: 'Width',
+            dtick: 0.1  // Grid step for X axis 10 cm
+        },
+        yaxis: {
+            title: 'Depth',
+            dtick: 0.1  // Grid step for Y axis 10 cm
+        },
+        zaxis: {
+            title: 'Height',
+            dtick: 0.1  // Grid step for Z axis 10 cm
+        },
+        aspectmode: 'cube',  // Ensure the aspect ratio is equal
+        camera: {
+            eye: {
+                x: 2, // Adjust these values to zoom out
+                y: 1,
+                z: 2
             },
-            yaxis: {
-                title: 'Depth',
-                dtick: 0.1  // Grid step for Y axis 10 cm
-            },
-            zaxis: {
-                title: 'Height',
-                dtick: 0.1  // Grid step for Z axis 10 cm
-            },
-            aspectratio: { x: width, y: depth, z: height },
-            camera: {
-                eye: {
-                    x: 2, // Adjust these values to zoom out
-                    y: 1,
-                    z: 2
-                },
-                center: {
-                    x: 0.5,  // Move right (positive value)
-                    y: 0,
-                    z: 0.1 // Move down (negative value)
-                }
+            center: {
+                x: 0.5,  // Move right (positive value)
+                y: 0,
+                z: 0.1 // Move down (negative value)
             }
-        },
-        legend: {
-            y: -0.2,
-            yanchor: 'top'
-        },
-        margin: {
-            l: 0,
-            r: 0,
-            b: 0,
-            t: 0
         }
-    };
+    },
+    legend: {
+        y: -0.2,
+        yanchor: 'top'
+    },
+    margin: {
+        l: 0,
+        r: 0,
+        b: 0,
+        t: 0
+    }
+};
 
-    Plotly.newPlot('tentModel', data, layout);
-}
+Plotly.newPlot('tentModel', data, layout);
+
