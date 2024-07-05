@@ -13,9 +13,9 @@ export function createScene() {
     container.appendChild(renderer.domElement);
 
     window.addEventListener('resize', () => {
-    camera.aspect = container.clientWidth / container.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
     });
 
     const ambientLight = new THREE.AmbientLight(0x404040);
@@ -27,6 +27,21 @@ export function createScene() {
 
     const axesHelper = new THREE.AxesHelper(5);
     scene.add(axesHelper);
+
+    // Adding grids for all three directions
+    const size = 10;
+    const divisions = 10;
+
+    const gridHelperXY = new THREE.GridHelper(size, divisions);
+    gridHelperXY.rotation.x = Math.PI / 2;
+    scene.add(gridHelperXY);
+
+    const gridHelperXZ = new THREE.GridHelper(size, divisions);
+    scene.add(gridHelperXZ);
+
+    const gridHelperYZ = new THREE.GridHelper(size, divisions);
+    gridHelperYZ.rotation.z = Math.PI / 2;
+    scene.add(gridHelperYZ);
 
     function animate() {
         requestAnimationFrame(animate);
