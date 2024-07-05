@@ -1,6 +1,6 @@
 let ggbApplet;
 
-function initializeGeoGebra() {
+export function initializeGeoGebra() {
     ggbApplet = new GGBApplet({
         "appName": "classic3d",
         "width": "100%",
