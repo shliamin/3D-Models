@@ -1,13 +1,17 @@
-import { linspace, calculateArcLength } from './model-utils.js';
+import { linspace, calculateArcLength, perfectArc } from './model-utils.js';
 
-// model.js
+// Function to create a linear interval
+function linspace(start, stop, num) {
+    const arr = [];
+    const step = (stop - start) / (num - 1);
+    for (let i = 0; i < num; i++) {
+        arr.push(start + step * i);
+    }
+    return arr;
+}
 
-export function updateModel() {
-    const width = parseFloat(document.getElementById('width').value) / 100;
-    const depth = parseFloat(document.getElementById('depth').value) / 100;
-    const height = parseFloat(document.getElementById('height').value) / 100;
-
-    function createArcs(width, depth, height) {
+// Function to create arcs
+function createArcs(width, depth, height) {
     const y = linspace(0, depth, 100);
     const theta = linspace(0, Math.PI, 100);
 
@@ -34,6 +38,13 @@ export function updateModel() {
 
     return { arc1, arc2 };
 }
+
+// model.js
+
+export function updateModel() {
+    const width = parseFloat(document.getElementById('width').value) / 100;
+    const depth = parseFloat(document.getElementById('depth').value) / 100;
+    const height = parseFloat(document.getElementById('height').value) / 100;
 
     const { arc1, arc2 } = createArcs(width, depth, height);
 
