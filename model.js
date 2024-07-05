@@ -1,4 +1,4 @@
-
+import { createScene } from './scene.js';
 
 // Define linspace function
 function linspace(start, end, num) {
@@ -148,130 +148,67 @@ export function calculateSurfaceArea(surface, num_points = 100) {
 }
 
 export function updateModel() {
+    // Get values in meters
     const width = parseFloat(document.getElementById('width').value) / 100;
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    let vertices = [
-        [0, 0, 0],
-        [width, 0, 0],
-        [0, depth, 0],
-        [width, depth, 0],
-        [width / 2, depth / 2, height]
+    // Tent vertices coordinates
+    const vertices = [
+        [0, 0, 0],         // Bottom front left corner
+        [width, 0, 0],     // Bottom front right corner
+        [0, depth, 0],     // Bottom back left corner
+        [width, depth, 0], // Bottom back right corner
+        [width / 2, depth / 2, height]  // Top center point
     ];
 
-    let arc1 = perfectArc(vertices[0], vertices[3], height);
-    let arc2 = perfectArc(vertices[1], vertices[2], height);
-    let arc3 = perfectArc(vertices[0], vertices[3], height);
-    let arc4 = perfectArc(vertices[2], vertices[1], height);
+    // Create arcs intersecting at the tent's top vertex
+    const arc1 = perfectArc(vertices[0], vertices[3], height);
+    const arc2 = perfectArc(vertices[1], vertices[2], height);
 
-    let surface1 = interpolateSurface(arc1, arc2);
-    let surface2a = interpolateSurface(arc3, arc4);
+    // Interpolate to create surface points between arcs
+    const surface1 = interpolateSurface(arc1, arc2);
 
-    let area1 = calculateSurfaceArea(surface1);
-    let area2a = calculateSurfaceArea(surface2a);
+    // Calculate surface areas
+    const area1 = calculateSurfaceArea(surface1);
 
-    let arcLength1 = calculateArcLength(arc1);
-    let arcLength2 = calculateArcLength(arc2);
+    // Calculate arc lengths
+    const arcLength1 = calculateArcLength(arc1);
+    const arcLength2 = calculateArcLength(arc2);
 
+    // Initialize total area
     let totalArea = 0;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('tentModel').appendChild(renderer.domElement);
+    // Create the scene, camera, and renderer
+    const { scene, camera, renderer } = createScene();
 
-    const surfaceMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffff, opacity: 0.3, transparent: true });
-    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
-
+    // Check which surfaces are enabled
     if (document.getElementById('surface1').checked) {
         totalArea += area1;
         const geometry = new THREE.BufferGeometry();
-        const vertices = new Float32Array(surface1.x.length * surface1.x[0].length * 3);
+        const verticesArray = new Float32Array(surface1.x.length * surface1.x[0].length * 3);
         let index = 0;
         for (let i = 0; i < surface1.x.length; i++) {
             for (let j = 0; j < surface1.x[i].length; j++) {
-                vertices[index++] = surface1.x[i][j];
-                vertices[index++] = surface1.y[i][j];
-                vertices[index++] = surface1.z[i][j];
+                verticesArray[index++] = surface1.x[i][j];
+                verticesArray[index++] = surface1.y[i][j];
+                verticesArray[index++] = surface1.z[i][j];
             }
         }
-        geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-        const surface = new THREE.Mesh(geometry, surfaceMaterial);
+        geometry.setAttribute('position', new THREE.BufferAttribute(verticesArray, 3));
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ffff, opacity: 0.5, transparent: true });
+        const surface = new THREE.Mesh(geometry, material);
         scene.add(surface);
     }
 
-    if (document.getElementById('surface2').checked) {
-        totalArea += area2a;
-        const geometry = new THREE.BufferGeometry();
-        const vertices = new Float32Array(surface2a.x.length * surface2a.x[0].length * 3);
-        let index = 0;
-        for (let i = 0; i < surface2a.x.length; i++) {
-            for (let j = 0; j < surface2a.x[i].length; j++) {
-                vertices[index++] = surface2a.x[i][j];
-                vertices[index++] = surface2a.y[i][j];
-                vertices[index++] = surface2a.z[i][j];
-            }
-        }
-        geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-        const surface = new THREE.Mesh(geometry, surfaceMaterial);
-        scene.add(surface);
-    }
-
-    const arc1Geometry = new THREE.BufferGeometry();
-    const arc1Vertices = new Float32Array(arc1.x.length * 3);
-    for (let i = 0; i < arc1.x.length; i++) {
-        arc1Vertices[i * 3] = arc1.x[i];
-        arc1Vertices[i * 3 + 1] = arc1.y[i];
-        arc1Vertices[i * 3 + 2] = arc1.z[i];
-    }
-    arc1Geometry.setAttribute('position', new THREE.BufferAttribute(arc1Vertices, 3));
-    const arc1Line = new THREE.Line(arc1Geometry, lineMaterial);
-    scene.add(arc1Line);
-
-    const arc2Geometry = new THREE.BufferGeometry();
-    const arc2Vertices = new Float32Array(arc2.x.length * 3);
-    for (let i = 0; i < arc2.x.length; i++) {
-        arc2Vertices[i * 3] = arc2.x[i];
-        arc2Vertices[i * 3 + 1] = arc2.y[i];
-        arc2Vertices[i * 3 + 2] = arc2.z[i];
-    }
-    arc2Geometry.setAttribute('position', new THREE.BufferAttribute(arc2Vertices, 3));
-    const arc2Line = new THREE.Line(arc2Geometry, lineMaterial);
-    scene.add(arc2Line);
-
-    const bottomEdgeGeometry = new THREE.BufferGeometry();
-    const bottomEdgeVertices = new Float32Array(5 * 3);
-    bottomEdgeVertices[0] = arc1.x[0];
-    bottomEdgeVertices[1] = arc1.y[0];
-    bottomEdgeVertices[2] = arc1.z[0];
-    bottomEdgeVertices[3] = arc2.x[0];
-    bottomEdgeVertices[4] = arc2.y[0];
-    bottomEdgeVertices[5] = arc2.z[0];
-    bottomEdgeVertices[6] = arc2.x[arc2.x.length - 1];
-    bottomEdgeVertices[7] = arc2.y[arc2.y.length - 1];
-    bottomEdgeVertices[8] = arc2.z[arc2.z.length - 1];
-    bottomEdgeVertices[9] = arc1.x[arc1.x.length - 1];
-    bottomEdgeVertices[10] = arc1.y[arc1.y.length - 1];
-    bottomEdgeVertices[11] = arc1.z[arc1.z.length - 1];
-    bottomEdgeVertices[12] = arc1.x[0];
-    bottomEdgeVertices[13] = arc1.y[0];
-    bottomEdgeVertices[14] = arc1.z[0];
-    bottomEdgeGeometry.setAttribute('position', new THREE.BufferAttribute(bottomEdgeVertices, 3));
-    const bottomEdgeLine = new THREE.Line(bottomEdgeGeometry, lineMaterial);
-    scene.add(bottomEdgeLine);
-
-    camera.position.z = 2;
-    camera.position.y = 1;
-    camera.position.x = 2;
-
+    // Render the scene
     function animate() {
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
     }
     animate();
 
+    // Update total surface area and arc lengths
     document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 }
