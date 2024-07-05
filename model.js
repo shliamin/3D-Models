@@ -52,33 +52,22 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100
     return surface;
 }
 
-
-// Function to calculate distance between two points
-function calculateDistance(p0, p1) {
-    return Math.sqrt(Math.pow(p1[0] - p0[0], 2) + Math.pow(p1[1] - p0[1], 2) + Math.pow(p1[2] - p0[2], 2));
-}
-
-// New function for calculating circular arc based on oval
 export function circularArc(p0, p1, height, num_points = 100) {
     let t = Array.from({ length: num_points }, (_, i) => i / (num_points - 1));
     let arc = { x: [], y: [], z: [] };
-
+    
     // Midpoint coordinates between p0 and p1
     let midX = (p0[0] + p1[0]) / 2;
     let midY = (p0[1] + p1[1]) / 2;
-
-    // Calculate a and b based on the distance between p0 and p1
-    let a = calculateDistance([p0[0], p0[1]], [p1[0], p1[1]]) / 2;
-    let b = a;  // Assuming a circular arc, a and b are the same
-
+    
     t.forEach(val => {
         let angle = Math.PI * val;
-
-        // Arc coordinates calculation based on oval
-        let x = midX + a * Math.cos(angle);
-        let y = midY + b * Math.sin(angle);  // Use sin for y to differentiate it from x
+        
+        // Arc coordinates calculation
+        let x = midX + (p0[0] - midX) * Math.cos(angle);
+        let y = midY + (p0[1] - midY) * Math.cos(angle);
         let z = height * Math.sin(angle);
-
+        
         arc.x.push(x);
         arc.y.push(y);
         arc.z.push(z);
@@ -87,7 +76,6 @@ export function circularArc(p0, p1, height, num_points = 100) {
     return arc;
 }
 
-// New function for calculating half circular arc based on oval
 export function halfCircularArc(p0, p1, height, num_points = 100) {
     let t = Array.from({ length: num_points }, (_, i) => i / (num_points - 1));
     let arc = { x: [], y: [], z: [] };
@@ -95,17 +83,13 @@ export function halfCircularArc(p0, p1, height, num_points = 100) {
     // Midpoint coordinates between p0 and p1
     let midX = (p0[0] + p1[0]) / 2;
     let midY = (p0[1] + p1[1]) / 2;
-
-    // Calculate a and b based on the distance between p0 and p1
-    let a = calculateDistance([p0[0], p0[1]], [p1[0], p1[1]]) / 2;
-    let b = a;  // Assuming a circular arc, a and b are the same
     
     t.forEach(val => {
         let angle = (Math.PI / 2) * val;  // This ensures we only go from 0 to π/2 (half arc)
         
-        // Arc coordinates calculation based on oval
-        let x = midX + a * Math.cos(angle);
-        let y = midY + b * Math.sin(angle);  // Use sin for y to differentiate it from x
+        // Arc coordinates calculation
+        let x = midX + (p0[0] - midX) * Math.cos(angle);
+        let y = midY + (p0[1] - midY) * Math.cos(angle);
         let z = height * Math.sin(angle);
         
         arc.x.push(x);
@@ -116,7 +100,7 @@ export function halfCircularArc(p0, p1, height, num_points = 100) {
     return arc;
 }
 
-// Function to interpolate between two arcs
+
 export function interpolateSurface(arc1, arc2, num_points = 100) {
     let surface = { x: [], y: [], z: [] };
 
@@ -140,7 +124,6 @@ export function interpolateSurface(arc1, arc2, num_points = 100) {
     return surface;
 }
 
-// Function to calculate the surface area
 export function calculateSurfaceArea(surface, num_points = 100) {
     let area = 0;
 
@@ -178,18 +161,6 @@ export function calculateSurfaceArea(surface, num_points = 100) {
     return area;
 }
 
-// Function to calculate semi-major and semi-minor axes of the ellipse
-export function calculateSemiAxes(vertices) {
-    let length = Math.sqrt(Math.pow(vertices[1][0] - vertices[0][0], 2) + Math.pow(vertices[1][1] - vertices[0][1], 2));
-    let width = Math.sqrt(Math.pow(vertices[3][0] - vertices[0][0], 2) + Math.pow(vertices[3][1] - vertices[0][1], 2));
-
-    let a = length / 2;
-    let b = width / 2;
-
-    return { a, b };
-}
-
-// Function to update the model
 export function updateModel() {
     // Get values in centimeters and convert to meters
     const width = parseFloat(document.getElementById('width').value) / 100;
@@ -205,14 +176,11 @@ export function updateModel() {
         [width / 2, depth / 2, height]  // Top center point
     ];
 
-    // Calculate semi-major and semi-minor axes
-    let { a, b } = calculateSemiAxes(vertices);
-
-    // Draw arcs intersecting at the tent's top vertex using new functions
-    let arc1 = circularArc(vertices[0], vertices[3], height, a, b);
-    let arc2 = circularArc(vertices[1], vertices[2], height, a, b);
-    let arc3 = circularArc(vertices[0], vertices[3], height, a, b);
-    let arc4 = circularArc(vertices[2], vertices[1], height, a, b);
+    // Draw arcs intersecting at the tent's top vertex
+    let arc1 = circularArc(vertices[0], vertices[3], height);
+    let arc2 = circularArc(vertices[1], vertices[2], height);
+    let arc3 = circularArc(vertices[0], vertices[3], height);
+    let arc4 = circularArc(vertices[2], vertices[1], height);
 
     // Interpolate to create surface points between arcs
     let surface1 = interpolateSurface(arc1, arc2);
