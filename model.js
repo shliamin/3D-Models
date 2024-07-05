@@ -1,4 +1,13 @@
-import { linspace, calculateArcLength, calculateSurfaceArea, findIntersection, interpolateSurface, perfectArc, halfPerfectArc, interpolateSurfaceUntilIntersection } from './model-utils.js';
+import { 
+    linspace, 
+    calculateArcLength, 
+    calculateSurfaceArea, 
+    findIntersection, 
+    interpolateSurface, 
+    perfectArc, 
+    halfPerfectArc, 
+    interpolateSurfaceUntilIntersection 
+} from './model-utils.js';
 
 // model.js
 
@@ -8,11 +17,17 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
+    // Validate input values
+    if (isNaN(width) || isNaN(depth) || isNaN(height)) {
+        alert('Please enter valid numbers for width, depth, and height.');
+        return;
+    }
+
     // Create a canvas and set its context
-    var canvas = document.createElement('canvas');
+    const canvas = document.createElement('canvas');
     canvas.width = 500;
     canvas.height = 500;
-    var context = canvas.getContext('2d', { willReadFrequently: true });
+    const context = canvas.getContext('2d', { willReadFrequently: true });
 
     // Drawing on the canvas
     context.fillStyle = 'lightblue';
@@ -27,7 +42,7 @@ export function updateModel() {
     document.body.appendChild(canvas);
 
     // Tent vertices coordinates
-    let vertices = [
+    const vertices = [
         [0, 0, 0],         // Bottom front left corner
         [width, 0, 0],     // Bottom front right corner
         [0, depth, 0],     // Bottom back left corner
@@ -36,30 +51,30 @@ export function updateModel() {
     ];
 
     // Draw arcs intersecting at the tent's top vertex
-    let arc1 = perfectArc(vertices[0], vertices[4], height);
-    let arc2 = perfectArc(vertices[1], vertices[4], height);
-    let arc3 = perfectArc(vertices[2], vertices[4], height);
-    let arc4 = perfectArc(vertices[3], vertices[4], height);
+    const arc1 = perfectArc(vertices[0], vertices[4], height);
+    const arc2 = perfectArc(vertices[1], vertices[4], height);
+    const arc3 = perfectArc(vertices[2], vertices[4], height);
+    const arc4 = perfectArc(vertices[3], vertices[4], height);
 
     // Interpolate to create surface points between arcs
-    let surface1 = interpolateSurface(arc1, arc2);
-    let surface2 = interpolateSurface(arc3, arc4);
+    const surface1 = interpolateSurface(arc1, arc2);
+    const surface2 = interpolateSurface(arc3, arc4);
 
     // Calculate surface areas
-    let area1 = calculateSurfaceArea(surface1);
-    let area2 = calculateSurfaceArea(surface2);
+    const area1 = calculateSurfaceArea(surface1);
+    const area2 = calculateSurfaceArea(surface2);
 
     // Calculate arc lengths
-    let arcLength1 = calculateArcLength(arc1);
-    let arcLength2 = calculateArcLength(arc2);
-    let arcLength3 = calculateArcLength(arc3);
-    let arcLength4 = calculateArcLength(arc4);
+    const arcLength1 = calculateArcLength(arc1);
+    const arcLength2 = calculateArcLength(arc2);
+    const arcLength3 = calculateArcLength(arc3);
+    const arcLength4 = calculateArcLength(arc4);
 
     // Initialize total area
     let totalArea = 0;
 
     // Check which surfaces are enabled
-    let data = [];
+    const data = [];
     if (document.getElementById('surface1').checked) {
         totalArea += area1;
         data.push({
@@ -146,45 +161,46 @@ export function updateModel() {
         type: 'scatter3d'
     });
 
-    let allX = [...arc1.x, ...arc2.x, ...arc3.x, ...arc4.x];
-    let allY = [...arc1.y, ...arc2.y, ...arc3.y, ...arc4.y];
-    let allZ = [...arc1.z, ...arc2.z, ...arc3.z, ...arc4.z];
+    const allX = [...arc1.x, ...arc2.x, ...arc3.x, ...arc4.x];
+    const allY = [...arc1.y, ...arc2.y, ...arc3.y, ...arc4.y];
+    const allZ = [...arc1.z, ...arc2.z, ...arc3.z, ...arc4.z];
 
-    let minX = Math.min(...allX);
-    let maxX = Math.max(...allX);
-    let minY = Math.min(...allY);
-    let maxY = Math.max(...allY);
-    let minZ = Math.min(...allZ);
-    let maxZ = Math.max(...allZ);
+    const minX = Math.min(...allX);
+    const maxX = Math.max(...allX);
+    const minY = Math.min(...allY);
+    const maxY = Math.max(...allY);
+    const minZ = Math.min(...allZ);
+    const maxZ = Math.max(...allZ);
 
-    let layout = {
+    // Create the layout with more tick marks and centered object
+    const layout = {
         scene: {
             xaxis: {
                 title: 'Width',
-                range: [minX, maxX],
-                dtick: (maxX - minX)
+                range: [minX - 0.1, maxX + 0.1],  // Adding a margin for better visualization
+                dtick: 0.1  // 10 cm ticks
             },
             yaxis: {
                 title: 'Depth',
-                range: [minY, maxY],
-                dtick: (maxY - minY)
+                range: [minY - 0.1, maxY + 0.1],  // Adding a margin for better visualization
+                dtick: 0.1  // 10 cm ticks
             },
             zaxis: {
                 title: 'Height',
-                range: [minZ, maxZ],
-                dtick: (maxZ - minZ)
+                range: [minZ - 0.1, maxZ + 0.1],  // Adding a margin for better visualization
+                dtick: 0.1  // 10 cm ticks
             },
             aspectratio: { x: width, y: depth, z: height },
             camera: {
                 eye: {
                     x: 1.5,
-                    y: 0.75,
+                    y: 1.5,
                     z: 1.5
                 },
                 center: {
-                    x: 0.5,
-                    y: 0,
-                    z: -0.2
+                    x: (minX + maxX) / 2,
+                    y: (minY + maxY) / 2,
+                    z: (minZ + maxZ) / 2
                 }
             }
         },
