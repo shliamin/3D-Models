@@ -10,57 +10,13 @@ export function updateModel() {
 
 
     // Tent vertices coordinates
-
-data.push({
-    x: [vertices[0][0], vertices[1][0]],
-    y: [vertices[0][1], vertices[1][1]],
-    z: [vertices[0][2], vertices[1][2]],
-    mode: 'lines',
-    line: {
-        color: 'red',
-        width: 5
-    },
-    type: 'scatter3d'
-});
-
-
-data.push({
-    x: [vertices[0][0], vertices[2][0]],
-    y: [vertices[0][1], vertices[2][1]],
-    z: [vertices[0][2], vertices[2][2]],
-    mode: 'lines',
-    line: {
-        color: 'blue',
-        width: 5
-    },
-    type: 'scatter3d'
-});
-
-
-data.push({
-    x: [vertices[2][0], vertices[3][0]],
-    y: [vertices[2][1], vertices[3][1]],
-    z: [vertices[2][2], vertices[3][2]],
-    mode: 'lines',
-    line: {
-        color: 'green',
-        width: 5
-    },
-    type: 'scatter3d'
-});
-
-
-data.push({
-    x: [vertices[3][0], vertices[1][0]],
-    y: [vertices[3][1], vertices[1][1]],
-    z: [vertices[3][2], vertices[1][2]],
-    mode: 'lines',
-    line: {
-        color: 'yellow',
-        width: 5
-    },
-    type: 'scatter3d'
-});
+let vertices = [
+    [0, 0, 0],         // Bottom front left corner
+    [width, 0, 0],     // Bottom front right corner
+    [0, depth, 0],     // Bottom back left corner
+    [width, depth, 0], // Bottom back right corner
+    [width / 2, depth / 2, height]  // Top center point
+];
 
 // Draw arcs intersecting at the tent's top vertex
 let arc1 = perfectArc(vertices[0], vertices[3], height);
@@ -161,13 +117,53 @@ data.push({
     },
     type: 'scatter3d'
 });
+
 data.push({
-    x: [vertices[0][0], vertices[1][0], vertices[3][0], vertices[2][0], vertices[0][0]],
-    y: [vertices[0][1], vertices[1][1], vertices[3][1], vertices[2][1], vertices[0][1]],
-    z: [vertices[0][2], vertices[1][2], vertices[3][2], vertices[2][2], vertices[0][2]],
+    x: [vertices[0][0], vertices[1][0]],
+    y: [vertices[0][1], vertices[1][1]],
+    z: [vertices[0][2], vertices[1][2]],
     mode: 'lines',
     line: {
         color: 'red',
+        width: 5
+    },
+    type: 'scatter3d'
+});
+
+
+data.push({
+    x: [vertices[0][0], vertices[2][0]],
+    y: [vertices[0][1], vertices[2][1]],
+    z: [vertices[0][2], vertices[2][2]],
+    mode: 'lines',
+    line: {
+        color: 'blue',
+        width: 5
+    },
+    type: 'scatter3d'
+});
+
+
+data.push({
+    x: [vertices[2][0], vertices[3][0]],
+    y: [vertices[2][1], vertices[3][1]],
+    z: [vertices[2][2], vertices[3][2]],
+    mode: 'lines',
+    line: {
+        color: 'green',
+        width: 5
+    },
+    type: 'scatter3d'
+});
+
+
+data.push({
+    x: [vertices[3][0], vertices[1][0]],
+    y: [vertices[3][1], vertices[1][1]],
+    z: [vertices[3][2], vertices[1][2]],
+    mode: 'lines',
+    line: {
+        color: 'yellow',
         width: 5
     },
     type: 'scatter3d'
