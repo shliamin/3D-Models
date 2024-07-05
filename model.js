@@ -53,7 +53,7 @@ export function updateModel() {
     document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
-    // Add arcs and edges
+    // Add arcs only
     data.push({
         x: arc1.x,
         y: arc1.y,
@@ -77,146 +77,38 @@ export function updateModel() {
         type: 'scatter3d'
     });
 
-    // Add edges of the tent base
-    data.push({
-        x: [vertices[0][0], vertices[1][0]],
-        y: [vertices[0][1], vertices[1][1]],
-        z: [vertices[0][2], vertices[1][2]],
-        mode: 'lines',
-        line: {
-            color: 'red',
-            width: 5
-        },
-        type: 'scatter3d'
-    });
-
-    data.push({
-        x: [vertices[0][0], vertices[2][0]],
-        y: [vertices[0][1], vertices[2][1]],
-        z: [vertices[0][2], vertices[2][2]],
-        mode: 'lines',
-        line: {
-            color: 'blue',
-            width: 5
-        },
-        type: 'scatter3d'
-    });
-
-    data.push({
-        x: [vertices[2][0], vertices[3][0]],
-        y: [vertices[2][1], vertices[3][1]],
-        z: [vertices[2][2], vertices[3][2]],
-        mode: 'lines',
-        line: {
-            color: 'green',
-            width: 5
-        },
-        type: 'scatter3d'
-    });
-
-    data.push({
-        x: [vertices[3][0], vertices[1][0]],
-        y: [vertices[3][1], vertices[1][1]],
-        z: [vertices[3][2], vertices[1][2]],
-        mode: 'lines',
-        line: {
-            color: 'yellow',
-            width: 5
-        },
-        type: 'scatter3d'
-    });
-
-    // Adding grid lines
-    const gridSize = 0.1;
-    const gridLines = [];
-    for (let i = 0; i <= width; i += gridSize) {
-        gridLines.push({
-            x: [i, i],
-            y: [0, depth],
-            z: [0, 0],
-            mode: 'lines',
-            line: { color: 'gray', width: 1 },
-            type: 'scatter3d'
-        });
-        gridLines.push({
-            x: [i, i],
-            y: [0, 0],
-            z: [0, height],
-            mode: 'lines',
-            line: { color: 'gray', width: 1 },
-            type: 'scatter3d'
-        });
-    }
-    for (let j = 0; j <= depth; j += gridSize) {
-        gridLines.push({
-            x: [0, width],
-            y: [j, j],
-            z: [0, 0],
-            mode: 'lines',
-            line: { color: 'gray', width: 1 },
-            type: 'scatter3d'
-        });
-        gridLines.push({
-            x: [0, 0],
-            y: [j, j],
-            z: [0, height],
-            mode: 'lines',
-            line: { color: 'gray', width: 1 },
-            type: 'scatter3d'
-        });
-    }
-    for (let k = 0; k <= height; k += gridSize) {
-        gridLines.push({
-            x: [0, width],
-            y: [0, 0],
-            z: [k, k],
-            mode: 'lines',
-            line: { color: 'gray', width: 1 },
-            type: 'scatter3d'
-        });
-        gridLines.push({
-            x: [0, 0],
-            y: [0, depth],
-            z: [k, k],
-            mode: 'lines',
-            line: { color: 'gray', width: 1 },
-            type: 'scatter3d'
-        });
-    }
-    data = data.concat(gridLines);
-
     let layout = {
         scene: {
             xaxis: {
                 title: 'Width',
-                dtick: 0.1, // Grid step size for X axis (10 cm)
+                dtick: 0.1, // Шаг сетки по оси X 10 см
                 range: [0, Math.max(width, depth, height)]
             },
             yaxis: {
                 title: 'Depth',
-                dtick: 0.1, // Grid step size for Y axis (10 cm)
+                dtick: 0.1, // Шаг сетки по оси Y 10 см
                 range: [0, Math.max(width, depth, height)]
             },
             zaxis: {
                 title: 'Height',
-                dtick: 0.1, // Grid step size for Z axis (10 cm)
+                dtick: 0.1, // Шаг сетки по оси Z 10 см
                 range: [0, Math.max(width, depth, height)]
             },
             aspectratio: {
-                x: 1, // Fixed values for aspect ratio
+                x: 1, // Установим фиксированные значения для пропорций
                 y: 1,
                 z: 1
             },
             camera: {
                 eye: {
-                    x: 2, // Adjust these values to zoom out the camera
+                    x: 2, // Отрегулируйте эти значения для отдаления камеры
                     y: 1,
                     z: 2
                 },
                 center: {
-                    x: 0.5, // Shift right (positive value)
+                    x: 0.5, // Сдвинуть вправо (положительное значение)
                     y: 0,
-                    z: 0.1 // Shift down (negative value)
+                    z: 0.1 // Сдвинуть вниз (отрицательное значение)
                 }
             }
         },
