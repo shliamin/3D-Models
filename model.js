@@ -70,7 +70,7 @@ if (document.getElementById('surface2').checked) {
 
 // Update total surface area and arc lengths
 document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
-document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2 + arcLength3 + arcLength4).toFixed(2)} m`;
+document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
 // Add arcs and edges
 addLine(vertices[0], vertices[1], 'blue');   
