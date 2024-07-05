@@ -187,3 +187,10 @@ export function generateSemiEllipse(a, b, numPoints) {
     }
     return { x: xValues, y: yValuesUpper };
 }
+
+// Function to calculate the diagonals of the base
+export function calculateDiagonals(length, depth) {
+    const diagonal1 = Math.sqrt(Math.pow(length, 2) + Math.pow(depth, 2));
+    const diagonal2 = diagonal1; // Assuming both diagonals are equal for a rectangular base
+    return [diagonal1, diagonal2];
+}
