@@ -2,24 +2,6 @@ import { calculateArcLength } from './model-utils.js';
 
 // model.js
 
-// Функция для создания эллиптической арки
-function createEllipseArc(start, middle, end, segments = 100) {
-    const points = [];
-    const centerX = (start[0] + end[0]) / 2;
-    const centerY = (start[1] + end[1]) / 2;
-    const xRadius = Math.abs(start[0] - end[0]) / 2;
-    const yRadius = Math.abs(start[1] - end[1]) / 2;
-    const angleStep = Math.PI / segments;
-
-    for (let i = 0; i <= segments; i++) {
-        const angle = i * angleStep;
-        const x = centerX + xRadius * Math.cos(angle);
-        const y = centerY + yRadius * Math.sin(angle);
-        points.push([x, y]);
-    }
-    return points;
-}
-
 export function updateModel() {
     // Получение значений в сантиметрах и конвертация в метры
     const width = parseFloat(document.getElementById('width').value) / 100;
@@ -62,23 +44,9 @@ export function updateModel() {
         line: { color: 'blue', width: 5 }
     };
 
-    // Создание эллиптических арок с помощью createEllipseArc
-    const start = [-width / 2, 0];
-    const middle = [0, height];
-    const end = [width / 2, 0];
-    const ellipseArcPoints = createEllipseArc(start, middle, end);
-
-    const arc3 = {
-        x: ellipseArcPoints.map(point => point[0]),
-        y: ellipseArcPoints.map(point => point[1]),
-        type: 'scatter',
-        mode: 'lines',
-        line: { color: 'red', width: 5 }
-    };
-
     // Масштабирование осей на основе крайних точек арок
-    const allX = x_fine.concat(x_fine.map(x => -x), ellipseArcPoints.map(point => point[0]));
-    const allY = y.concat(y, ellipseArcPoints.map(point => point[1]));
+    const allX = x_fine.concat(x_fine.map(x => -x));
+    const allY = y.concat(y);
     const allZ = z_fine.concat(z_fine);
 
     const minX = Math.min(...allX);
@@ -98,7 +66,6 @@ export function updateModel() {
     // Добавление арок на график
     data.push(arc1);
     data.push(arc2);
-    data.push(arc3);
 
     // Обновление длин арок
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
