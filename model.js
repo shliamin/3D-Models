@@ -52,8 +52,14 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100
     return surface;
 }
 
+
+// Function to calculate distance between two points
+function calculateDistance(p0, p1) {
+    return Math.sqrt(Math.pow(p1[0] - p0[0], 2) + Math.pow(p1[1] - p0[1], 2) + Math.pow(p1[2] - p0[2], 2));
+}
+
 // New function for calculating circular arc based on oval
-export function circularArc(p0, p1, height, a, b, num_points = 100) {
+export function circularArc(p0, p1, height, num_points = 100) {
     let t = Array.from({ length: num_points }, (_, i) => i / (num_points - 1));
     let arc = { x: [], y: [], z: [] };
 
@@ -61,12 +67,16 @@ export function circularArc(p0, p1, height, a, b, num_points = 100) {
     let midX = (p0[0] + p1[0]) / 2;
     let midY = (p0[1] + p1[1]) / 2;
 
+    // Calculate a and b based on the distance between p0 and p1
+    let a = calculateDistance([p0[0], p0[1]], [p1[0], p1[1]]) / 2;
+    let b = a;  // Assuming a circular arc, a and b are the same
+
     t.forEach(val => {
         let angle = Math.PI * val;
 
         // Arc coordinates calculation based on oval
         let x = midX + a * Math.cos(angle);
-        let y = midY + b * Math.cos(angle);
+        let y = midY + b * Math.sin(angle);  // Use sin for y to differentiate it from x
         let z = height * Math.sin(angle);
 
         arc.x.push(x);
@@ -78,20 +88,24 @@ export function circularArc(p0, p1, height, a, b, num_points = 100) {
 }
 
 // New function for calculating half circular arc based on oval
-export function halfCircularArc(p0, p1, height, a, b, num_points = 100) {
+export function halfCircularArc(p0, p1, height, num_points = 100) {
     let t = Array.from({ length: num_points }, (_, i) => i / (num_points - 1));
     let arc = { x: [], y: [], z: [] };
     
     // Midpoint coordinates between p0 and p1
     let midX = (p0[0] + p1[0]) / 2;
     let midY = (p0[1] + p1[1]) / 2;
+
+    // Calculate a and b based on the distance between p0 and p1
+    let a = calculateDistance([p0[0], p0[1]], [p1[0], p1[1]]) / 2;
+    let b = a;  // Assuming a circular arc, a and b are the same
     
     t.forEach(val => {
         let angle = (Math.PI / 2) * val;  // This ensures we only go from 0 to π/2 (half arc)
         
         // Arc coordinates calculation based on oval
         let x = midX + a * Math.cos(angle);
-        let y = midY + b * Math.cos(angle);
+        let y = midY + b * Math.sin(angle);  // Use sin for y to differentiate it from x
         let z = height * Math.sin(angle);
         
         arc.x.push(x);
