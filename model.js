@@ -9,8 +9,8 @@ export function updateModel() {
     const height = parseFloat(document.getElementById('height').value) / 100;
 
     var canvas = document.createElement('canvas');
-    canvas.width = 100%;
-    canvas.height = 100%;
+    canvas.width = '100%';
+    canvas.height = '100%';
     var context = canvas.getContext('2d', { willReadFrequently: true });
 
     // Drawing something on the canvas
