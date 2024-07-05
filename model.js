@@ -284,7 +284,6 @@ export function updateModel() {
         type: 'scatter3d'
     });
 
-
     let layout = {
         scene: {
             xaxis: {
