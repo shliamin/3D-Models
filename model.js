@@ -1,4 +1,4 @@
-const THREE = window.THREE;
+const THREE = window.THREE || global.THREE;
 
 // Define linspace function
 function linspace(start, end, num) {
