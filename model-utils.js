@@ -52,7 +52,7 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100
 
 
 // Function to create half arcs using the logic from createArcs
-export function halfPerfectArc(startCoord, endCoord, height, num_points = 100) {
+export function createHalfArc(startCoord, endCoord, height, num_points = 100) {
     // Helper function to generate a linspace array
     function linspace(start, end, num) {
         const step = (end - start) / (num - 1);
@@ -154,15 +154,15 @@ export function linspace(start, stop, num) {
     return arr;
 }
 
-// Function to create arcs
-export function createArcs(width, depth, height) {
+// Function to create a single arc
+export function createArc(width, depth, height) {
     const y = linspace(0, depth, 100);
     const theta = linspace(0, Math.PI, 100);
 
     const x_fine = theta.map(t => width / 2 * Math.cos(t));
     const z_fine = theta.map(t => height * Math.sin(t));
 
-    const arc1 = {
+    const arc = {
         x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
         y: y,
         z: z_fine.map(z => Math.abs(z)), // Ensure positive coordinates
@@ -171,15 +171,7 @@ export function createArcs(width, depth, height) {
         line: { color: 'blue', width: 5 }
     };
 
-    const arc2 = {
-        x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
-        y: y,
-        z: z_fine.map(z => Math.abs(z)), // Ensure positive coordinates
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'blue', width: 5 }
-    };
-
-    return { arc1, arc2 };
+    return arc;
 }
+
 
