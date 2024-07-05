@@ -1,10 +1,10 @@
 import { calculateArcLength, generateSemiEllipse, calculateDiagonals, linspace } from './model-utils.js';
 
-export function updateModel() {
-    // Get values in centimeters and convert to meters
-    const length = parseFloat(document.getElementById('length').value) / 100;
-    const depth = parseFloat(document.getElementById('depth').value) / 100;
-    const height = parseFloat(document.getElementById('height').value) / 100;
+export function updateModel(length, depth, height) {
+    // Convert values from centimeters to meters
+    length = length / 100;
+    depth = depth / 100;
+    height = height / 100;
 
     // Validate input values
     if (isNaN(length) || isNaN(depth) || isNaN(height)) {
