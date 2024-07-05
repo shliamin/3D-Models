@@ -177,15 +177,22 @@ export function linspace(start, stop, num) {
 
 export function generateSemiEllipse(a, b, numPoints) {
     var xValues = linspace(-a, a, numPoints);
-    var yValuesUpper = [];
+    var yValues = [];
     for (var i = 0; i < xValues.length; i++) {
         var x = xValues[i];
         var y = b * Math.sqrt(1 - (x * x) / (a * a));
-        if (y >= 0) {  //  (y >= 0)
-            yValuesUpper.push(y);
-        }
+        yValues.push(y);
     }
-    return { x: xValues, y: yValuesUpper };
+
+    // Create arrays for the full ellipse
+    var fullXValues = xValues.concat(xValues.slice(1, -1).reverse());
+    var fullYValues = yValues.concat(yValues.slice(1, -1).map(y => -y));
+
+    // Shift the ellipse vertex to the center of the coordinate system
+    var centerY = b;
+    fullYValues = fullYValues.map(y => y - centerY);
+
+    return { x: fullXValues, y: fullYValues };
 }
 
 // Function to calculate the diagonals of the base
