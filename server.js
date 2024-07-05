@@ -1,6 +1,6 @@
 // static/js/server.js
 
-import { interpolateSurface, perfectArc, halfPerfectArc, interpolateSurfaceUntilIntersection } from './model-utils.js';
+import { interpolateSurface, interpolateSurfaceUntilIntersection } from './model-utils.js';
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
