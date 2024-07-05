@@ -187,7 +187,7 @@ export function updateModel() {
 
     // Interpolate to create surface points between arcs
     let surface1 = interpolateSurface(arc1, arc2);
-    let surface2a = interpolateSurface(arc3, arc4);
+    let surface2a = interpolateSurface(arc4, arc3);
 
     // Calculate surface areas
     let area1 = calculateSurfaceArea(surface1);
@@ -265,6 +265,7 @@ export function updateModel() {
         },
         type: 'scatter3d'
     });
+
 
 
 
