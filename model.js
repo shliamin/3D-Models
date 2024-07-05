@@ -23,13 +23,19 @@ export function updateModel() {
         return;
     }
 
-    // Create a canvas and set its context
-    const canvas = document.createElement('canvas');
-    canvas.width = 500;
-    canvas.height = 500;
+    // Create or select a canvas and set its context
+    let canvas = document.getElementById('tentCanvas');
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.id = 'tentCanvas';
+        canvas.width = 500;
+        canvas.height = 500;
+        document.body.appendChild(canvas);
+    }
     const context = canvas.getContext('2d', { willReadFrequently: true });
 
     // Drawing on the canvas
+    context.clearRect(0, 0, canvas.width, canvas.height); // Clear previous drawing
     context.fillStyle = 'lightblue';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -37,9 +43,6 @@ export function updateModel() {
     context.beginPath();
     context.arc(250, 250, 100, 0, Math.PI * 2, true);
     context.fill();
-
-    // Adding canvas to the DOM
-    document.body.appendChild(canvas);
 
     // Tent vertices coordinates
     const vertices = [
