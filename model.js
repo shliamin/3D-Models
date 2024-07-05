@@ -9,11 +9,13 @@ function initializeGeoGebra() {
         "height": 600,
         "showToolBar": true,
         "showAlgebraInput": true,
-        "showMenuBar": true,
-        "perspective": "G" // G is the 3D Graphics View in GeoGebra
+        "showMenuBar": true
     }, true);
 
-    ggbApplet.inject('ggbApplet');
+    ggbApplet.inject('ggbApplet', 'preferHTML5', function() {
+        // После того, как апплет полностью загружен
+        updateModel();
+    });
 }
 
 function linspace(start, stop, num) {
@@ -37,6 +39,8 @@ function circumcircle(x1, y1, x2, y2, x3, y3) {
 }
 
 export function updateModel() {
+    if (!ggbApplet) return; // Проверяем, что апплет загружен
+
     const width = parseFloat(document.getElementById('width').value) / 100;
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
@@ -50,12 +54,16 @@ export function updateModel() {
     const z_fine = theta.map(t => circle.centerY + circle.radius * Math.sin(t));
     const y = linspace(0, depth, numPoints);
 
-    if (ggbApplet) {
-        ggbApplet.evalCommand(`A = (${x1}, ${y1}, 0)`);
-        ggbApplet.evalCommand(`B = (${x2}, ${y2}, 0)`);
-        ggbApplet.evalCommand(`C = (${x3}, ${y3}, 0)`);
-        ggbApplet.evalCommand(`circumcircle = Circle(A, B, C)`);
-    }
+    // Очищаем предыдущее содержимое апплета
+    ggbApplet.evalCommand('Delete(A)');
+    ggbApplet.evalCommand('Delete(B)');
+    ggbApplet.evalCommand('Delete(C)');
+    ggbApplet.evalCommand('Delete(circumcircle)');
+
+    ggbApplet.evalCommand(`A = (${x1}, ${y1}, 0)`);
+    ggbApplet.evalCommand(`B = (${x2}, ${y2}, 0)`);
+    ggbApplet.evalCommand(`C = (${x3}, ${y3}, 0)`);
+    ggbApplet.evalCommand(`circumcircle = Circle(A, B, C)`);
 }
 
 window.addEventListener("load", initializeGeoGebra);
@@ -64,6 +72,3 @@ window.addEventListener("load", initializeGeoGebra);
 document.getElementById('width').addEventListener('input', updateModel);
 document.getElementById('depth').addEventListener('input', updateModel);
 document.getElementById('height').addEventListener('input', updateModel);
-
-// Первоначальный вызов для инициализации модели
-updateModel();
