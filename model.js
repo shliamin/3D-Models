@@ -9,15 +9,15 @@ export function updateModel() {
     const height = parseFloat(document.getElementById('height').value) / 100;
 
     // Находим максимальное измерение, чтобы сделать сетку квадратной
-    const maxDim = Math.max(width, depth, height);
+    const maxDim = Math.max(width, depth);
 
     // Координаты вершин палатки, масштабированные для равной сетки
     let vertices = [
-        [0, 0, 0],         // Нижний передний левый угол
-        [maxDim, 0, 0],     // Нижний передний правый угол
-        [0, maxDim, 0],     // Нижний задний левый угол
-        [maxDim, maxDim, 0], // Нижний задний правый угол
-        [maxDim / 2, maxDim / 2, height]  // Верхняя центральная точка
+        [0, 0, 0],                      // Нижний передний левый угол
+        [maxDim, 0, 0],                 // Нижний передний правый угол
+        [0, maxDim, 0],                 // Нижний задний левый угол
+        [maxDim, maxDim, 0],            // Нижний задний правый угол
+        [maxDim / 2, maxDim / 2, height] // Верхняя центральная точка
     ];
 
     // Создание арок
@@ -73,11 +73,11 @@ export function updateModel() {
             zaxis: {
                 title: 'Height',
                 dtick: 0.1, // Шаг сетки по оси Z 10 см
-                range: [0, maxDim] // Установите диапазон по оси Z
+                range: [0, height] // Установите диапазон по оси Z
             },
             aspectratio: {
-                x: 1, // Установим фиксированные значения для пропорций
-                y: 1,
+                x: maxDim / height, // Установим фиксированные значения для пропорций
+                y: maxDim / height,
                 z: 1
             },
             camera: {
