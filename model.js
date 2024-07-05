@@ -45,7 +45,7 @@ export function updateModel() {
     const y = linspace(0, depth, numPoints);
     const arc1 = {
         x: x_fine,
-        y: y,
+        y: Array(numPoints).fill(0), // Арка начинается с глубины 0
         z: z_fine,
         type: 'scatter3d',
         mode: 'lines',
@@ -54,7 +54,7 @@ export function updateModel() {
 
     const arc2 = {
         x: x_fine.map(x => -x),
-        y: y,
+        y: Array(numPoints).fill(depth), // Вторая арка находится на глубине depth
         z: z_fine,
         type: 'scatter3d',
         mode: 'lines',
