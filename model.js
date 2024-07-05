@@ -1,4 +1,4 @@
-import { linspace, calculateArcLength } from './model-utils.js';
+import { linspace, calculateArcLength, perfectArc } from './model-utils.js';
 
 // model.js
 
@@ -19,26 +19,25 @@ export function updateModel() {
     }
 
     // Определяем параметры для построения арок
+    const y = linspace(0, depth, 100);
     const theta = linspace(0, Math.PI, 100);
 
     // Создаем арки
-    const x_fine = theta.map(t => (width / 2) * Math.cos(t));
+    const x_fine = theta.map(t => width / 2 * Math.cos(t));
     const z_fine = theta.map(t => height * Math.sin(t));
 
-    // Первая арка: глубина на y = 0
     const arc1 = {
         x: x_fine,
-        y: x_fine.map(() => 0),  // y = 0
+        y: y,
         z: z_fine,
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
 
-    // Вторая арка: глубина на y = depth
     const arc2 = {
-        x: x_fine,
-        y: x_fine.map(() => depth),  // y = depth
+        x: x_fine.map(x => -x),
+        y: y,
         z: z_fine,
         type: 'scatter3d',
         mode: 'lines',
@@ -46,8 +45,8 @@ export function updateModel() {
     };
 
     // Масштабирование осей на основе крайних точек арок
-    const allX = x_fine.concat(x_fine);
-    const allY = [0, depth];
+    const allX = x_fine.concat(x_fine.map(x => -x));
+    const allY = y.concat(y);
     const allZ = z_fine.concat(z_fine);
 
     const minX = Math.min(...allX);
@@ -81,7 +80,7 @@ export function updateModel() {
             yaxis: {
                 title: 'Depth',
                 dtick: 0.1, // Шаг сетки по оси Y 10 см
-                range: [minY, maxY]
+                range: [0, depth]
             },
             zaxis: {
                 title: 'Height',
