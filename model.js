@@ -72,6 +72,18 @@ if (document.getElementById('surface2').checked) {
 document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
 document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
+    function addLine(vertex1, vertex2, color) {
+            return {
+                x: [vertex1[0], vertex2[0]],
+                y: [vertex1[1], vertex2[1]],
+                mode: 'lines',
+                line: {
+                    color: color,
+                    width: 5
+                }
+            };
+}
+
 // Add arcs and edges
 addLine(vertices[0], vertices[1], 'blue');   
 addLine(vertices[0], vertices[2], 'blue');  
