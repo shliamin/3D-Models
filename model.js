@@ -162,24 +162,24 @@ export function updateModel() {
             xaxis: {
                 title: 'Width',
                 range: [minX, maxX],
-                dtick: 10
+                dtick: (maxX - minX)
             },
             yaxis: {
                 title: 'Depth',
                 range: [minY, maxY],
-                dtick: 10
+                dtick: (maxY - minY)
             },
             zaxis: {
                 title: 'Height',
                 range: [minZ, maxZ],
-                dtick: 10
+                dtick: (maxZ - minZ)
             },
             aspectratio: { x: width, y: depth, z: height },
             camera: {
                 eye: {
                     x: 1.5,
-                    y: 1,
-                    z: 2
+                    y: 0.75,
+                    z: 1.5
                 },
                 center: {
                     x: 0.5,
