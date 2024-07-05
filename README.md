@@ -24,5 +24,5 @@ An interactive 3D tent model visualizer using three.js, allowing users to input 
 1. Open the app in your web browser.
 2. Adjust the width, depth, and height values to change the tent dimensions.
 3. Check or uncheck the surfaces you want to visualize.
-4. Click on "Generate Model".
+4. Click on buttons.
 
