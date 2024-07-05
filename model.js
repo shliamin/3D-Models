@@ -4,12 +4,13 @@ let ggbApplet;
 
 function initializeGeoGebra() {
     ggbApplet = new GGBApplet({
-        "appName": "classic",
+        "appName": "classic3d",
         "width": 800,
         "height": 600,
         "showToolBar": true,
         "showAlgebraInput": true,
-        "showMenuBar": true
+        "showMenuBar": true,
+        "perspective": "G" // G is the 3D Graphics View in GeoGebra
     }, true);
 
     ggbApplet.inject('ggbApplet');
@@ -50,10 +51,10 @@ export function updateModel() {
     const y = linspace(0, depth, numPoints);
 
     if (ggbApplet) {
-        ggbApplet.evalCommand(`A = (${x1}, ${y1})`);
-        ggbApplet.evalCommand(`B = (${x2}, ${y2})`);
-        ggbApplet.evalCommand(`C = (${x3}, ${y3})`);
-        ggbApplet.evalCommand(`circumcircle = Circumcircle(A, B, C)`);
+        ggbApplet.evalCommand(`A = (${x1}, ${y1}, 0)`);
+        ggbApplet.evalCommand(`B = (${x2}, ${y2}, 0)`);
+        ggbApplet.evalCommand(`C = (${x3}, ${y3}, 0)`);
+        ggbApplet.evalCommand(`circumcircle = Circle(A, B, C)`);
     }
 }
 
@@ -63,3 +64,6 @@ window.addEventListener("load", initializeGeoGebra);
 document.getElementById('width').addEventListener('input', updateModel);
 document.getElementById('depth').addEventListener('input', updateModel);
 document.getElementById('height').addEventListener('input', updateModel);
+
+// Первоначальный вызов для инициализации модели
+updateModel();
