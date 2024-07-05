@@ -1,5 +1,5 @@
 // Define linspace function similar to numeric.linspace
-function linspace(start, end, num) {
+export function linspace(start, end, num) {
     const step = (end - start) / (num - 1);
     return Array.from({ length: num }, (_, i) => start + (i * step));
 }
@@ -17,7 +17,7 @@ export function calculateArcLength(arc) {
 }
 
 // Function to find the first intersection point of two arcs
-function findIntersection(arc1, arc2, num_points = 100) {
+export function findIntersection(arc1, arc2, num_points = 100) {
     for (let i = 0; i < num_points; i++) {
         if (arc1.x[i] === arc2.x[i] && arc1.y[i] === arc2.y[i] && arc1.z[i] === arc2.z[i]) {
             return i;
