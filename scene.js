@@ -11,8 +11,16 @@ export function createScene() {
 
     // Create a renderer
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('tentModel').appendChild(renderer.domElement);
+    const container = document.getElementById('tentModel');
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    // Resize handling
+    window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+    });
 
     // Add ambient light
     const ambientLight = new THREE.AmbientLight(0x404040); // Soft white light
