@@ -149,21 +149,18 @@ let layout = {
     scene: {
         xaxis: {
             title: 'Width',
-            dtick: 0.1  // Grid step for X axis 10 cm
-            tickvals: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], 
-            ticktext: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'] 
+            range: [0, 120],  
+            dtick: 10  
         },
         yaxis: {
             title: 'Depth',
-            dtick: 0.1  // Grid step for Y axis 10 cm
-            tickvals: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], 
-            ticktext: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'] 
+            range: [0, 120],  
+            dtick: 10
         },
         zaxis: {
             title: 'Height',
-            dtick: 0.1  // Grid step for Z axis 10 cm
-            tickvals: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], 
-            ticktext: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'] 
+            range: [0, 120],  
+            dtick: 10
         },
         aspectratio: { x: width, y: depth, z: height },
         camera: {
