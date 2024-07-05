@@ -7,18 +7,23 @@ export async function generateModel() {
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
 
+    let p0 = [0, 0];
+    let p1 = [depth, 0];
+    let p2 = [depth, width];
+    let p3 = [0, width];
+    
     let { a, b } = calculateSemiAxes(p0, p1, p2, p3);
 
     console.log('Current values for 3D Model:', { width, depth, height });
 
-    const arc1 = circularArc([0, 0], [width, depth], height);
-    const arc2 = circularArc([width, 0], [0, depth], height);
-    const arc3 = circularArc([0, 0], [width, depth], height);
-    const arc4 = circularArc([0, depth], [width, 0], height);
-    const arc5 = halfCircularArc([0, 0], [width, depth], height);
-    const arc6 = halfCircularArc([width, 0], [0, depth], height);
-    const arc7 = halfCircularArc([0, 0], [width, depth], height);
-    const arc8 = halfCircularArc([0, depth], [width, 0], height);
+    const arc1 = circularArc([0, 0], [width, depth], height, a, b);
+    const arc2 = circularArc([width, 0], [0, depth], height, a, b);
+    const arc3 = circularArc([0, 0], [width, depth], height, a, b);
+    const arc4 = circularArc([0, depth], [width, 0], height, a, b);
+    const arc5 = halfCircularArc([0, 0], [width, depth], height, a, b);
+    const arc6 = halfCircularArc([width, 0], [0, depth], height, a, b);
+    const arc7 = halfCircularArc([0, 0], [width, depth], height, a, b);
+    const arc8 = halfCircularArc([0, depth], [width, 0], height, a, b);
 
     const surface1 = interpolateSurface(arc1, arc2);
     const surface2 = interpolateSurface(arc3, arc4);
@@ -74,10 +79,10 @@ export async function generatePattern() {
 
     console.log('Current values for 2D Pattern:', { width, depth, height });
 
-    const arc5 = halfCircularArc([0, 0], [width, depth], height);
-    const arc6 = halfCircularArc([width, 0], [0, depth], height);
-    const arc7 = halfCircularArc([0, 0], [width, depth], height);
-    const arc8 = halfCircularArc([0, depth], [width, 0], height);
+    const arc5 = halfCircularArc([0, 0], [width, depth], height, a, b);
+    const arc6 = halfCircularArc([width, 0], [0, depth], height, a, b);
+    const arc7 = halfCircularArc([0, 0], [width, depth], height, a, b);
+    const arc8 = halfCircularArc([0, depth], [width, 0], height, a, b);
 
     const surface3 = interpolateSurfaceUntilIntersection(arc5, arc6);
     const surface4 = interpolateSurfaceUntilIntersection(arc7, arc8);
