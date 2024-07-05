@@ -4,9 +4,9 @@ import { linspace, calculateArcLength, calculateSurfaceArea, findIntersection, i
 
 export function updateModel() {
     // Get values in centimeters and convert to meters
-    const width = parseFloat(document.getElementById('width').value) / 100;
-    const depth = parseFloat(document.getElementById('depth').value) / 100;
-    const height = parseFloat(document.getElementById('height').value) / 100;
+    const width = parseFloat(document.getElementById('width').value) ;
+    const depth = parseFloat(document.getElementById('depth').value) ;
+    const height = parseFloat(document.getElementById('height').value) ;
 
     var canvas = document.createElement('canvas');
     canvas.width = '100%';
@@ -145,25 +145,33 @@ data.push({
     type: 'scatter3d'
 });
 
+let allX = [...arc1.x, ...arc2.x, ...arc3.x, ...arc4.x];
+let allY = [...arc1.y, ...arc2.y, ...arc3.y, ...arc4.y];
+let allZ = [...arc1.z, ...arc2.z, ...arc3.z, ...arc4.z];
+
+let minX = Math.min(...allX);
+let maxX = Math.max(...allX);
+let minY = Math.min(...allY);
+let maxY = Math.max(...allY);
+let minZ = Math.min(...allZ);
+let maxZ = Math.max(...allZ);
+
 let layout = {
     scene: {
         xaxis: {
             title: 'Width',
-            dtick: 0.1  // Grid step for X axis 10 cm
-            tickvals: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], 
-            ticktext: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'] 
+            range: [minX, maxX],  
+            dtick: (maxX - minX) 
         },
         yaxis: {
             title: 'Depth',
-            dtick: 0.1  // Grid step for Y axis 10 cm
-            tickvals: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], 
-            ticktext: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'] 
+            range: [minX, maxX],  
+            dtick: (maxX - minX)
         },
         zaxis: {
             title: 'Height',
-            dtick: 0.1  // Grid step for Z axis 10 cm
-            tickvals: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], 
-            ticktext: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'] 
+            range: [minX, maxX],  
+            dtick: (maxX - minX)
         },
         aspectratio: { x: width, y: depth, z: height },
         camera: {
