@@ -81,8 +81,19 @@ export function perfectArc(startCoord, endCoord, height, num_points = 100) {
         z: z.map((zi, i) => zi + z0) // shift z values by the initial z0
     };
 
+    // Find minimum values for each coordinate to shift all points to positive
+    const minX = Math.min(...arc.x);
+    const minY = Math.min(...arc.y);
+    const minZ = Math.min(...arc.z);
+
+    // Shift all coordinates to make them positive
+    arc.x = arc.x.map(xi => xi - minX);
+    arc.y = arc.y.map(yi => yi - minY);
+    arc.z = arc.z.map(zi => zi - minZ);
+
     return arc;
 }
+
 
 
 export function halfPerfectArc(startCoord, endCoord, height, num_points = 100) {
