@@ -40,8 +40,8 @@ export function updateModel() {
 
 
     // Generate semi-ellipses for both diagonals
-    //const semiEllipse1 = generateSemiEllipse(point1, point3, apexPoint, 100);
-    //const semiEllipse2 = generateSemiEllipse(point2, point4, apexPoint, 100);
+    const semiEllipse1 = generateSemiEllipse3DFromPoints(point1, point3, apexPoint, 100);
+    const semiEllipse2 = generateSemiEllipse3DFromPoints(point2, point4, apexPoint, 100);
     
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
@@ -49,9 +49,6 @@ export function updateModel() {
     const z_fine2 = semiEllipse2.y;
     const y = linspace(0, depth, 100);
 
-    console.log(`x_fine1: ${x_fine1}, z_fine1: ${z_fine1}`);
-    console.log(`x_fine2: ${x_fine2}, z_fine2: ${z_fine2}`);
-    console.log(`y: ${y}`);
 
     // Validate arc data
     if (!Array.isArray(x_fine1) || !Array.isArray(z_fine1) || !Array.isArray(x_fine2) || !Array.isArray(z_fine2) || !Array.isArray(y)) {
