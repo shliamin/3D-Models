@@ -19,11 +19,12 @@ export function updateModel() {
     }
 
     // Определяем параметры для построения арок
-    const x = linspace(0, depth, 100);
-    const theta = linspace(-Math.PI / 2, Math.PI / 2, 100);
+    const x = linspace(0, width, 100);
+    const z = linspace(0, depth, 100);
+    const theta = linspace(0, Math.PI, 100);
 
     // Создаем арки
-    const y_fine = theta.map(t => width * Math.sin(t));
+    const y_fine = theta.map(t => height * Math.sin(t));
     const z_fine = theta.map(t => height * Math.cos(t));
 
     const arc1 = {
@@ -37,8 +38,8 @@ export function updateModel() {
 
     const arc2 = {
         x: x,
-        y: y_fine.map(y => -y),
-        z: z_fine,
+        y: y_fine,
+        z: z_fine.map(z => -z),
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
@@ -46,8 +47,8 @@ export function updateModel() {
 
     // Масштабирование осей на основе крайних точек арок
     const allX = x.concat(x);
-    const allY = y_fine.concat(y_fine.map(y => -y));
-    const allZ = z_fine.concat(z_fine);
+    const allY = y_fine.concat(y_fine);
+    const allZ = z_fine.concat(z_fine.map(z => -z));
 
     const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
@@ -73,24 +74,24 @@ export function updateModel() {
     let layout = {
         scene: {
             xaxis: {
-                title: 'Depth',
+                title: 'Width',
                 dtick: 0.1, // Шаг сетки по оси X 10 см
-                range: [0, depth]
+                range: [0, width]
             },
             yaxis: {
-                title: 'Width',
-                dtick: 0.1, // Шаг сетки по оси Y 10 см
-                range: [-width, width]
-            },
-            zaxis: {
                 title: 'Height',
-                dtick: 0.1, // Шаг сетки по оси Z 10 см
+                dtick: 0.1, // Шаг сетки по оси Y 10 см
                 range: [0, height]
             },
+            zaxis: {
+                title: 'Depth',
+                dtick: 0.1, // Шаг сетки по оси Z 10 см
+                range: [-depth, depth]
+            },
             aspectratio: {
-                x: depth / Math.max(depth, width, height),
-                y: width / Math.max(depth, width, height),
-                z: height / Math.max(depth, width, height)
+                x: width / Math.max(width, depth, height),
+                y: height / Math.max(width, depth, height),
+                z: depth / Math.max(width, depth, height)
             },
             camera: {
                 eye: {
