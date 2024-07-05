@@ -86,8 +86,8 @@ export function perfectArc(startCoord, endCoord, height, num_points = 100) {
 
 
 export function halfPerfectArc(startCoord, endCoord, height, num_points = 100) {
-    // Use drawArc to get the full arc
-    const fullArc = drawArc(startCoord, endCoord, height, num_points * 2);
+    // Use perfectArc to get the full arc
+    const fullArc = perfectArc(startCoord, endCoord, height, num_points * 2);
 
     // Extract half of the points from the full arc
     const halfNumPoints = Math.ceil(fullArc.x.length / 2);
