@@ -1,5 +1,11 @@
 // model.js
 
+// Define linspace function similar to numeric.linspace
+function linspace(start, end, num) {
+    const step = (end - start) / (num - 1);
+    return Array.from({ length: num }, (_, i) => start + (i * step));
+}
+
 // Function to calculate the length of an arc
 export function calculateArcLength(arc) {
     let length = 0;
@@ -61,10 +67,10 @@ export function perfectArc(startCoord, endCoord, height, num_points = 100) {
     const width = Math.abs(y2 - y0);
 
     // Generate theta values
-    const theta = numeric.linspace(-Math.PI / 2, Math.PI / 2, num_points);
+    const theta = linspace(-Math.PI / 2, Math.PI / 2, num_points);
 
     // Generate x values linearly between the start and end x-coordinates
-    const x = numeric.linspace(x0, x2, num_points);
+    const x = linspace(x0, x2, num_points);
 
     // Generate y and z values using sine and cosine functions
     const y = theta.map(t => width * Math.sin(t));
