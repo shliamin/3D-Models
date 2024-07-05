@@ -8,11 +8,30 @@
     <script src="polyfill.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+     <style>
+        #spinner {
+            display: none;
+            width: 50px;
+            height: 50px;
+            border: 5px solid lightgray;
+            border-top: 5px solid blue;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Ensure it is above other content */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+</style>
 </head>
 <body>
     <div class="container">
-        <div id="progress" style="display: none;"></div>
         <div id="spinner"></div>
         <!-- Mobile Message -->
         <div class="mobile-message" style="display: none;">
