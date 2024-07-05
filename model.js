@@ -1,3 +1,5 @@
+const THREE = window.THREE;
+
 // Define linspace function
 function linspace(start, end, num) {
     const step = (end - start) / (num - 1);
