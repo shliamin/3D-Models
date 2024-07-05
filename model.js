@@ -1,3 +1,5 @@
+import { linspace, calculateArcLength, calculateSurfaceArea, findIntersection, interpolateSurface, perfectArc, halfPerfectArc, interpolateSurfaceUntilIntersection } from './model-utils.js';
+
 // model.js
 
 export function updateModel() {
