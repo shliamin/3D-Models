@@ -25,7 +25,7 @@ export function updateModel() {
         return;
     }
 
-    // Create arcs
+    / Create arcs
     const arc1 = {
         x: x_fine1,
         y: y,
@@ -34,7 +34,7 @@ export function updateModel() {
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
-
+    
     const arc2 = {
         x: x_fine1.map(x => -x),
         y: y,
@@ -43,30 +43,12 @@ export function updateModel() {
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
-
-    const arc3 = {
-        x: x_fine2,
-        y: y,
-        z: z_fine2,
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'green', width: 5 }
-    };
-
-    const arc4 = {
-        x: x_fine2.map(x => -x),
-        y: y,
-        z: z_fine2,
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'green', width: 5 }
-    };
-
+    
     // Scale axes based on arc end points
-    const allX = arc1.x.concat(arc2.x, arc3.x, arc4.x);
-    const allY = arc1.y.concat(arc2.y, arc3.y, arc4.y);
-    const allZ = arc1.z.concat(arc2.z, arc3.z, arc4.z);
-
+    const allX = arc1.x.concat(arc2.x);
+    const allY = arc1.y.concat(arc2.y);
+    const allZ = arc1.z.concat(arc2.z);
+    
     const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
     const minY = Math.min(...allY);
@@ -75,8 +57,8 @@ export function updateModel() {
     const maxZ = Math.max(...allZ);
 
     // Calculate arc lengths
-    let arcLength1 = calculateArcLength({ x: arc1.x, y: arc1.y, z: arc1.z });
-    let arcLength2 = calculateArcLength({ x: arc2.x, y: arc2.y, z: arc2.z });
+    let arcLength1 = calculateArcLength(arc1);
+    let arcLength2 = calculateArcLength(arc2);
 
     // Initialize graph data
     let data = [];
@@ -84,8 +66,6 @@ export function updateModel() {
     // Add arcs to graph
     data.push(arc1);
     data.push(arc2);
-    data.push(arc3);
-    data.push(arc4);
 
     // Update arc lengths
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
