@@ -1,6 +1,14 @@
 import { calculateArcLength } from './model-utils.js';
 
-// model.js
+// Функция для создания линейного интервала
+function linspace(start, stop, num) {
+    const arr = [];
+    const step = (stop - start) / (num - 1);
+    for (let i = 0; i < num; i++) {
+        arr.push(start + step * i);
+    }
+    return arr;
+}
 
 function circumcircle(x1, y1, x2, y2, x3, y3) {
     // Вычисляем середины отрезков между точками
@@ -156,12 +164,10 @@ export function updateModel() {
     });
 }
 
-// Функция для создания линейного интервала
-function linspace(start, stop, num) {
-    const arr = [];
-    const step = (stop - start) / (num - 1);
-    for (let i = 0; i < num; i++) {
-        arr.push(start + step * i);
-    }
-    return arr;
-}
+// Вызов функции для обновления модели
+document.getElementById('width').addEventListener('input', updateModel);
+document.getElementById('depth').addEventListener('input', updateModel);
+document.getElementById('height').addEventListener('input', updateModel);
+
+// Первоначальный вызов для инициализации модели
+updateModel();
