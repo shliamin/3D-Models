@@ -6,14 +6,8 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Validate input values
-    if (isNaN(length) || isNaN(depth) || isNaN(height)) {
-        console.error("Invalid input values.");
-        return;
-    }
-
     // Calculate the diagonals
-    const [diagonal1, diagonal2] = calculateDiagonals(length, depth);
+    const [diagonal1, diagonal2] = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
@@ -83,8 +77,6 @@ export function updateModel() {
     // Calculate arc lengths
     let arcLength1 = calculateArcLength({ x: arc1.x, y: arc1.y, z: arc1.z });
     let arcLength2 = calculateArcLength({ x: arc2.x, y: arc2.y, z: arc2.z });
-    let arcLength3 = calculateArcLength({ x: arc3.x, y: arc3.y, z: arc3.z });
-    let arcLength4 = calculateArcLength({ x: arc4.x, y: arc4.y, z: arc4.z });
 
     // Initialize graph data
     let data = [];
@@ -96,7 +88,7 @@ export function updateModel() {
     data.push(arc4);
 
     // Update arc lengths
-    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2 + arcLength3 + arcLength4).toFixed(2)} m`;
+    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
     let layout = {
         scene: {
@@ -116,9 +108,9 @@ export function updateModel() {
                 range: [minZ, maxZ]
             },
             aspectratio: {
-                x: length / Math.max(length, depth, height),
-                y: depth / Math.max(length, depth, height),
-                z: height / Math.max(length, depth, height)
+                x: length / Math.max(width, depth, height),
+                y: depth / Math.max(width, depth, height),
+                z: height / Math.max(width, depth, height)
             },
             camera: {
                 eye: {
