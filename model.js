@@ -1,43 +1,4 @@
-import { linspace, calculateArcLength, perfectArc } from './model-utils.js';
-
-// Function to create a linear interval
-function linspace(start, stop, num) {
-    const arr = [];
-    const step = (stop - start) / (num - 1);
-    for (let i = 0; i < num; i++) {
-        arr.push(start + step * i);
-    }
-    return arr;
-}
-
-// Function to create arcs
-function createArcs(width, depth, height) {
-    const y = linspace(0, depth, 100);
-    const theta = linspace(0, Math.PI, 100);
-
-    const x_fine = theta.map(t => width / 2 * Math.cos(t));
-    const z_fine = theta.map(t => height * Math.sin(t));
-
-    const arc1 = {
-        x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
-        y: y,
-        z: z_fine.map(z => Math.abs(z)), // Ensure positive coordinates
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'blue', width: 5 }
-    };
-
-    const arc2 = {
-        x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
-        y: y,
-        z: z_fine.map(z => Math.abs(z)), // Ensure positive coordinates
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'blue', width: 5 }
-    };
-
-    return { arc1, arc2 };
-}
+import { linspace, calculateArcLength, createArcs } from './model-utils.js';
 
 // model.js
 
