@@ -83,16 +83,6 @@ export function perfectArc(startCoord, endCoord, height, num_points = 100) {
         z: z.map((zi, i) => zi + z0) // shift z values by the initial z0
     };
 
-    // Shift coordinates to start from zero
-    const xShift = arc.x[0];
-    const yShift = arc.y[0];
-    const zShift = arc.z[0];
-    arc = {
-        x: arc.x.map(x => x - xShift),
-        y: arc.y.map(y => y - yShift),
-        z: arc.z.map(z => z - zShift)
-    };
-
     return arc;
 }
 
