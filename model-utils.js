@@ -155,21 +155,17 @@ export function linspace(start, stop, num) {
 }
 
 // Function to create a single arc
-export function createArc(width, depth, height, mirror = false) {
+export function createArc(width, depth, height) {
     const y = linspace(0, depth, 100);
     const theta = linspace(0, Math.PI, 100);
 
     const x_fine = theta.map(t => width / 2 * Math.cos(t));
     const z_fine = theta.map(t => height * Math.sin(t));
 
-    // Apply mirroring if needed
-    const x_final = mirror ? x_fine.map(x => -Math.abs(x)) : x_fine.map(x => Math.abs(x));
-    const z_final = z_fine.map(z => Math.abs(z)); // Always ensure positive coordinates
-
     const arc = {
-        x: x_final,
+        x: x_fine.map(x => Math.abs(x)), // Ensure positive coordinates
         y: y,
-        z: z_final,
+        z: z_fine.map(z => Math.abs(z)), // Ensure positive coordinates
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
@@ -177,5 +173,3 @@ export function createArc(width, depth, height, mirror = false) {
 
     return arc;
 }
-
-
