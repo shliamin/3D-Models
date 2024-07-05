@@ -52,52 +52,49 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100
     return surface;
 }
 
-export function circularArc(p0, p1, height, num_points = 100) {
-    let t = Array.from({ length: num_points }, (_, i) => i / (num_points - 1));
-    let arc = { x: [], y: [], z: [] };
-    
-    // Midpoint coordinates between p0 and p1
-    let midX = (p0[0] + p1[0]) / 2;
-    let midY = (p0[1] + p1[1]) / 2;
-    
-    t.forEach(val => {
-        let angle = Math.PI * val;
-        
-        // Arc coordinates calculation
-        let x = midX + (p0[0] - midX) * Math.cos(angle);
-        let y = midY + (p0[1] - midY) * Math.cos(angle);
-        let z = height * Math.sin(angle);
-        
-        arc.x.push(x);
-        arc.y.push(y);
-        arc.z.push(z);
-    });
+export function perfectArc(startCoord, endCoord, height, num_points = 100) {
+    // Extract coordinates
+    const [x0, y0, z0] = startCoord;
+    const [x2, y2, z2] = endCoord;
+
+    // Calculate width based on y-coordinates of start and end
+    const width = Math.abs(y2 - y0);
+
+    // Generate theta values
+    const theta = numeric.linspace(-Math.PI / 2, Math.PI / 2, num_points);
+
+    // Generate x values linearly between the start and end x-coordinates
+    const x = numeric.linspace(x0, x2, num_points);
+
+    // Generate y and z values using sine and cosine functions
+    const y = theta.map(t => width * Math.sin(t));
+    const z = theta.map(t => height * Math.cos(t));
+
+    // Define the arc with adjusted coordinates
+    let arc = {
+        x: x,
+        y: y.map((yi, i) => yi + (y0 + y2) / 2), // center the y values between y0 and y2
+        z: z.map((zi, i) => zi + z0) // shift z values by the initial z0
+    };
 
     return arc;
 }
 
-export function halfCircularArc(p0, p1, height, num_points = 100) {
-    let t = Array.from({ length: num_points }, (_, i) => i / (num_points - 1));
-    let arc = { x: [], y: [], z: [] };
-    
-    // Midpoint coordinates between p0 and p1
-    let midX = (p0[0] + p1[0]) / 2;
-    let midY = (p0[1] + p1[1]) / 2;
-    
-    t.forEach(val => {
-        let angle = (Math.PI / 2) * val;  // This ensures we only go from 0 to π/2 (half arc)
-        
-        // Arc coordinates calculation
-        let x = midX + (p0[0] - midX) * Math.cos(angle);
-        let y = midY + (p0[1] - midY) * Math.cos(angle);
-        let z = height * Math.sin(angle);
-        
-        arc.x.push(x);
-        arc.y.push(y);
-        arc.z.push(z);
-    });
 
-    return arc;
+export function halfPerfectArc(startCoord, endCoord, height, num_points = 100) {
+    // Use drawArc to get the full arc
+    const fullArc = drawArc(startCoord, endCoord, height, num_points * 2);
+
+    // Extract half of the points from the full arc
+    const halfNumPoints = Math.ceil(fullArc.x.length / 2);
+
+    let halfArc = {
+        x: fullArc.x.slice(0, halfNumPoints),
+        y: fullArc.y.slice(0, halfNumPoints),
+        z: fullArc.z.slice(0, halfNumPoints)
+    };
+
+    return halfArc;
 }
 
 
@@ -177,10 +174,10 @@ export function updateModel() {
     ];
 
     // Draw arcs intersecting at the tent's top vertex
-    let arc1 = circularArc(vertices[0], vertices[3], height);
-    let arc2 = circularArc(vertices[1], vertices[2], height);
-    let arc3 = circularArc(vertices[0], vertices[3], height);
-    let arc4 = circularArc(vertices[2], vertices[1], height);
+    let arc1 = perfectArc(vertices[0], vertices[3], height);
+    let arc2 = perfectArc(vertices[1], vertices[2], height);
+    let arc3 = perfectArc(vertices[0], vertices[3], height);
+    let arc4 = perfectrArc(vertices[2], vertices[1], height);
 
     // Interpolate to create surface points between arcs
     let surface1 = interpolateSurface(arc1, arc2);
