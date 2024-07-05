@@ -1,4 +1,4 @@
-import { linspace, calculateArcLength, perfectArc } from './model-utils.js';
+import { calculateArcLength, perfectArc } from './model-utils.js';
 
 // Function to create a linear interval
 function linspace(start, stop, num) {
