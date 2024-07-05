@@ -147,42 +147,33 @@ export function calculateSurfaceArea(surface, num_points = 100) {
     return area;
 }
 
+const { scene, camera, renderer } = createScene();
+
 export function updateModel() {
-    // Get values in meters
     const width = parseFloat(document.getElementById('width').value) / 100;
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Tent vertices coordinates
     const vertices = [
-        [0, 0, 0],         // Bottom front left corner
-        [width, 0, 0],     // Bottom front right corner
-        [0, depth, 0],     // Bottom back left corner
-        [width, depth, 0], // Bottom back right corner
-        [width / 2, depth / 2, height]  // Top center point
+        [0, 0, 0],
+        [width, 0, 0],
+        [0, depth, 0],
+        [width, depth, 0],
+        [width / 2, depth / 2, height]
     ];
 
-    // Create arcs intersecting at the tent's top vertex
     const arc1 = perfectArc(vertices[0], vertices[3], height);
     const arc2 = perfectArc(vertices[1], vertices[2], height);
 
-    // Interpolate to create surface points between arcs
     const surface1 = interpolateSurface(arc1, arc2);
 
-    // Calculate surface areas
     const area1 = calculateSurfaceArea(surface1);
 
-    // Calculate arc lengths
     const arcLength1 = calculateArcLength(arc1);
     const arcLength2 = calculateArcLength(arc2);
 
-    // Initialize total area
     let totalArea = 0;
 
-    // Create the scene, camera, and renderer
-    const { scene, camera, renderer } = createScene();
-
-    // Check which surfaces are enabled
     if (document.getElementById('surface1').checked) {
         totalArea += area1;
         const geometry = new THREE.BufferGeometry();
@@ -201,14 +192,31 @@ export function updateModel() {
         scene.add(surface);
     }
 
-    // Render the scene
-    function animate() {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    // Update total surface area and arc lengths
     document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 }
+index.js
+
+
+
+javascript
+Copy code
+import { updateModel } from './model.js';
+
+document.getElementById('generateModelButton').onclick = updateModel;
+document.getElementById('generatePatternButton').onclick = updateModel;
+document.getElementById('width').onchange = updateModel;
+document.getElementById('depth').onchange = updateModel;
+document.getElementById('height').onchange = updateModel;
+document.getElementById('surface1').onchange = updateModel;
+document.getElementById('surface2').onchange = updateModel;
+
+window.onload = () => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+    if (!isMobile) {
+        updateModel();
+    } else {
+        document.querySelector('.mobile-message').style.display = 'block';
+    }
+};
