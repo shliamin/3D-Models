@@ -173,14 +173,4 @@ export function calculateSurfaceArea(surface, num_points = 100) {
     return area;
 }
 
-export function addLine(vertex1, vertex2, color) {
-            return {
-                x: [vertex1[0], vertex2[0]],
-                y: [vertex1[1], vertex2[1]],
-                mode: 'lines',
-                line: {
-                    color: color,
-                    width: 5
-                }
-            };
-}
+
