@@ -1,27 +1,6 @@
+// static/js/server.js
+
 import { interpolateSurface, circularArc, halfCircularArc, interpolateSurfaceUntilIntersection } from './model.js';
-
-const socket = io('https://interactive-tent-0697ab02fbe0.herokuapp.com');
-
-socket.on('task_status', (data) => {
-    console.log(`Received update for task ${data.task_id}: ${data.status_msg} (${data.current}/${data.total})`);
-    const progressElement = document.getElementById('progress');
-    if (data.status === 'completed') {
-        progressElement.style.display = 'none';
-        const downloadLink = document.createElement('a');
-        downloadLink.href = `https://interactive-tent-0697ab02fbe0.herokuapp.com/download/${data.task_id}`;
-        downloadLink.click();
-    } else if (data.status === 'failed') {
-        progressElement.style.display = 'none';
-        alert('Task failed: ' + data.error);
-    } else {
-        const percentage = (data.current / data.total) * 100;
-        progressElement.innerText = `${data.status_msg} - ${percentage.toFixed(2)}%`;
-        progressElement.style.display = 'block';
-    }
-});
-
-document.getElementById('generateModelButton').addEventListener('click', generateModel);
-document.getElementById('generatePatternButton').addEventListener('click', generatePattern);
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
@@ -55,6 +34,7 @@ export async function generateModel() {
         enable_relaxation: true // Always enable relaxation
     };
 
+    // 
     document.getElementById('spinner').style.display = 'block';
 
     try {
@@ -80,6 +60,7 @@ export async function generateModel() {
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     } finally {
+        // 
         document.getElementById('spinner').style.display = 'none';
     }
 }
@@ -88,6 +69,8 @@ export async function generatePattern() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
+
+    console.log('Current values for 2D Pattern:', { width, depth, height });
 
     const arc5 = halfCircularArc([0, 0], [width, depth], height);
     const arc6 = halfCircularArc([width, 0], [0, depth], height);
@@ -106,6 +89,7 @@ export async function generatePattern() {
         enable_relaxation: true // Always enable relaxation
     };
 
+    // 
     document.getElementById('spinner').style.display = 'block';
 
     try {
@@ -121,14 +105,17 @@ export async function generatePattern() {
             throw new Error('Network response was not ok');
         }
 
-        const data = await response.json();
-        const taskId = data.task_id;
-        console.log(`Task ID: ${taskId}`);
-
-        document.getElementById('progress').innerText = `Task started with ID: ${taskId}`;
+        const blob = await response.blob();
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'Patterns_and_Models.zip';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     } finally {
+        // 
         document.getElementById('spinner').style.display = 'none';
     }
 }
