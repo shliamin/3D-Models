@@ -20,22 +20,16 @@ export function updateModel() {
     // Draw arcs intersecting at the tent's top vertex
     let arc1 = perfectArc(vertices[0], vertices[3], height);
     let arc2 = perfectArc(vertices[1], vertices[2], height);
-    let arc3 = perfectArc(vertices[0], vertices[3], height);
-    let arc4 = perfectArc(vertices[2], vertices[1], height);
 
     // Interpolate to create surface points between arcs
     let surface1 = interpolateSurface(arc1, arc2);
-    let surface2 = interpolateSurface(arc3, arc4);
 
     // Calculate surface areas
     let area1 = calculateSurfaceArea(surface1);
-    let area2 = calculateSurfaceArea(surface2);
 
     // Calculate arc lengths
     let arcLength1 = calculateArcLength(arc1);
     let arcLength2 = calculateArcLength(arc2);
-    let arcLength3 = calculateArcLength(arc3);
-    let arcLength4 = calculateArcLength(arc4);
 
     // Initialize total area
     let totalArea = 0;
@@ -54,22 +48,10 @@ export function updateModel() {
             showscale: false
         });
     }
-    if (document.getElementById('surface2').checked) {
-        totalArea += area2;
-        data.push({
-            x: surface2.x,
-            y: surface2.y,
-            z: surface2.z,
-            type: 'surface',
-            colorscale: [[0, 'rgba(255, 0, 0, 0.3)'], [1, 'rgba(255, 0, 0, 0.3)']],
-            opacity: 0.7,
-            showscale: false
-        });
-    }
 
     // Update total surface area and arc lengths
     document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
-    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2 + arcLength3 + arcLength4).toFixed(2)} m`;
+    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
     // Add arcs and edges
     data.push({
@@ -87,28 +69,6 @@ export function updateModel() {
         x: arc2.x,
         y: arc2.y,
         z: arc2.z,
-        mode: 'lines',
-        line: {
-            color: 'blue',
-            width: 5
-        },
-        type: 'scatter3d'
-    });
-    data.push({
-        x: arc3.x,
-        y: arc3.y,
-        z: arc3.z,
-        mode: 'lines',
-        line: {
-            color: 'blue',
-            width: 5
-        },
-        type: 'scatter3d'
-    });
-    data.push({
-        x: arc4.x,
-        y: arc4.y,
-        z: arc4.z,
         mode: 'lines',
         line: {
             color: 'blue',
@@ -270,9 +230,6 @@ export function updateModel() {
         t: 0
     }
 };
-
-Plotly.newPlot('tentModel', data, layout);
-
 
 Plotly.newPlot('tentModel', data, layout);
 }
