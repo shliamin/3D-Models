@@ -1,28 +1,28 @@
 import { calculateArcLength, generateSemiEllipse, linspace } from './model-utils.js';
 
 export function updateModel() {
-    // Получение значений в сантиметрах и конвертация в метры
+    // Get values in centimeters and convert to meters
     const width = parseFloat(document.getElementById('width').value) / 100;
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Проверка корректности входных данных
+    // Validate input values
     if (isNaN(width) || isNaN(depth) || isNaN(height)) {
-        console.error("Некорректные входные данные.");
+        console.error("Invalid input values.");
         return;
     }
 
-    // Определяем параметры для построения арок
+    // Define parameters for creating arcs
     const y = linspace(0, depth, 100);
     const { x: x_fine, z: z_fine } = generateSemiEllipse(width, height);
 
-    // Проверка корректности данных для арок
+    // Validate arc data
     if (!Array.isArray(x_fine) || !Array.isArray(y) || !Array.isArray(z_fine)) {
-        console.error("Ошибка в данных для построения арок.");
+        console.error("Error in arc data.");
         return;
     }
 
-    // Создаем арки
+    // Create arcs
     const arc1 = {
         x: x_fine,
         y: y,
@@ -41,10 +41,10 @@ export function updateModel() {
         line: { color: 'blue', width: 5 }
     };
 
-    // Масштабирование осей на основе крайних точек арок
-    const allX = x_fine.concat(x_fine.map(x => -x));
-    const allY = y.concat(y);
-    const allZ = z_fine.concat(z_fine);
+    // Scale axes based on arc end points
+    const allX = arc1.x.concat(arc2.x);
+    const allY = arc1.y.concat(arc2.y);
+    const allZ = arc1.z.concat(arc2.z);
 
     const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
@@ -53,35 +53,35 @@ export function updateModel() {
     const minZ = Math.min(...allZ);
     const maxZ = Math.max(...allZ);
 
-    // Вычисление длин арок
+    // Calculate arc lengths
     let arcLength1 = calculateArcLength({ x: arc1.x, y: arc1.y, z: arc1.z });
     let arcLength2 = calculateArcLength({ x: arc2.x, y: arc2.y, z: arc2.z });
 
-    // Инициализация данных для графика
+    // Initialize graph data
     let data = [];
 
-    // Добавление арок на график
+    // Add arcs to graph
     data.push(arc1);
     data.push(arc2);
 
-    // Обновление длин арок
+    // Update arc lengths
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
     let layout = {
         scene: {
             xaxis: {
                 title: 'Width',
-                dtick: 0.1, // Шаг сетки по оси X 10 см
+                dtick: 0.1, // Grid step on X axis 10 cm
                 range: [minX, maxX]
             },
             yaxis: {
                 title: 'Depth',
-                dtick: 0.1, // Шаг сетки по оси Y 10 см
+                dtick: 0.1, // Grid step on Y axis 10 cm
                 range: [0, depth]
             },
             zaxis: {
                 title: 'Height',
-                dtick: 0.1, // Шаг сетки по оси Z 10 см
+                dtick: 0.1, // Grid step on Z axis 10 cm
                 range: [minZ, maxZ]
             },
             aspectratio: {
@@ -91,14 +91,14 @@ export function updateModel() {
             },
             camera: {
                 eye: {
-                    x: 2, // Отрегулируйте эти значения для отдаления камеры
+                    x: 2, // Adjust these values to zoom out the camera
                     y: 1,
                     z: 2
                 },
                 center: {
-                    x: 0.5, // Сдвинуть вправо (положительное значение)
+                    x: 0.5, // Shift right (positive value)
                     y: 0,
-                    z: 0.1 // Сдвинуть вниз (отрицательное значение)
+                    z: 0.1 // Shift down (negative value)
                 }
             }
         },
