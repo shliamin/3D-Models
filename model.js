@@ -1,5 +1,8 @@
 // model.js
 
+
+
+
 // Function to calculate the length of an arc
 export function calculateArcLength(arc) {
     let length = 0;
@@ -50,6 +53,16 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100
     }
     
     return surface;
+}
+
+function calculateSemiAxes(p0, p1, p2, p3) {
+    let length = Math.sqrt(Math.pow(p1[0] - p0[0], 2) + Math.pow(p1[1] - p0[1], 2));
+    let width = Math.sqrt(Math.pow(p3[0] - p0[0], 2) + Math.pow(p3[1] - p0[1], 2));
+
+    let a = length / 2;
+    let b = width / 2;
+
+    return { a, b };
 }
 
 export function circularArc(p0, p1, height, num_points = 100) {
@@ -176,6 +189,9 @@ export function updateModel() {
         [width / 2, depth / 2, height]  // Top center point
     ];
 
+    let { a, b } = calculateSemiAxes(vertices[0], vertices[1], vertices[2], vertices[3]);
+    console.log(a,b);
+    
     // Draw arcs intersecting at the tent's top vertex
     let arc1 = circularArc(vertices[0], vertices[3], height);
     let arc2 = circularArc(vertices[1], vertices[2], height);
