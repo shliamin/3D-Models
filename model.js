@@ -8,18 +8,20 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Координаты вершин палатки
+    const maxDim = Math.max(width, depth, height);
+
+    // Масштабирование координат вершин
     let vertices = [
-        [0, 0, 0],         // Нижний передний левый угол
-        [width, 0, 0],     // Нижний передний правый угол
-        [0, depth, 0],     // Нижний задний левый угол
-        [width, depth, 0], // Нижний задний правый угол
-        [width / 2, depth / 2, height]  // Верхняя центральная точка
+        [0, 0, 0],                             // Нижний передний левый угол
+        [width / maxDim, 0, 0],                // Нижний передний правый угол
+        [0, depth / maxDim, 0],                // Нижний задний левый угол
+        [width / maxDim, depth / maxDim, 0],   // Нижний задний правый угол
+        [width / (2 * maxDim), depth / (2 * maxDim), height / maxDim]  // Верхняя центральная точка
     ];
 
     // Создание арок
-    let arc1 = perfectArc(vertices[0], vertices[3], height);
-    let arc2 = perfectArc(vertices[1], vertices[2], height);
+    let arc1 = perfectArc(vertices[0], vertices[3], height / maxDim);
+    let arc2 = perfectArc(vertices[1], vertices[2], height / maxDim);
 
     // Вычисление длин арок
     let arcLength1 = calculateArcLength(arc1);
@@ -60,22 +62,22 @@ export function updateModel() {
             xaxis: {
                 title: 'Width',
                 dtick: 0.1, // Шаг сетки по оси X 10 см
-                range: [0, Math.max(width, depth, height)]
+                range: [0, 1] // Установите диапазон по оси X в масштабированном пространстве
             },
             yaxis: {
                 title: 'Depth',
                 dtick: 0.1, // Шаг сетки по оси Y 10 см
-                range: [0, Math.max(width, depth, height)]
+                range: [0, 1] // Установите диапазон по оси Y в масштабированном пространстве
             },
             zaxis: {
                 title: 'Height',
                 dtick: 0.1, // Шаг сетки по оси Z 10 см
-                range: [0, Math.max(width, depth, height)]
+                range: [0, 1] // Установите диапазон по оси Z в масштабированном пространстве
             },
             aspectratio: {
-                x: width / Math.max(width, depth, height),
-                y: depth / Math.max(width, depth, height),
-                z: height / Math.max(width, depth, height)
+                x: 1, // Установим фиксированные значения для пропорций
+                y: 1,
+                z: 1
             },
             camera: {
                 eye: {
