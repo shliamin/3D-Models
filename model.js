@@ -1,5 +1,6 @@
 import { createScene } from './scene.js';
 const { scene, camera, renderer } = createScene();
+import { calculateArcLength, interpolateSurface, perfectArc, calculateSurfaceArea } from './model-utils.js';
 
 
 export function updateModel() {
@@ -47,5 +48,21 @@ export function updateModel() {
 
     document.getElementById('surfaceArea').innerText = `Surface area: ${totalArea.toFixed(2)} m²`;
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
+
+    // Adding arcs
+    const arcMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+    
+    function addArcToScene(arc) {
+        const arcPoints = [];
+        for (let i = 0; i < arc.x.length; i++) {
+            arcPoints.push(new THREE.Vector3(arc.x[i], arc.y[i], arc.z[i]));
+        }
+        const arcGeometry = new THREE.BufferGeometry().setFromPoints(arcPoints);
+        const arcLine = new THREE.Line(arcGeometry, arcMaterial);
+        scene.add(arcLine);
+    }
+
+    addArcToScene(arc1);
+    addArcToScene(arc2);
 }
 
