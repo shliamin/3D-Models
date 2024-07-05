@@ -20,9 +20,9 @@ export function updateModel() {
         [width / 2, depth / 2, height]   // Верхняя центральная точка
     ];
 
-    // Создание арок
-    let arc1 = perfectArc(vertices[0], vertices[3], height);
-    let arc2 = perfectArc(vertices[1], vertices[2], height);
+    // Создание арок на основе размеров сетки
+    let arc1 = perfectArc([0, 0, 0], [width, depth, 0], height);
+    let arc2 = perfectArc([width, 0, 0], [0, depth, 0], height);
 
     // Масштабирование осей на основе крайних точек арок
     const allX = arc1.x.concat(arc2.x);
