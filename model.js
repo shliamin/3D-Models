@@ -1,6 +1,4 @@
-import { calculateArcLength } from './model-utils.js';
-
-// model.js
+import { calculateArcLength, generateSemiEllipse, linspace } from './model-utils.js';
 
 export function updateModel() {
     // Получение значений в сантиметрах и конвертация в метры
@@ -8,24 +6,11 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Функция для создания линейного интервала
-    function linspace(start, stop, num) {
-        const arr = [];
-        const step = (stop - start) / (num - 1);
-        for (let i = 0; i < num; i++) {
-            arr.push(start + step * i);
-        }
-        return arr;
-    }
-
     // Определяем параметры для построения арок
     const y = linspace(0, depth, 100);
-    const theta = linspace(0, Math.PI, 100);
+    const { x: x_fine, z: z_fine } = generateSemiEllipse(width, height);
 
     // Создаем арки
-    const x_fine = theta.map(t => width / 2 * Math.cos(t));
-    const z_fine = theta.map(t => height * Math.sin(t));
-
     const arc1 = {
         x: x_fine,
         y: y,
