@@ -213,7 +213,9 @@ button.styled-button:active {
 
 #desktop-only {
     width: 100%;
-    height: 700px;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
 }
 
 #spinner {
