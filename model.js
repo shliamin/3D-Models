@@ -310,5 +310,5 @@ export function updateModel() {
     }
 };
 
-Plotly.newPlot('tentModel', data, layout);
-
+    Plotly.newPlot('tentModel', data, layout);
+};
