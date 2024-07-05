@@ -185,8 +185,8 @@ let layout = {
         },
         aspectratio: {
             x: 1, // Установим фиксированные значения для пропорций
-            y: depth / width,
-            z: height / width
+            y: 1,
+            z: 1
         },
         camera: {
             eye: {
