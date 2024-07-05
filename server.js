@@ -89,8 +89,9 @@ export async function generatePattern() {
         enable_relaxation: true // Always enable relaxation
     };
 
-    // 
     document.getElementById('spinner').style.display = 'block';
+    document.getElementById('progress').style.display = 'block';
+    document.getElementById('progress').textContent = '0%';
 
     try {
         const response = await fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/generate_pattern', {
@@ -101,21 +102,55 @@ export async function generatePattern() {
             body: JSON.stringify(payload)
         });
 
-        if (!response.ok) {
+        if (response.status === 202) {
+            const result = await response.json();
+            const taskId = result.task_id;
+            checkTaskStatus(taskId);
+        } else {
             throw new Error('Network response was not ok');
         }
-
-        const blob = await response.blob();
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = 'Patterns_and_Models.zip';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
-    } finally {
-        // 
         document.getElementById('spinner').style.display = 'none';
+        document.getElementById('progress').style.display = 'none';
     }
+}
+
+async function checkTaskStatus(taskId) {
+    try {
+        const response = await fetch(`https://interactive-tent-0697ab02fbe0.herokuapp.com/status/${taskId}`);
+        const result = await response.json();
+
+        if (result.status === 'completed') {
+            // Задача завершена, скачать результат
+            document.getElementById('progress').textContent = '100%';
+            downloadResult(taskId);
+        } else if (result.status === 'failed') {
+            console.error('Task failed:', result.error);
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('progress').style.display = 'none';
+        } else {
+            // Обновить прогресс
+            const progress = Math.round((result.current / result.total) * 100);
+            document.getElementById('progress').textContent = `${progress}%`;
+            // Повторная проверка через некоторое время
+            setTimeout(() => checkTaskStatus(taskId), 2000); // Повторная проверка каждые 2 секунды
+        }
+    } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('progress').style.display = 'none';
+    }
+}
+
+function downloadResult(taskId) {
+    const link = document.createElement('a');
+    link.href = `https://interactive-tent-0697ab02fbe0.herokuapp.com/download/${taskId}`;
+    link.download = `Patterns_and_Models_${taskId}.zip`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('progress').style.display = 'none';
 }
