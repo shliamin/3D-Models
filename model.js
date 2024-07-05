@@ -1,7 +1,7 @@
 import { createScene } from './scene.js';
-const { scene, camera, renderer } = createScene();
 import { calculateArcLength, interpolateSurface, perfectArc, calculateSurfaceArea } from './model-utils.js';
 
+const { scene, camera, renderer } = createScene();
 
 export function updateModel() {
     const width = parseFloat(document.getElementById('width').value) / 100;
@@ -27,6 +27,11 @@ export function updateModel() {
     const arcLength2 = calculateArcLength(arc2);
 
     let totalArea = 0;
+
+    // Remove old objects from the scene
+    while (scene.children.length > 4) { // Keep the lights and axes helpers
+        scene.remove(scene.children[4]);
+    }
 
     if (document.getElementById('surface1').checked) {
         totalArea += area1;
@@ -65,4 +70,3 @@ export function updateModel() {
     addArcToScene(arc1);
     addArcToScene(arc2);
 }
-
