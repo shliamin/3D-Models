@@ -123,11 +123,11 @@ async function checkTaskStatus(taskId) {
         }
 
         const data = await response.json();
+        console.log(`Status data for task ID ${taskId}:`, data);
         const progressElement = document.getElementById('progress');
 
         if (data.status === 'completed') {
             progressElement.style.display = 'none';
-            // Trigger the download
             const downloadLink = document.createElement('a');
             downloadLink.href = `https://interactive-tent-0697ab02fbe0.herokuapp.com/download/${taskId}`;
             downloadLink.click();
@@ -144,6 +144,7 @@ async function checkTaskStatus(taskId) {
         console.error('Error checking task status:', error);
     }
 }
+
 
 function downloadResult(taskId) {
     const link = document.createElement('a');
