@@ -70,8 +70,6 @@ export async function generatePattern() {
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
 
-    console.log('Current values for 2D Pattern:', { width, depth, height });
-
     const arc5 = halfCircularArc([0, 0], [width, depth], height);
     const arc6 = halfCircularArc([width, 0], [0, depth], height);
     const arc7 = halfCircularArc([0, 0], [width, depth], height);
@@ -90,8 +88,6 @@ export async function generatePattern() {
     };
 
     document.getElementById('spinner').style.display = 'block';
-    document.getElementById('progress').style.display = 'block';
-    document.getElementById('progress').textContent = '0%';
 
     try {
         const response = await fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/generate_pattern', {
@@ -102,44 +98,49 @@ export async function generatePattern() {
             body: JSON.stringify(payload)
         });
 
-        if (response.status === 202) {
-            const result = await response.json();
-            const taskId = result.task_id;
-            checkTaskStatus(taskId);
-        } else {
+        if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+
+        const data = await response.json();
+        const taskId = data.task_id;
+
+        // Start checking the task status
+        await checkTaskStatus(taskId);
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
+    } finally {
         document.getElementById('spinner').style.display = 'none';
-        document.getElementById('progress').style.display = 'none';
     }
 }
 
 async function checkTaskStatus(taskId) {
     try {
         const response = await fetch(`https://interactive-tent-0697ab02fbe0.herokuapp.com/status/${taskId}`);
-        const result = await response.json();
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
 
-        if (result.status === 'completed') {
-            // Задача завершена, скачать результат
-            document.getElementById('progress').textContent = '100%';
-            downloadResult(taskId);
-        } else if (result.status === 'failed') {
-            console.error('Task failed:', result.error);
-            document.getElementById('spinner').style.display = 'none';
-            document.getElementById('progress').style.display = 'none';
+        const data = await response.json();
+        const progressElement = document.getElementById('progress');
+
+        if (data.status === 'completed') {
+            progressElement.style.display = 'none';
+            // Trigger the download
+            const downloadLink = document.createElement('a');
+            downloadLink.href = `https://interactive-tent-0697ab02fbe0.herokuapp.com/download/${taskId}`;
+            downloadLink.click();
+        } else if (data.status === 'failed') {
+            progressElement.style.display = 'none';
+            alert('Task failed: ' + data.error);
         } else {
-            // Обновить прогресс
-            const progress = Math.round((result.current / result.total) * 100);
-            document.getElementById('progress').textContent = `${progress}%`;
-            // Повторная проверка через некоторое время
-            setTimeout(() => checkTaskStatus(taskId), 2000); // Повторная проверка каждые 2 секунды
+            const percentage = (data.current / data.total) * 100;
+            progressElement.innerText = `${data.status_msg} - ${percentage.toFixed(2)}%`;
+            progressElement.style.display = 'block';
+            setTimeout(() => checkTaskStatus(taskId), 2000);
         }
     } catch (error) {
-        console.error('There has been a problem with your fetch operation:', error);
-        document.getElementById('spinner').style.display = 'none';
-        document.getElementById('progress').style.display = 'none';
+        console.error('Error checking task status:', error);
     }
 }
 
