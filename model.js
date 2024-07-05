@@ -77,6 +77,7 @@ export function updateModel() {
         type: 'scatter3d'
     });
 
+    // Add edges of the tent base
     data.push({
         x: [vertices[0][0], vertices[1][0]],
         y: [vertices[0][1], vertices[1][1]],
@@ -188,48 +189,48 @@ export function updateModel() {
         scene: {
             xaxis: {
                 title: 'Width',
-                dtick: 0.1, // Шаг сетки по оси X 10 см
+                dtick: 0.1, // Grid step size for X axis (10 cm)
                 range: [0, Math.max(width, depth, height)]
             },
             yaxis: {
                 title: 'Depth',
-                dtick: 0.1, // Шаг сетки по оси Y 10 см
+                dtick: 0.1, // Grid step size for Y axis (10 cm)
                 range: [0, Math.max(width, depth, height)]
             },
             zaxis: {
                 title: 'Height',
-                dtick: 0.1, // Шаг сетки по оси Z 10 см
+                dtick: 0.1, // Grid step size for Z axis (10 cm)
                 range: [0, Math.max(width, depth, height)]
             },
-        aspectratio: {
-            x: 1, // Установим фиксированные значения для пропорций
-            y: 1,
-            z: 1
-        },
-        camera: {
-            eye: {
-                x: 2, // Отрегулируйте эти значения для отдаления камеры
+            aspectratio: {
+                x: 1, // Fixed values for aspect ratio
                 y: 1,
-                z: 2
+                z: 1
             },
-            center: {
-                x: 0.5, // Сдвинуть вправо (положительное значение)
-                y: 0,
-                z: 0.1 // Сдвинуть вниз (отрицательное значение)
+            camera: {
+                eye: {
+                    x: 2, // Adjust these values to zoom out the camera
+                    y: 1,
+                    z: 2
+                },
+                center: {
+                    x: 0.5, // Shift right (positive value)
+                    y: 0,
+                    z: 0.1 // Shift down (negative value)
+                }
             }
+        },
+        legend: {
+            y: -0.2,
+            yanchor: 'top'
+        },
+        margin: {
+            l: 0,
+            r: 0,
+            b: 0,
+            t: 0
         }
-    },
-    legend: {
-        y: -0.2,
-        yanchor: 'top'
-    },
-    margin: {
-        l: 0,
-        r: 0,
-        b: 0,
-        t: 0
-    }
-};
+    };
 
-Plotly.newPlot('tentModel', data, layout);
+    Plotly.newPlot('tentModel', data, layout);
 }
