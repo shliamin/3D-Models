@@ -8,6 +8,10 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d', { willReadFrequently: true });
+
+
     // Tent vertices coordinates
     let vertices = [
         [0, 0, 0],         // Bottom front left corner
