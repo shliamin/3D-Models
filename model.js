@@ -82,27 +82,27 @@ export function updateModel() {
 
     // Visualize x, y, z axes separately
     const xAxis = {
-        x: allX,
-        y: Array(allX.length).fill(0),
-        z: Array(allX.length).fill(0),
+        x: [minX, maxX],
+        y: [0, 0],
+        z: [0, 0],
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'red', width: 2 }
     };
 
     const yAxis = {
-        x: Array(allY.length).fill(0),
-        y: allY,
-        z: Array(allY.length).fill(0),
+        x: [0, 0],
+        y: [minY, maxY],
+        z: [0, 0],
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'green', width: 2 }
     };
 
     const zAxis = {
-        x: Array(allZ.length).fill(0),
-        y: Array(allZ.length).fill(0),
-        z: allZ,
+        x: [0, 0],
+        y: [0, 0],
+        z: [minZ, maxZ],
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 2 }
@@ -125,7 +125,7 @@ export function updateModel() {
             yaxis: {
                 title: 'Depth',
                 dtick: 0.1, // Grid step on Y axis 10 cm
-                range: [0, depth]
+                range: [minY, maxY]
             },
             zaxis: {
                 title: 'Height',
