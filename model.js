@@ -6,9 +6,21 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
+    // Проверка корректности входных данных
+    if (isNaN(width) || isNaN(depth) || isNaN(height)) {
+        console.error("Некорректные входные данные.");
+        return;
+    }
+
     // Определяем параметры для построения арок
     const y = linspace(0, depth, 100);
     const { x: x_fine, z: z_fine } = generateSemiEllipse(width, height);
+
+    // Проверка корректности данных для арок
+    if (!Array.isArray(x_fine) || !Array.isArray(y) || !Array.isArray(z_fine)) {
+        console.error("Ошибка в данных для построения арок.");
+        return;
+    }
 
     // Создаем арки
     const arc1 = {
