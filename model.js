@@ -184,9 +184,9 @@ let layout = {
             dtick: 0.1 // Шаг сетки по оси Z 10 см
         },
         aspectratio: {
-            x: width / Math.max(width, depth, height),
-            y: depth / Math.max(width, depth, height),
-            z: height / Math.max(width, depth, height)
+            x: 1, // Установим фиксированные значения для пропорций
+            y: depth / width,
+            z: height / width
         },
         camera: {
             eye: {
@@ -212,6 +212,9 @@ let layout = {
         t: 0
     }
 };
+
+Plotly.newPlot('tentModel', data, layout);
+
 
 Plotly.newPlot('tentModel', data, layout);
 }
