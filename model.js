@@ -145,22 +145,33 @@ data.push({
     type: 'scatter3d'
 });
 
+let allX = [...arc1.x, ...arc2.x, ...arc3.x, ...arc4.x];
+let allY = [...arc1.y, ...arc2.y, ...arc3.y, ...arc4.y];
+let allZ = [...arc1.z, ...arc2.z, ...arc3.z, ...arc4.z];
+
+let minX = Math.min(...allX);
+let maxX = Math.max(...allX);
+let minY = Math.min(...allY);
+let maxY = Math.max(...allY);
+let minZ = Math.min(...allZ);
+let maxZ = Math.max(...allZ);
+
 let layout = {
     scene: {
         xaxis: {
             title: 'Width',
-            range: [0, 120],  
-            dtick: 10  
+            range: [minX, maxX],  
+            dtick: (maxX - minX) 
         },
         yaxis: {
             title: 'Depth',
-            range: [0, 120],  
-            dtick: 10
+            range: [minX, maxX],  
+            dtick: (maxX - minX)
         },
         zaxis: {
             title: 'Height',
-            range: [0, 120],  
-            dtick: 10
+            range: [minX, maxX],  
+            dtick: (maxX - minX)
         },
         aspectratio: { x: width, y: depth, z: height },
         camera: {
