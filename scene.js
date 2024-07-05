@@ -1,4 +1,5 @@
 import * as THREE from './libs/three.module.min.js';
+import { OrbitControls } from './libs/OrbitControls.js';
 
 export function createScene() {
     const scene = new THREE.Scene();
@@ -11,6 +12,13 @@ export function createScene() {
     const container = document.getElementById('tentModel');
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
+
+    // Initialize OrbitControls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.screenSpacePanning = false;
+    controls.maxPolarAngle = Math.PI / 2;
 
     window.addEventListener('resize', () => {
         camera.aspect = container.clientWidth / container.clientHeight;
@@ -28,7 +36,6 @@ export function createScene() {
     const axesHelper = new THREE.AxesHelper(5);
     scene.add(axesHelper);
 
-    // Adding grids for all three directions
     const size = 10;
     const divisions = 10;
 
@@ -45,6 +52,7 @@ export function createScene() {
 
     function animate() {
         requestAnimationFrame(animate);
+        controls.update(); // Update controls
         renderer.render(scene, camera);
     }
 
