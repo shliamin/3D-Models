@@ -1,11 +1,13 @@
 // static/js/server.js
 
-import { interpolateSurface, circularArc, halfCircularArc, interpolateSurfaceUntilIntersection } from './model.js';
+import { interpolateSurface, calculateSemiAxes, circularArc, halfCircularArc, interpolateSurfaceUntilIntersection } from './model.js';
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
+
+    let { a, b } = calculateSemiAxes(p0, p1, p2, p3);
 
     console.log('Current values for 3D Model:', { width, depth, height });
 
