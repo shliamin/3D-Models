@@ -80,38 +80,6 @@ export function updateModel() {
     data.push(arc1);
     data.push(arc2);
 
-    // Visualize x, y, z axes separately
-    const xAxis = {
-        x: allX,
-        y: Array(allX.length).fill(0),
-        z: Array(allX.length).fill(0),
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'red', width: 2 }
-    };
-
-    const yAxis = {
-        x: Array(allY.length).fill(0),
-        y: allY,
-        z: Array(allY.length).fill(0),
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'green', width: 2 }
-    };
-
-    const zAxis = {
-        x: Array(allZ.length).fill(0),
-        y: Array(allZ.length).fill(0),
-        z: allZ,
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'blue', width: 2 }
-    };
-
-    data.push(xAxis);
-    data.push(yAxis);
-    data.push(zAxis);
-
     // Update arc lengths
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
