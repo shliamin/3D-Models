@@ -52,7 +52,6 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100
     return surface;
 }
 
-// New function for calculating circular arc based on oval
 export function circularArc(p0, p1, height, a, b, num_points = 100) {
     let t = Array.from({ length: num_points }, (_, i) => i / (num_points - 1));
     let arc = { x: [], y: [], z: [] };
@@ -65,8 +64,8 @@ export function circularArc(p0, p1, height, a, b, num_points = 100) {
         let angle = Math.PI * val;
 
         // Arc coordinates calculation based on oval
-        let x = midX + a * Math.cos(angle);
-        let y = midY + b * Math.cos(angle);
+        let x = midX + (p0[0] - midX) * Math.cos(angle);
+        let y = midY + (p0[1] - midY) * Math.cos(angle);
         let z = height * Math.sin(angle);
 
         arc.x.push(x);
@@ -77,7 +76,6 @@ export function circularArc(p0, p1, height, a, b, num_points = 100) {
     return arc;
 }
 
-// New function for calculating half circular arc based on oval
 export function halfCircularArc(p0, p1, height, a, b, num_points = 100) {
     let t = Array.from({ length: num_points }, (_, i) => i / (num_points - 1));
     let arc = { x: [], y: [], z: [] };
@@ -90,8 +88,8 @@ export function halfCircularArc(p0, p1, height, a, b, num_points = 100) {
         let angle = (Math.PI / 2) * val;  // This ensures we only go from 0 to π/2 (half arc)
         
         // Arc coordinates calculation based on oval
-        let x = midX + a * Math.cos(angle);
-        let y = midY + b * Math.cos(angle);
+        let x = midX + (p0[0] - midX) * Math.cos(angle);
+        let y = midY + (p0[1] - midY) * Math.cos(angle);
         let z = height * Math.sin(angle);
         
         arc.x.push(x);
