@@ -123,7 +123,7 @@ data.push({
     z: [vertices[0][2], vertices[1][2], vertices[3][2], vertices[2][2], vertices[0][2]],
     mode: 'lines',
     line: {
-        color: 'blue',
+        color: 'red',
         width: 5
     },
     type: 'scatter3d'
