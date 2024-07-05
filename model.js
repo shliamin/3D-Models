@@ -4,9 +4,9 @@ import { linspace, calculateArcLength, calculateSurfaceArea, findIntersection, i
 
 export function updateModel() {
     // Get values in centimeters and convert to meters
-    const width = parseFloat(document.getElementById('width').value) / 10;
-    const depth = parseFloat(document.getElementById('depth').value) / 10;
-    const height = parseFloat(document.getElementById('height').value) / 10;
+    const width = parseFloat(document.getElementById('width').value) ;
+    const depth = parseFloat(document.getElementById('depth').value) ;
+    const height = parseFloat(document.getElementById('height').value) ;
 
     var canvas = document.createElement('canvas');
     canvas.width = '100%';
