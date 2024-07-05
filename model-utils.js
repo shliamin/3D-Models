@@ -164,3 +164,17 @@ export function createArc(width, depth, height) {
 
     return arc;
 }
+
+
+export function generateSemiEllipse(a, b) {
+    var xValues = [];
+    var yValuesUpper = [];
+    for (var x = -a; x <= a; x += 1) {
+        var y = b * Math.sqrt(1 - (x * x) / (a * a));
+        if (y >= 0) {  // higher than floor (y >= 0)
+            xValues.push(x);
+            yValuesUpper.push(y);
+        }
+    }
+    return { x: xValues, y: yValuesUpper };
+}
