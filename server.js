@@ -34,7 +34,6 @@ export async function generateModel() {
         enable_relaxation: true // Always enable relaxation
     };
 
-    // 
     document.getElementById('spinner').style.display = 'block';
 
     try {
@@ -60,7 +59,6 @@ export async function generateModel() {
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     } finally {
-        // 
         document.getElementById('spinner').style.display = 'none';
     }
 }
@@ -125,6 +123,7 @@ async function checkTaskStatus(taskId) {
 
         const data = await response.json();
         const progressElement = document.getElementById('progress');
+        console.log(`Task Status: ${data.status}, Current: ${data.current}, Total: ${data.total}, Message: ${data.status_msg}`);
 
         if (data.status === 'completed') {
             progressElement.style.display = 'none';
