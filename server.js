@@ -63,7 +63,6 @@ export async function generateModel() {
     }
 }
 
-// server.js
 export async function generatePattern() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
@@ -123,7 +122,6 @@ async function checkTaskStatus(taskId) {
 
         const data = await response.json();
         const progressElement = document.getElementById('progress');
-        console.log(`Task Status: ${data.status}, Current: ${data.current}, Total: ${data.total}, Message: ${data.status_msg}`);
 
         if (data.status === 'completed') {
             progressElement.style.display = 'none';
