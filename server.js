@@ -1,6 +1,24 @@
-// static/js/server.js
-
 import { interpolateSurface, circularArc, halfCircularArc, interpolateSurfaceUntilIntersection } from './model.js';
+
+const socket = io('https://interactive-tent-0697ab02fbe0.herokuapp.com');
+
+socket.on('task_status', (data) => {
+    console.log(`Received update for task ${data.task_id}: ${data.status_msg} (${data.current}/${data.total})`);
+    const progressElement = document.getElementById('progress');
+    if (data.status === 'completed') {
+        progressElement.style.display = 'none';
+        const downloadLink = document.createElement('a');
+        downloadLink.href = `https://interactive-tent-0697ab02fbe0.herokuapp.com/download/${data.task_id}`;
+        downloadLink.click();
+    } else if (data.status === 'failed') {
+        progressElement.style.display = 'none';
+        alert('Task failed: ' + data.error);
+    } else {
+        const percentage = (data.current / data.total) * 100;
+        progressElement.innerText = `${data.status_msg} - ${percentage.toFixed(2)}%`;
+        progressElement.style.display = 'block';
+    }
+});
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
@@ -104,56 +122,10 @@ export async function generatePattern() {
         const taskId = data.task_id;
         console.log(`Task ID: ${taskId}`);
 
-        // Start checking the task status
-        await checkTaskStatus(taskId);
+        document.getElementById('progress').innerText = `Task started with ID: ${taskId}`;
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     } finally {
         document.getElementById('spinner').style.display = 'none';
     }
-}
-
-async function checkTaskStatus(taskId) {
-    try {
-        console.log(`Checking status for task ID: ${taskId}`);
-        const response = await fetch(`https://interactive-tent-0697ab02fbe0.herokuapp.com/status/${taskId}`);
-        console.log(`Status response for task ID ${taskId}: ${response.status}`);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        console.log(`Status data for task ID ${taskId}:`, data);
-        const progressElement = document.getElementById('progress');
-
-        if (data.status === 'completed') {
-            progressElement.style.display = 'none';
-            const downloadLink = document.createElement('a');
-            downloadLink.href = `https://interactive-tent-0697ab02fbe0.herokuapp.com/download/${taskId}`;
-            downloadLink.click();
-        } else if (data.status === 'failed') {
-            progressElement.style.display = 'none';
-            alert('Task failed: ' + data.error);
-        } else {
-            const percentage = (data.current / data.total) * 100;
-            progressElement.innerText = `${data.status_msg} - ${percentage.toFixed(2)}%`;
-            progressElement.style.display = 'block';
-            setTimeout(() => checkTaskStatus(taskId), 2000);
-        }
-    } catch (error) {
-        console.error('Error checking task status:', error);
-    }
-}
-
-
-function downloadResult(taskId) {
-    const link = document.createElement('a');
-    link.href = `https://interactive-tent-0697ab02fbe0.herokuapp.com/download/${taskId}`;
-    link.download = `Patterns_and_Models_${taskId}.zip`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    document.getElementById('spinner').style.display = 'none';
-    document.getElementById('progress').style.display = 'none';
 }
