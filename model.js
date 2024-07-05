@@ -148,18 +148,15 @@ data.push({
 let layout = {
     scene: {
         xaxis: {
-            title: 'Width',
-            range: [0, 120],  
+            title: 'Width',  
             dtick: 10  
         },
         yaxis: {
-            title: 'Depth',
-            range: [0, 120],  
+            title: 'Depth',  
             dtick: 10
         },
         zaxis: {
-            title: 'Height',
-            range: [0, 120],  
+            title: 'Height', 
             dtick: 10
         },
         aspectratio: { x: width, y: depth, z: height },
