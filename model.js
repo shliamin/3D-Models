@@ -3,6 +3,16 @@ import { calculateArcLength, interpolateSurface, perfectArc, calculateSurfaceAre
 
 const { scene, camera, renderer } = createScene();
 
+function addArcToScene(arc, material) {
+    const arcPoints = [];
+    for (let i = 0; i < arc.x.length; i++) {
+        arcPoints.push(new THREE.Vector3(arc.x[i], arc.y[i], arc.z[i]));
+    }
+    const arcGeometry = new THREE.BufferGeometry().setFromPoints(arcPoints);
+    const arcLine = new THREE.Line(arcGeometry, material);
+    scene.add(arcLine);
+}
+
 export function updateModel() {
     const width = parseFloat(document.getElementById('width').value) / 100;
     const depth = parseFloat(document.getElementById('depth').value) / 100;
@@ -56,17 +66,7 @@ export function updateModel() {
 
     // Adding arcs
     const arcMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
-    
-    function addArcToScene(arc) {
-        const arcPoints = [];
-        for (let i = 0; i < arc.x.length; i++) {
-            arcPoints.push(new THREE.Vector3(arc.x[i], arc.y[i], arc.z[i]));
-        }
-        const arcGeometry = new THREE.BufferGeometry().setFromPoints(arcPoints);
-        const arcLine = new THREE.Line(arcGeometry, arcMaterial);
-        scene.add(arcLine);
-    }
 
-    addArcToScene(arc1);
-    addArcToScene(arc2);
+    addArcToScene(arc1, arcMaterial);
+    addArcToScene(arc2, arcMaterial);
 }
