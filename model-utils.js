@@ -25,14 +25,14 @@ export function findIntersection(arc1, arc2, num_points = 100, epsilon = 5) {
 export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolation = false) {
     let surface = { x: [], y: [], z: [] };
 
-    let points = num_points;
     let intersectionIndex = -1;
 
     // Find the intersection point if halfInterpolation is true
     if (halfInterpolation) {
-        points = num_points * 10; // Increase points for more precision
-        intersectionIndex = findIntersection(arc1, arc2, points);
-        if (intersectionIndex === -1) {
+        intersectionIndex = findIntersection(arc1, arc2, num_points);
+        if (intersectionIndex !== -1) {
+            console.log(`Intersection point found at index ${intersectionIndex}: (${arc1.x[intersectionIndex]}, ${arc1.y[intersectionIndex]}, ${arc1.z[intersectionIndex]})`);
+        } else {
             console.log('Intersection point not found');
             return surface; // Return empty surface if no intersection is found
         }
