@@ -60,6 +60,10 @@ export async function generateModel() {
     // Interpolate surfaces
     const surface1 = interpolateSurface(arc1, arc2, 100);
     const surface2 = interpolateSurface(arc2, arc3, 100);
+
+    const intersection1 = findIntersection(arc1, arc3, 100)
+    const intersection2 = findIntersection(arc2, arc3, 100)
+    
     const surface3 = interpolateSurface(arc1, arc2, 100, true);
     const surface4 = interpolateSurface(arc2, arc3, 100, true);
 
@@ -163,6 +167,9 @@ export async function generatePattern() {
     };
 
     // Interpolate surfaces until intersection
+    const intersection1 = findIntersection(arc1, arc3, 100)
+    const intersection2 = findIntersection(arc2, arc3, 100)
+    
     const surface3 = interpolateSurface(arc1, arc2, 100, true);
     const surface4 = interpolateSurface(arc2, arc3, 100, true);
     
