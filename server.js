@@ -13,16 +13,16 @@ export async function generateModel() {
     const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
-    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, numPoints);
-    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, numPoints);
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
     
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
-    const y = linspace(0, depth, numPoints);
-
-    // Create arcs
+    const y = linspace(0, depth, 100);
+    
+     // Create arcs
     const arc1 = {
         x: x_fine1,
         y: y,
@@ -43,21 +43,22 @@ export async function generateModel() {
         name: 'Tent Frame 2'
     };
     
+    // Create arc3 with reversed points from arc1
     const arc3 = {
-        x: x_fine2,
-        y: y,
-        z: z_fine2,
+        x: [...arc1.x].reverse(),
+        y: [...arc1.y].reverse(),
+        z: [...arc1.z].reverse(),
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'Tent Frame 3'
+        visible: false
     };
 
     // Interpolate surfaces
-    const surface1 = interpolateSurface(arc1, arc2, numPoints);
-    const surface2 = interpolateSurface(arc2, arc3, numPoints);
-    const surface3 = interpolateSurfaceUntilIntersection(arc1, arc2, numPoints);
-    const surface4 = interpolateSurfaceUntilIntersection(arc2, arc3, numPoints);
+    const surface1 = interpolateSurface(arc1, arc2, 100);
+    const surface2 = interpolateSurface(arc2, arc3, 100);
+    const surface3 = interpolateSurfaceUntilIntersection(arc1, arc2);
+    const surface4 = interpolateSurfaceUntilIntersection(arc2, arc3);
 
     const payload = {
         width,
@@ -114,16 +115,16 @@ export async function generatePattern() {
     const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
-    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, numPoints);
-    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, numPoints);
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
     
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
-    const y = linspace(0, depth, numPoints);
+    const y = linspace(0, depth, 100);
     
-    // Create arcs
+     // Create arcs
     const arc1 = {
         x: x_fine1,
         y: y,
@@ -144,20 +145,21 @@ export async function generatePattern() {
         name: 'Tent Frame 2'
     };
     
+    // Create arc3 with reversed points from arc1
     const arc3 = {
-        x: x_fine2,
-        y: y,
-        z: z_fine2,
+        x: [...arc1.x].reverse(),
+        y: [...arc1.y].reverse(),
+        z: [...arc1.z].reverse(),
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'Tent Frame 3'
+        visible: false
     };
 
     // Interpolate surfaces until intersection
-    const surface3 = interpolateSurfaceUntilIntersection(arc1, arc2, numPoints);
-    const surface4 = interpolateSurfaceUntilIntersection(arc2, arc3, numPoints);
-
+    const surface3 = interpolateSurfaceUntilIntersection(arc1, arc2);
+    const surface4 = interpolateSurfaceUntilIntersection(arc2, arc3);
+    
     const payload = {
         width,
         depth,
