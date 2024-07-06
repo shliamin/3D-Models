@@ -29,19 +29,27 @@ export function findIntersection(arc1, arc2, num_points = 100, epsilon = 5) {
 export function interpolateSurface(arc1, arc2, num_points = 100, interpolationPoint = null) {
     let surface = { x: [], y: [], z: [] };
 
-    let max_points = num_points;
+    // Функция для нахождения расстояния между двумя точками в 3D пространстве
+    function distance(point1, point2) {
+        return Math.sqrt(
+            Math.pow(point1.x - point2.x, 2) +
+            Math.pow(point1.y - point2.y, 2) +
+            Math.pow(point1.z - point2.z, 2)
+        );
+    }
 
     // Найдем индекс пересечения, если задана точка интерполяции
-    let intersectionIndex = -1;
+    let max_points = num_points;
     if (interpolationPoint) {
-        intersectionIndex = findIntersectionIndex(arc1, arc2, interpolationPoint, num_points);
-        if (intersectionIndex !== -1) {
-            console.log(`Intersection point found at index ${intersectionIndex}: (${arc1.x[intersectionIndex]}, ${arc1.y[intersectionIndex]}, ${arc1.z[intersectionIndex]})`);
-            max_points = intersectionIndex + 1;
-        } else {
-            console.log('Intersection point not found');
-            return surface; // Return empty surface if no intersection is found
-        }
+        let distances1 = arc1.x.map((_, i) => distance({ x: arc1.x[i], y: arc1.y[i], z: arc1.z[i] }, interpolationPoint));
+        let distances2 = arc2.x.map((_, i) => distance({ x: arc2.x[i], y: arc2.y[i], z: arc2.z[i] }, interpolationPoint));
+        
+        // Найдем минимальное расстояние до заданной точки
+        let minDistance1 = Math.min(...distances1);
+        let minDistance2 = Math.min(...distances2);
+        
+        // Максимальная точка интерполяции будет ближайшей точкой к заданной на обеих дугах
+        max_points = Math.min(distances1.indexOf(minDistance1), distances2.indexOf(minDistance2)) + 1;
     }
 
     for (let i = 0; i < num_points; i++) {
@@ -63,6 +71,8 @@ export function interpolateSurface(arc1, arc2, num_points = 100, interpolationPo
 
     return surface;
 }
+
+
 export function calculateSurfaceArea(surface, num_points = 100) {
     let area = 0;
 
