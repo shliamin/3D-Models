@@ -101,7 +101,7 @@ export function updateModel() {
                 center: {
                     x: 0.5, // Shift right (positive value)
                     y: 0,
-                    z: -1.6 // Shift down (negative value)
+                    z: 1.6 // Shift down (negative value)
                 }
             }
         },
