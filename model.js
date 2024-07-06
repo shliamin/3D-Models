@@ -164,44 +164,58 @@ export function updateModel() {
         {
             showarrow: false,
             text: "The Perfect Tent Shape",
-            x: 0,
-            y: 0,
-            z: 0,
+            x: width / 2,
+            y: depth / 2,
+            z: height,
             font: {
                 family: "Arial, sans-serif",
                 size: 16,
                 color: "black"
             },
-            xanchor: 'left',
-            yanchor: 'middle'
+            xanchor: 'center',
+            yanchor: 'bottom'
         },
         {
             showarrow: false,
             text: "Optimal Weather Protection",
-            x: 0,
-            y: 0,
-            z: 0.2,
+            x: width / 2,
+            y: depth / 2,
+            z: height * 0.8,
             font: {
                 family: "Arial, sans-serif",
                 size: 16,
                 color: "black"
             },
-            xanchor: 'left',
-            yanchor: 'middle'
+            xanchor: 'center',
+            yanchor: 'bottom'
         },
         {
             showarrow: false,
             text: "Designed from Experience & Analysis",
-            x: 0,
-            y: 0,
-            z: 0.4,
+            x: width / 2,
+            y: depth / 2,
+            z: height * 0.6,
             font: {
                 family: "Arial, sans-serif",
                 size: 16,
                 color: "black"
             },
-            xanchor: 'left',
-            yanchor: 'middle'
+            xanchor: 'center',
+            yanchor: 'bottom'
+        },
+        {
+            showarrow: false,
+            text: "Unmatched Durability & Comfort",
+            x: width / 2,
+            y: depth / 2,
+            z: height * 0.4,
+            font: {
+                family: "Arial, sans-serif",
+                size: 16,
+                color: "black"
+            },
+            xanchor: 'center',
+            yanchor: 'bottom'
         }
     ]
     };
