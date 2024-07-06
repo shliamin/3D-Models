@@ -64,7 +64,7 @@ export function updateModel() {
 
     // Interpolate surfaces
     const surface1 = interpolateSurface(arc1, arc2, 100);
-    const surface2 = interpolateSurface(arc3, arc4, 100);
+    const surface2 = interpolateSurface(arc4, arc3, 100);
 
     // Create surface traces
     const surfaceTrace1 = {
