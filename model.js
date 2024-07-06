@@ -52,7 +52,6 @@ export function updateModel() {
         x: surface.x,
         y: surface.y,
         z: surface.z,
-        type: 'surface',
         colorscale: 'cyan',
         opacity: 0.3
     };
@@ -70,8 +69,8 @@ export function updateModel() {
     const maxZ = Math.max(...allZ);
 
     // Calculate arc lengths
-    let arcLength1 = calculateArcLength(arcTrace1);
-    let arcLength2 = calculateArcLength(arcTrace2);
+    let arcLength1 = calculateArcLength(arc1);
+    let arcLength2 = calculateArcLength(arc2);
 
     // Initialize graph data
     let data = [];
