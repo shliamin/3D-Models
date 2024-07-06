@@ -1,6 +1,4 @@
-// server.js
-
-import { interpolateSurface, interpolateSurfaceUntilIntersection, generateHalfSemiEllipse, generateSemiEllipse, calculateDiagonals } from './model-utils.js';
+import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, interpolateSurfaceUntilIntersection, calculateDiagonals } from './model-utils.js';
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
@@ -9,15 +7,21 @@ export async function generateModel() {
 
     console.log('Current values for 3D Model:', { width, depth, height });
 
-    const arc1 = perfectArc([0, 0], [width, depth], height);
-    const arc2 = perfectArc([width, 0], [0, depth], height);
-    const arc3 = perfectArc([0, 0], [width, depth], height);
-    const arc4 = perfectArc([0, depth], [width, 0], height);
-    const arc5 = halfPerfectArc([0, 0], [width, depth], height);
-    const arc6 = halfPerfectArc([width, 0], [0, depth], height);
-    const arc7 = halfPerfectArc([0, 0], [width, depth], height);
-    const arc8 = halfPerfectArc([0, depth], [width, 0], height);
+    const numPoints = 100;
 
+    // Generate arcs using the new functions
+    const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
+
+    const arc1 = generateSemiEllipse(diagonal1 / 2, height, numPoints);
+    const arc2 = generateSemiEllipse(diagonal2 / 2, height, numPoints);
+    const arc3 = generateSemiEllipse(diagonal1 / 2, height, numPoints);
+    const arc4 = generateSemiEllipse(diagonal2 / 2, height, numPoints);
+    const arc5 = generateHalfSemiEllipse(diagonal1 / 2, height, numPoints);
+    const arc6 = generateHalfSemiEllipse(diagonal2 / 2, height, numPoints);
+    const arc7 = generateHalfSemiEllipse(diagonal1 / 2, height, numPoints);
+    const arc8 = generateHalfSemiEllipse(diagonal2 / 2, height, numPoints);
+
+    // Interpolate surfaces
     const surface1 = interpolateSurface(arc1, arc2);
     const surface2 = interpolateSurface(arc3, arc4);
     const surface3 = interpolateSurfaceUntilIntersection(arc5, arc6);
@@ -34,7 +38,7 @@ export async function generateModel() {
         enable_relaxation: true // Always enable relaxation
     };
 
-    // 
+    // Show spinner while fetching
     document.getElementById('spinner').style.display = 'block';
 
     try {
@@ -60,7 +64,7 @@ export async function generateModel() {
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     } finally {
-        // 
+        // Hide spinner after fetch
         document.getElementById('spinner').style.display = 'none';
     }
 }
@@ -72,11 +76,17 @@ export async function generatePattern() {
 
     console.log('Current values for 2D Pattern:', { width, depth, height });
 
-    const arc5 = halfPerfectArc([0, 0], [width, depth], height);
-    const arc6 = halfPerfectArc([width, 0], [0, depth], height);
-    const arc7 = halfPerfectArc([0, 0], [width, depth], height);
-    const arc8 = halfPerfectArc([0, depth], [width, 0], height);
+    const numPoints = 100;
 
+    // Generate half arcs using the new function
+    const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
+
+    const arc5 = generateHalfSemiEllipse(diagonal1 / 2, height, numPoints);
+    const arc6 = generateHalfSemiEllipse(diagonal2 / 2, height, numPoints);
+    const arc7 = generateHalfSemiEllipse(diagonal1 / 2, height, numPoints);
+    const arc8 = generateHalfSemiEllipse(diagonal2 / 2, height, numPoints);
+
+    // Interpolate surfaces until intersection
     const surface3 = interpolateSurfaceUntilIntersection(arc5, arc6);
     const surface4 = interpolateSurfaceUntilIntersection(arc7, arc8);
 
@@ -89,7 +99,7 @@ export async function generatePattern() {
         enable_relaxation: true // Always enable relaxation
     };
 
-    // 
+    // Show spinner while fetching
     document.getElementById('spinner').style.display = 'block';
 
     try {
@@ -115,7 +125,7 @@ export async function generatePattern() {
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     } finally {
-        // 
+        // Hide spinner after fetch
         document.getElementById('spinner').style.display = 'none';
     }
 }
