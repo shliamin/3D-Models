@@ -6,11 +6,8 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    console.log(`Width: ${width}, Depth: ${depth}, Height: ${height}`);
-
     // Calculate the diagonals
     const [diagonal1, diagonal2] = calculateDiagonals(width, depth);
-    console.log(`Diagonals: ${diagonal1}, ${diagonal2}`);
 
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
@@ -21,10 +18,6 @@ export function updateModel() {
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
     const y = linspace(0, depth, 100);
-
-    console.log(`x_fine1: ${x_fine1}, z_fine1: ${z_fine1}`);
-    console.log(`x_fine2: ${x_fine2}, z_fine2: ${z_fine2}`);
-    console.log(`y: ${y}`);
 
     // Validate arc data
     if (!Array.isArray(x_fine1) || !Array.isArray(z_fine1) || !Array.isArray(x_fine2) || !Array.isArray(z_fine2) || !Array.isArray(y)) {
@@ -51,8 +44,6 @@ export function updateModel() {
         line: { color: 'blue', width: 5 }
     };
 
-    console.log(`arc1: ${arc1}, arc2: ${arc2}`);
-    
     // Scale axes based on arc end points
     const allX = arc1.x.concat(arc2.x);
     const allY = arc1.y.concat(arc2.y);
@@ -65,13 +56,9 @@ export function updateModel() {
     const minZ = Math.min(...allZ);
     const maxZ = Math.max(...allZ);
 
-    console.log(`X range: [${minX}, ${maxX}], Y range: [${minY}, ${maxY}], Z range: [${minZ}, ${maxZ}]`);
-
     // Calculate arc lengths
     let arcLength1 = calculateArcLength(arc1);
     let arcLength2 = calculateArcLength(arc2);
-
-    console.log(`Arc lengths: ${arcLength1}, ${arcLength2}`);
 
     // Initialize graph data
     let data = [];
@@ -79,38 +66,6 @@ export function updateModel() {
     // Add arcs to graph
     data.push(arc1);
     data.push(arc2);
-
-    // Visualize x, y, z axes separately
-    const xAxis = {
-        x: [minX, maxX],
-        y: [0, 0],
-        z: [0, 0],
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'red', width: 2 }
-    };
-
-    const yAxis = {
-        x: [0, 0],
-        y: [minY, maxY],
-        z: [0, 0],
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'green', width: 2 }
-    };
-
-    const zAxis = {
-        x: [0, 0],
-        y: [0, 0],
-        z: [minZ, maxZ],
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'blue', width: 2 }
-    };
-
-    data.push(xAxis);
-    data.push(yAxis);
-    data.push(zAxis);
 
     // Update arc lengths
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
