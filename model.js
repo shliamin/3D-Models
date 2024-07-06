@@ -13,17 +13,21 @@ export function updateModel() {
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
     const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
 
-    // Извлечение координат x и z для полуэллипсов
-    const x_fine1 = semiEllipse1.x;
-    const z_fine1 = semiEllipse1.z;
-    const x_fine2 = semiEllipse2.x;
-    const z_fine2 = semiEllipse2.z;
-
-    // Проверка длины массивов
-    if (x_fine1.length !== 100 || z_fine1.length !== 100 || x_fine2.length !== 100 || z_fine2.length !== 100) {
-        console.error("Ошибка в генерации полуэллипсов: длина массивов не соответствует ожидаемой.");
+    // Проверка на правильную инициализацию массивов
+    if (!semiEllipse1 || !semiEllipse1.x || !semiEllipse1.y || semiEllipse1.x.length !== 100 || semiEllipse1.y.length !== 100) {
+        console.error("Ошибка в генерации semiEllipse1: массивы не определены или имеют неправильную длину.");
         return;
     }
+    if (!semiEllipse2 || !semiEllipse2.x || !semiEllipse2.y || semiEllipse2.x.length !== 100 || semiEllipse2.y.length !== 100) {
+        console.error("Ошибка в генерации semiEllipse2: массивы не определены или имеют неправильную длину.");
+        return;
+    }
+
+    // Извлечение координат x и y для полуэллипсов
+    const x_fine1 = semiEllipse1.x;
+    const z_fine1 = semiEllipse1.y; // Используем y как z для высоты
+    const x_fine2 = semiEllipse2.x;
+    const z_fine2 = semiEllipse2.y; // Используем y как z для высоты
 
     // Генерация координат y вдоль глубины палатки
     const y_coords = linspace(0, depth, 100);
