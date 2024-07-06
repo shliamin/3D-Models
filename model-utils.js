@@ -30,6 +30,8 @@ export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolati
         let intersectionIndex = findIntersection(arc1, arc2, num_points);
         if (intersectionIndex !== -1) {
             max_points = intersectionIndex + 1;
+        } else {
+            console.log('Intersection point not found');
         }
     }
 
