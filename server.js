@@ -1,5 +1,17 @@
 import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, calculateDiagonals, linspace } from './model-utils.js';
 
+function formatPoint(label, point) {
+    return `${label}: (${point.x.toFixed(2)}, ${point.y.toFixed(2)}, ${point.z.toFixed(2)})`;
+}
+
+function logEndCoordinates(endCoord1Start, endCoord1End, endCoord2Start, endCoord2End) {
+    console.log("End Coordinates:");
+    console.log(formatPoint("endCoord1Start", endCoord1Start));
+    console.log(formatPoint("endCoord1End", endCoord1End));
+    console.log(formatPoint("endCoord2Start", endCoord2Start));
+    console.log(formatPoint("endCoord2End", endCoord2End));
+}
+
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
@@ -12,6 +24,8 @@ export async function generateModel() {
     // Calculate diagonals and their end coordinates
     const { lengths: [diagonal1, diagonal2], endCoordinates: [endCoord1Start, endCoord1End, endCoord2Start, endCoord2End] } = calculateDiagonals(width, depth);
 
+    logEndCoordinates(endCoord1Start, endCoord1End, endCoord2Start, endCoord2End);
+
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
     const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
@@ -22,7 +36,7 @@ export async function generateModel() {
     const z_fine2 = semiEllipse2.y;
     const y = linspace(0, depth, 100);
     
-     // Create arcs
+    // Create arcs
     const arc1 = {
         x: x_fine1,
         y: y,
@@ -124,7 +138,7 @@ export async function generatePattern() {
     const z_fine2 = semiEllipse2.y;
     const y = linspace(0, depth, 100);
     
-     // Create arcs
+    // Create arcs
     const arc1 = {
         x: x_fine1,
         y: y,
