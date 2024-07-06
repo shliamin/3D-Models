@@ -36,9 +36,9 @@ export function updateModel() {
     };
     
     const arc2 = {
-        x: x_fine1.map(x => -x),
-        y: y,
-        z: z_fine1,
+        x: x_fine1.map(x => -x).reverse(),
+        y: y.reverse(),
+        z: z_fine1.reverse(),
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
@@ -46,7 +46,7 @@ export function updateModel() {
 
     const arc3 = {
         x: x_fine2,
-        y: y,
+        y: y.reverse(),
         z: z_fine2,
         type: 'scatter3d',
         mode: 'lines',
@@ -54,9 +54,9 @@ export function updateModel() {
     };
 
     const arc4 = {
-        x: x_fine2.map(x => -x),
+        x: x_fine2.map(x => -x).reverse(),
         y: y,
-        z: z_fine2,
+        z: z_fine2.reverse(),
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
