@@ -1,4 +1,4 @@
-import { generateSemiEllipse, interpolateSurface, calculateDiagonals, linspace, findIntersection } from './model-utils.js';
+import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, calculateDiagonals, linspace, findIntersection } from './model-utils.js';
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
@@ -13,14 +13,14 @@ export async function generateModel() {
     const { lengths: [diagonal1, diagonal2], endCoordinates: [endCoord1Start, endCoord1End, endCoord2Start, endCoord2End] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
-    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, numPoints);
-    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, numPoints);
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
     
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
-    const y = linspace(0, depth, numPoints);
+    const y = linspace(0, depth, 100);
 
     // Assuming apex is the highest point of semiEllipse1
     const apex = { x: x_fine1[0], y: y[0], z: z_fine1[0] };
@@ -57,34 +57,26 @@ export async function generateModel() {
         visible: false
     };
 
-    console.log('Arc1:', arc1);
-    console.log('Arc2:', arc2);
-    console.log('Arc3:', arc3);
+    // Interpolate surfaces
+    const surface1 = interpolateSurface(arc1, arc2, 100);
+    const surface2 = interpolateSurface(arc2, arc3, 100);
 
-    // Find intersections
-    const intersection1 = findIntersection(arc1, arc2, numPoints);
-    const intersection2 = findIntersection(arc2, arc3, numPoints);
-
-    console.log('Intersection1:', intersection1);
-    console.log('Intersection2:', intersection2);
-
-    // Interpolate surfaces up to the intersection points
-    const surface3 = interpolateSurface(arc1, arc2, numPoints, 5, true);
-    const surface4 = interpolateSurface(arc2, arc3, numPoints, 5, true);
-
-    console.log('Surface3:', surface3);
-    console.log('Surface4:', surface4);
+    //const intersection1 = findIntersection(arc1, arc3, 100)
+    //const intersection2 = findIntersection(arc2, arc3, 100)
+    
+    const surface3 = interpolateSurface(arc1, arc2, 100, true);
+    const surface4 = interpolateSurface(arc2, arc3, 100, true);
 
     const payload = {
         width,
         depth,
         height,
+        surface1,
+        surface2,
         surface3,
         surface4,
         enable_relaxation: true // Always enable relaxation
     };
-
-    console.log('Payload:', payload);
 
     // Show spinner while fetching
     document.getElementById('spinner').style.display = 'block';
@@ -116,7 +108,6 @@ export async function generateModel() {
         document.getElementById('spinner').style.display = 'none';
     }
 }
-
 
 export async function generatePattern() {
     const width = parseFloat(document.getElementById('width').value);
