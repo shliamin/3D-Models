@@ -65,12 +65,30 @@ function showPopup() {
     closeButton.onclick = function() {
         popup.style.display = 'none';
         document.body.classList.remove('blurred');
+        removeBackgroundBlur();
     };
 
     window.onclick = function(event) {
         if (event.target == popup) {
             popup.style.display = 'none';
             document.body.classList.remove('blurred');
+            removeBackgroundBlur();
         }
     };
+
+    addBackgroundBlur();
+}
+
+function addBackgroundBlur() {
+    const blurDiv = document.createElement('div');
+    blurDiv.classList.add('background-blur');
+    blurDiv.id = 'backgroundBlur';
+    document.body.appendChild(blurDiv);
+}
+
+function removeBackgroundBlur() {
+    const blurDiv = document.getElementById('backgroundBlur');
+    if (blurDiv) {
+        document.body.removeChild(blurDiv);
+    }
 }
