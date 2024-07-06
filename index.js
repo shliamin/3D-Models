@@ -48,11 +48,29 @@ function validateAndUpdateModel(event) {
             return;
     }
 
-    if (value < minValue) {
-        target.value = minValue;
-    } else if (value > maxValue) {
-        target.value = maxValue;
+    if (value < minValue || value > maxValue) {
+        showPopup();
+        target.value = value < minValue ? minValue : maxValue;
     }
 
     updateModel();
+}
+
+function showPopup() {
+    const popup = document.getElementById('popup');
+    popup.style.display = 'block';
+    document.body.classList.add('blurred');
+
+    const closeButton = document.getElementById('closePopup');
+    closeButton.onclick = function() {
+        popup.style.display = 'none';
+        document.body.classList.remove('blurred');
+    };
+
+    window.onclick = function(event) {
+        if (event.target == popup) {
+            popup.style.display = 'none';
+            document.body.classList.remove('blurred');
+        }
+    };
 }
