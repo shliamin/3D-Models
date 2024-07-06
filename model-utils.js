@@ -10,10 +10,11 @@ export function calculateArcLength(arc) {
     return length;
 }
 
-// Function to find the first intersection point of two arcs
-export function findIntersection(arc1, arc2, num_points = 100) {
+export function findIntersection(arc1, arc2, num_points = 100, epsilon = 1e-6) {
     for (let i = 0; i < num_points; i++) {
-        if (arc1.x[i] === arc2.x[i] && arc1.y[i] === arc2.y[i] && arc1.z[i] === arc2.z[i]) {
+        if (Math.abs(arc1.x[i] - arc2.x[i]) < epsilon &&
+            Math.abs(arc1.y[i] - arc2.y[i]) < epsilon &&
+            Math.abs(arc1.z[i] - arc2.z[i]) < epsilon) {
             return i;
         }
     }
