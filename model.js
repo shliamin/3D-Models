@@ -94,14 +94,14 @@ export function updateModel() {
             },
             camera: {
                 eye: {
-                    x: 1.5, // Adjust these values to zoom out the camera
-                    y: 0.75,
-                    z: 1.5
+                    x: 1, // Adjust these values to zoom out the camera
+                    y: 0.5,
+                    z: 1
                 },
                 center: {
                     x: 0.5, // Shift right (positive value)
                     y: 0,
-                    z: 0.1 // Shift down (negative value)
+                    z: -0.3 // Shift down (negative value)
                 }
             }
         },
