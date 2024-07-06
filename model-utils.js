@@ -15,10 +15,14 @@ export function findIntersection(arc1, arc2, num_points = 100, epsilon = 5) {
         if (Math.abs(arc1.x[i] - arc2.x[i]) < epsilon &&
             Math.abs(arc1.y[i] - arc2.y[i]) < epsilon &&
             Math.abs(arc1.z[i] - arc2.z[i]) < epsilon) {
-            return i;
+            return {
+                x: arc1.x[i],
+                y: arc1.y[i],
+                z: arc1.z[i]
+            };
         }
     }
-    return -1; // Returns -1 if there is no intersection
+    return null; // Returns null if there is no intersection
 }
 
 
