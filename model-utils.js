@@ -83,7 +83,7 @@ export function createHalfArc(startCoord, endCoord, height, num_points = 100) {
 
 
 
-export function interpolateSurface(arc1, arc2, arc3, arc4, num_points = 100) {
+export function interpolateSurface(arc1, arc2, num_points = 100) {
     let surface = { x: [], y: [], z: [] };
 
     for (let i = 0; i < num_points; i++) {
@@ -92,17 +92,10 @@ export function interpolateSurface(arc1, arc2, arc3, arc4, num_points = 100) {
         let zRow = [];
         
         for (let j = 0; j < num_points; j++) {
-            let u = i / (num_points - 1);
-            let v = j / (num_points - 1);
-            
-            
-            let x = (1 - u) * ((1 - v) * arc1.x[0] + v * arc2.x[0]) + u * ((1 - v) * arc3.x[0] + v * arc4.x[0]);
-            let y = (1 - u) * ((1 - v) * arc1.y[0] + v * arc2.y[0]) + u * ((1 - v) * arc3.y[0] + v * arc4.y[0]);
-            let z = (1 - u) * ((1 - v) * arc1.z[0] + v * arc2.z[0]) + u * ((1 - v) * arc3.z[0] + v * arc4.z[0]);
-            
-            xRow.push(x);
-            yRow.push(y);
-            zRow.push(z);
+            let t = j / (num_points - 1);
+            xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
+            yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
+            zRow.push((1 - t) * arc1.z[i] + t * arc2.z[i]);
         }
         
         surface.x.push(xRow);
@@ -112,7 +105,6 @@ export function interpolateSurface(arc1, arc2, arc3, arc4, num_points = 100) {
     
     return surface;
 }
-
 
 export function calculateSurfaceArea(surface, num_points = 100) {
     let area = 0;
