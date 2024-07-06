@@ -189,9 +189,17 @@ export function generateSemiEllipse(width, height, numPoints) {
 }
 
 
-// Function to calculate the diagonals of the base
+// Function to calculate the diagonals of the base and their end coordinates
 export function calculateDiagonals(length, depth) {
     const diagonal1 = Math.sqrt(Math.pow(length, 2) + Math.pow(depth, 2));
     const diagonal2 = diagonal1; // Assuming both diagonals are equal for a rectangular base
-    return [diagonal1, diagonal2];
+
+    // Calculate the end coordinates for both diagonals
+    const endCoord1 = { x: length / 2, y: depth / 2 };
+    const endCoord2 = { x: -length / 2, y: depth / 2 };
+
+    return {
+        lengths: [diagonal1, diagonal2],
+        endCoordinates: [endCoord1, endCoord2]
+    };
 }
