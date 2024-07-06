@@ -57,7 +57,7 @@ export function updateModel() {
         z: arc2.z,
         type: 'scatter3d',
         mode: 'lines',
-        line: { color: 'blue', width: 5 }
+        line: { color: 'red', width: 5 }
     };
 
     // Create surface trace
