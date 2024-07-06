@@ -61,6 +61,10 @@ export function updateModel() {
     const surface1 = interpolateSurface(arc1, arc2, 100);
     const surface2 = interpolateSurface(arc2, arc3, 100);
 
+    // Check the state of the checkboxes
+    const showSurface1 = document.getElementById('surface1').checked;
+    const showSurface2 = document.getElementById('surface2').checked;
+
     // Create surface trace
     const surfaceTrace1 = {
         x: surface1.x,
@@ -70,7 +74,8 @@ export function updateModel() {
         colorscale: [[0, 'cyan'], [1, 'cyan']],
         opacity: 0.2,
         showscale: false,
-        name: 'Tent Wall'
+        name: 'Tent Wall 1',
+        visible: showSurface1
     };
 
     // Create surface trace
@@ -82,7 +87,8 @@ export function updateModel() {
         colorscale: [[0, 'cyan'], [1, 'cyan']],
         opacity: 0.2,
         showscale: false,
-        name: 'Tent Wall'
+        name: 'Tent Wall 2',
+        visible: showSurface2
     };
 
     // Scale axes based on arc end points
@@ -101,9 +107,9 @@ export function updateModel() {
     let arcLength1 = calculateArcLength(arc1);
     let arcLength2 = calculateArcLength(arc2);
 
-    // Calculate surface areas
-    let surfaceArea1 = calculateSurfaceArea(surface1);
-    let surfaceArea2 = calculateSurfaceArea(surface2);
+    // Calculate surface areas only for visible surfaces
+    let surfaceArea1 = showSurface1 ? calculateSurfaceArea(surface1) : 0;
+    let surfaceArea2 = showSurface2 ? calculateSurfaceArea(surface2) : 0;
 
     // Initialize graph data
     let data = [];
@@ -112,14 +118,14 @@ export function updateModel() {
     data.push(arc1);
     data.push(arc2);
     data.push(arc3);
-    data.push(surfaceTrace1);
-    data.push(surfaceTrace2);
+    if (showSurface1) data.push(surfaceTrace1);
+    if (showSurface2) data.push(surfaceTrace2);
 
     // Update arc lengths and surface areas
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
     document.getElementById('surfaceArea').innerText = `Surface areas: ${(surfaceArea1 + surfaceArea2).toFixed(2)} m²`;
 
-   let layout = {
+    let layout = {
         scene: {
             xaxis: {
                 title: 'Width',
