@@ -19,6 +19,12 @@ export function updateModel() {
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.z;
 
+    // Проверка длины массивов
+    if (x_fine1.length !== 100 || z_fine1.length !== 100 || x_fine2.length !== 100 || z_fine2.length !== 100) {
+        console.error("Ошибка в генерации полуэллипсов: длина массивов не соответствует ожидаемой.");
+        return;
+    }
+
     // Генерация координат y вдоль глубины палатки
     const y_coords = linspace(0, depth, 100);
 
