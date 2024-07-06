@@ -10,7 +10,7 @@ export function calculateArcLength(arc) {
     return length;
 }
 
-export function findIntersection(arc1, arc2, num_points = 100, epsilon = 5) {
+export function findIntersection(arc1, arc2, num_points = 100, epsilon = 2) {
     for (let i = 0; i < num_points; i++) {
         if (Math.abs(arc1.x[i] - arc2.x[i]) < epsilon &&
             Math.abs(arc1.y[i] - arc2.y[i]) < epsilon &&
