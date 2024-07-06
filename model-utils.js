@@ -26,7 +26,7 @@ export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolati
     let surface = { x: [], y: [], z: [] };
 
     // Increase number of points if halfInterpolation is true
-    let points = halfInterpolation ? num_points * 10 : num_points;
+    let points = halfInterpolation ? num_points * 1 : num_points;
 
     // Find the intersection point if halfInterpolation is true
     let max_points = points;
