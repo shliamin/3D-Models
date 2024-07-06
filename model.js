@@ -56,7 +56,18 @@ export function updateModel() {
         line: { color: 'blue', width: 5 },
         visible: false
     };
-    
+
+    // Create additional line through four points
+    const additionalLine = {
+        x: [endCoord1Start[0], endCoord1End[0], endCoord2Start[0], endCoord2End[0]],
+        y: [endCoord1Start[1], endCoord1End[1], endCoord2Start[1], endCoord2End[1]],
+        z: [endCoord1Start[2], endCoord1End[2], endCoord2Start[2], endCoord2End[2]],
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 },
+        name: 'Additional Line'
+    };
+
     // Interpolate surface
     const surface1 = interpolateSurface(arc1, arc2, 100);
     const surface2 = interpolateSurface(arc2, arc3, 100);
@@ -114,10 +125,11 @@ export function updateModel() {
     // Initialize graph data
     let data = [];
 
-    // Add arcs and surface to graph
+    // Add arcs, additional line, and surface to graph
     data.push(arc1);
     data.push(arc2);
     data.push(arc3);
+    data.push(additionalLine);
     if (showSurface1) data.push(surfaceTrace1);
     if (showSurface2) data.push(surfaceTrace2);
 
