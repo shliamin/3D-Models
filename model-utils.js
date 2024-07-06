@@ -20,41 +20,19 @@ export function findIntersection(arc1, arc2, num_points = 100) {
     return -1; // Returns -1 if there is no intersection
 }
 
-// Function to interpolate between two arcs ensuring midpoint interpolation
-export function interpolateHalfway(arc1, arc2, num_points = 100) {
-    let surface = { x: [], y: [], z: [] };
 
-    for (let i = 0; i < num_points; i++) {
-        let xRow = [];
-        let yRow = [];
-        let zRow = [];
-        
-        for (let j = 0; j < num_points; j++) {
-            // Ensure halfway interpolation
-            let t = 0.5;
-            xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
-            yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
-            zRow.push((1 - t) * arc1.z[i] + t * arc2.z[i]);
-        }
-        
-        surface.x.push(xRow);
-        surface.y.push(yRow);
-        surface.z.push(zRow);
-    }
+export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolation = false) {
+    let surface = { x: [], y: [], z: [] };
     
-    return surface;
-}
-
-
-export function interpolateSurface(arc1, arc2, num_points = 100) {
-    let surface = { x: [], y: [], z: [] };
+    // Determine the maximum j value based on halfInterpolation flag
+    let max_j = halfInterpolation ? Math.floor(num_points / 2) : num_points;
 
     for (let i = 0; i < num_points; i++) {
         let xRow = [];
         let yRow = [];
         let zRow = [];
         
-        for (let j = 0; j < num_points; j++) {
+        for (let j = 0; j < max_j; j++) {
             let t = j / (num_points - 1);
             xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
             yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
