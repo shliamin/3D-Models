@@ -176,11 +176,11 @@ export function linspace(start, stop, num) {
 }
 
 export function generateSemiEllipse(width, height, numPoints) {
-    var xValues = linspace(0, width, numPoints);
+    var xValues = linspace(-width/2, width/2, numPoints);
     var yValuesUpper = [];
     for (var i = 0; i < xValues.length; i++) {
         var x = xValues[i];
-        var y = height * Math.sqrt(1 - (x * x) / (width * width));
+        var y = height * Math.sqrt(1 - (x * x) / ((width/2) * (width/2)));
         if (!isNaN(y) && y >= 0) {
             yValuesUpper.push(y);
         }
