@@ -13,8 +13,8 @@ export async function generateModel() {
     const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
-    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 1000);
-    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 1000);
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
     
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
@@ -115,8 +115,8 @@ export async function generatePattern() {
     const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
-    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 1000);
-    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 1000);
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
     
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
