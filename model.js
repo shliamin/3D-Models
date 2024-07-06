@@ -50,13 +50,13 @@ export function updateModel() {
         z: z_fine1.reverse(),
         type: 'scatter3d',
         mode: 'lines',
-        line: { color: 'blue', width: 5 }
+        line: { color: 'red', width: 5 }
     };
     
 
     // Interpolate surface
     const surface1 = interpolateSurface(arc1, arc2, 100);
-    const surface2 = interpolateSurface(arc2, arc3, 100)
+    const surface2 = interpolateSurface(arc2, arc3, 100);
 
     // Create surface trace
     const surfaceTrace1 = {
