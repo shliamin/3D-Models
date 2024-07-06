@@ -63,9 +63,10 @@ export async function generateModel() {
 
     //const intersection1 = findIntersection(arc1, arc3, 100)
     //const intersection2 = findIntersection(arc2, arc3, 100)
+
     
-    const surface3 = interpolateSurface(arc1, arc2, 100, true);
-    const surface4 = interpolateSurface(arc2, arc3, 100, true);
+    const surface3 = interpolateSurface(arc1, arc2, 100, 5, true);
+    const surface4 = interpolateSurface(arc2, arc3, 100, 5, true);
 
     const payload = {
         width,
@@ -170,8 +171,8 @@ export async function generatePattern() {
     //const intersection1 = findIntersection(arc1, arc3, 100)
     //const intersection2 = findIntersection(arc2, arc3, 100)
     
-    const surface3 = interpolateSurface(arc1, arc2, 100,  true);
-    const surface4 = interpolateSurface(arc2, arc3, 100,  true);
+    const surface3 = interpolateSurface(arc1, arc2, 100, 5, true);
+    const surface4 = interpolateSurface(arc2, arc3, 100, 5, true);
     
     const payload = {
         width,
