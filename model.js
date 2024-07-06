@@ -33,7 +33,7 @@ export function updateModel() {
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'Tent Frame'
+        name: 'Tent Frame 1'
     };
     
     const arc2 = {
@@ -43,7 +43,7 @@ export function updateModel() {
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'Tent Frame'
+        name: 'Tent Frame 2'
     };
     
     // Create arc3 with reversed points from arc1
@@ -159,8 +159,8 @@ export function updateModel() {
                 color: 'black'
             },
             bgcolor: 'rgba(255, 255, 255, 0.5)',
-            bordercolor: 'black',
-            borderwidth: 2
+            bordercolor: 'rgba(255, 255, 255, 0)', // Make border invisible
+            borderwidth: 0
         },
         margin: {
             l: 0,
@@ -172,9 +172,9 @@ export function updateModel() {
             {
                 showarrow: false,
                 text: "The Perfect Tent Shape",
-                x: maxX + 0.2, // Position text to the right of the plot
+                x: maxX + 0.1, // Position text to the right of the plot
                 y: (maxY + minY) / 2,
-                z: maxZ,
+                z: maxZ * 0.9, // Lower the text
                 font: {
                     family: "Arial, sans-serif",
                     size: 16,
@@ -186,9 +186,9 @@ export function updateModel() {
             {
                 showarrow: false,
                 text: "Optimal Weather Protection",
-                x: maxX + 0.2,
+                x: maxX + 0.1,
                 y: (maxY + minY) / 2,
-                z: maxZ * 0.8,
+                z: maxZ * 0.7, // Lower the text
                 font: {
                     family: "Arial, sans-serif",
                     size: 16,
@@ -200,9 +200,9 @@ export function updateModel() {
             {
                 showarrow: false,
                 text: "Designed from Experience & Analysis",
-                x: maxX + 0.2,
+                x: maxX + 0.1,
                 y: (maxY + minY) / 2,
-                z: maxZ * 0.6,
+                z: maxZ * 0.5, // Lower the text
                 font: {
                     family: "Arial, sans-serif",
                     size: 16,
@@ -214,9 +214,9 @@ export function updateModel() {
             {
                 showarrow: false,
                 text: "Unmatched Durability & Comfort",
-                x: maxX + 0.2,
+                x: maxX + 0.1,
                 y: (maxY + minY) / 2,
-                z: maxZ * 0.4,
+                z: maxZ * 0.3, // Lower the text
                 font: {
                     family: "Arial, sans-serif",
                     size: 16,
