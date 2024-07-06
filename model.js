@@ -1,4 +1,4 @@
-import { calculateArcLength, generateSemiEllipse, calculateDiagonals, linspace } from './model-utils.js';
+import { calculateArcLength, generateSemiEllipse, calculateDiagonals, linspace, interpolateSurface } from './model-utils.js';
 
 export function updateModel() {
     // Convert values from centimeters to meters
@@ -29,19 +29,45 @@ export function updateModel() {
     const arc1 = {
         x: x_fine1,
         y: y,
-        z: z_fine1,
+        z: z_fine1
+    };
+    
+    const arc2 = {
+        x: x_fine2,
+        y: y,
+        z: z_fine2
+    };
+
+    // Interpolate surface
+    const surface = interpolateSurface(arc1, arc2, 100);
+
+    // Create scatter traces for arcs
+    const arcTrace1 = {
+        x: arc1.x,
+        y: arc1.y,
+        z: arc1.z,
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
     
-    const arc2 = {
-        x: x_fine1.map(x => -x),
-        y: y,
-        z: z_fine1,
+    const arcTrace2 = {
+        x: arc2.x,
+        y: arc2.y,
+        z: arc2.z,
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
+    };
+
+    // Create surface trace
+    const surfaceTrace = {
+        x: surface.x,
+        y: surface.y,
+        z: surface.z,
+        type: 'surface',
+        colorscale: 'Viridis',
+        opacity: 0.8
     };
 
     // Scale axes based on arc end points
@@ -57,15 +83,16 @@ export function updateModel() {
     const maxZ = Math.max(...allZ);
 
     // Calculate arc lengths
-    let arcLength1 = calculateArcLength(arc1);
-    let arcLength2 = calculateArcLength(arc2);
+    let arcLength1 = calculateArcLength(arcTrace1);
+    let arcLength2 = calculateArcLength(arcTrace2);
 
     // Initialize graph data
     let data = [];
 
-    // Add arcs to graph
-    data.push(arc1);
-    data.push(arc2);
+    // Add arcs and surface to graph
+    data.push(arcTrace1);
+    data.push(arcTrace2);
+    data.push(surfaceTrace);
 
     // Update arc lengths
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
