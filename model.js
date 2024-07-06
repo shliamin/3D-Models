@@ -32,7 +32,8 @@ export function updateModel() {
         z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
-        line: { color: 'blue', width: 5 }
+        line: { color: 'blue', width: 5 },
+        name: 'Tent Frame'
     };
     
     const arc2 = {
@@ -41,7 +42,8 @@ export function updateModel() {
         z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
-        line: { color: 'blue', width: 5 }
+        line: { color: 'blue', width: 5 },
+        name: 'Tent Frame'
     };
     
     // Create arc3 with reversed points from arc1
@@ -68,7 +70,8 @@ export function updateModel() {
         type: 'surface',
         colorscale: [[0, 'cyan'], [1, 'cyan']],
         opacity: 0.2,
-        showscale: false 
+        showscale: false,
+        name: 'Tent Wall'
     };
 
     // Create surface trace
@@ -79,7 +82,8 @@ export function updateModel() {
         type: 'surface',
         colorscale: [[0, 'cyan'], [1, 'cyan']],
         opacity: 0.2,
-        showscale: false 
+        showscale: false,
+        name: 'Tent Wall'
     };
 
     // Scale axes based on arc end points
