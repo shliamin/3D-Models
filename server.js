@@ -1,4 +1,4 @@
-import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, interpolateHalfway, calculateDiagonals, linspace } from './model-utils.js';
+import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, interpolateSurfaceUntilIntersection, calculateDiagonals, linspace } from './model-utils.js';
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
@@ -57,8 +57,8 @@ export async function generateModel() {
     // Interpolate surfaces
     const surface1 = interpolateSurface(arc1, arc2, 100);
     const surface2 = interpolateSurface(arc2, arc3, 100);
-    const surface3 = interpolateHalfway(arc1, arc2);
-    const surface4 = interpolateHalfway(arc2, arc3);
+    const surface3 = interpolateSurfaceUntilIntersection(arc1, arc2);
+    const surface4 = interpolateSurfaceUntilIntersection(arc2, arc3);
 
     const payload = {
         width,
@@ -157,8 +157,8 @@ export async function generatePattern() {
     };
 
     // Interpolate surfaces until intersection
-    const surface3 = interpolateHalfway(arc1, arc2);
-    const surface4 = interpolateHalfway(arc2, arc3);
+    const surface3 = interpolateSurfaceUntilIntersection(arc1, arc2);
+    const surface4 = interpolateSurfaceUntilIntersection(arc2, arc3);
     
     const payload = {
         width,
