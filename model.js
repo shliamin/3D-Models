@@ -151,7 +151,7 @@ export function updateModel() {
         },
         legend: {
             x: 1.1, // Move legend to the right of the plot
-            y: 0.5,
+            y: 0.1,
             traceorder: 'normal',
             font: {
                 family: 'Arial, sans-serif',
@@ -165,7 +165,7 @@ export function updateModel() {
         annotations: [
             {
                 showarrow: false,
-                text: "<b>The Perfect Tent Shape!</b>",
+                text: "<b>The Perfect Tent Shape</b>",
                 x: 1.2, // Position text to the right of the plot
                 y: 0.5,
                 font: {
