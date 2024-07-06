@@ -182,7 +182,7 @@ export function updateModel() {
         ],
         margin: {
             l: 0,
-            r: 200, // Add more space for annotations
+            r: 100, // Add more space for annotations
             b: 0,
             t: 0
         }
