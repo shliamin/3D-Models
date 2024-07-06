@@ -29,36 +29,23 @@ export function updateModel() {
     const arc1 = {
         x: x_fine1,
         y: y,
-        z: z_fine1
-    };
-    
-    const arc2 = {
-        x: x_fine2,
-        y: y,
-        z: z_fine2
-    };
-
-    // Interpolate surface
-    const surface = interpolateSurface(arc1, arc2, 100);
-
-    // Create scatter traces for arcs
-    const arcTrace1 = {
-        x: arc1.x,
-        y: arc1.y,
-        z: arc1.z,
+        z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
     
-    const arcTrace2 = {
-        x: arc2.x,
-        y: arc2.y,
-        z: arc2.z,
+    const arc2 = {
+        x: x_fine1.map(x => -x),
+        y: y,
+        z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
-        line: { color: 'red', width: 5 }
+        line: { color: 'blue', width: 5 }
     };
+
+    // Interpolate surface
+    const surface = interpolateSurface(arc1, arc2, 100);
 
     // Create surface trace
     const surfaceTrace = {
@@ -66,8 +53,8 @@ export function updateModel() {
         y: surface.y,
         z: surface.z,
         type: 'surface',
-        colorscale: 'Viridis',
-        opacity: 0.8
+        colorscale: 'cyan',
+        opacity: 0.3
     };
 
     // Scale axes based on arc end points
@@ -90,8 +77,6 @@ export function updateModel() {
     let data = [];
 
     // Add arcs and surface to graph
-    data.push(arcTrace1);
-    data.push(arcTrace2);
     data.push(surfaceTrace);
 
     // Update arc lengths
