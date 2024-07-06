@@ -54,7 +54,7 @@ export function updateModel() {
     };
 
     const arc4 = {
-        x: x_fine2.map(x => -x).reverse(),
+        x: x_fine2.map(x => -x),
         y: y,
         z: z_fine2,
         type: 'scatter3d',
