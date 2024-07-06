@@ -13,7 +13,7 @@ export function calculateArcLength(arc) {
 // Function to find the first intersection point of two arcs
 export function findIntersection(arc1, arc2, num_points = 100) {
     for (let i = 0; i < num_points; i++) {
-        if (Math.abs(arc1.x[i] - arc2.x[i]) < 1e-6 && Math.abs(arc1.y[i] - arc2.y[i]) < 1e-6 && Math.abs(arc1.z[i] - arc2.z[i]) < 1e-6) {
+        if (arc1.x[i] === arc2.x[i] && arc1.y[i] === arc2.y[i] && arc1.z[i] === arc2.z[i]) {
             return i;
         }
     }
@@ -34,21 +34,22 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100
         let xRow = [];
         let yRow = [];
         let zRow = [];
-
+        
         for (let j = 0; j < num_points; j++) {
             let t = j / (num_points - 1);
             xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
             yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
             zRow.push((1 - t) * arc1.z[i] + t * arc2.z[i]);
         }
-
+        
         surface.x.push(xRow);
         surface.y.push(yRow);
         surface.z.push(zRow);
     }
-
+    
     return surface;
 }
+
 
 export function interpolateSurface(arc1, arc2, num_points = 100) {
     let surface = { x: [], y: [], z: [] };
@@ -57,19 +58,19 @@ export function interpolateSurface(arc1, arc2, num_points = 100) {
         let xRow = [];
         let yRow = [];
         let zRow = [];
-
+        
         for (let j = 0; j < num_points; j++) {
             let t = j / (num_points - 1);
             xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
             yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
             zRow.push((1 - t) * arc1.z[i] + t * arc2.z[i]);
         }
-
+        
         surface.x.push(xRow);
         surface.y.push(yRow);
         surface.z.push(zRow);
     }
-
+    
     return surface;
 }
 
@@ -120,11 +121,11 @@ export function linspace(start, stop, num) {
 }
 
 export function generateSemiEllipse(width, height, numPoints) {
-    var xValues = linspace(-width / 2, width / 2, numPoints);
+    var xValues = linspace(-width/2, width/2, numPoints);
     var yValuesUpper = [];
     for (var i = 0; i < xValues.length; i++) {
         var x = xValues[i];
-        var y = height * Math.sqrt(1 - (x * x) / ((width / 2) * (width / 2)));
+        var y = height * Math.sqrt(1 - (x * x) / ((width/2) * (width/2)));
         if (!isNaN(y) && y >= 0) {
             yValuesUpper.push(y);
         }
@@ -150,6 +151,7 @@ export function generateHalfSemiEllipse(width, height, numPoints) {
 
     return { x: xValuesHalf, y: yValuesUpper };
 }
+
 
 // Function to calculate the diagonals of the base and their end coordinates
 export function calculateDiagonals(length, depth) {
