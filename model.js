@@ -94,9 +94,9 @@ export function updateModel() {
             },
             camera: {
                 eye: {
-                    x: 2, // Adjust these values to zoom out the camera
-                    y: 1,
-                    z: 2
+                    x: 1.5, // Adjust these values to zoom out the camera
+                    y: 0.75,
+                    z: 1.5
                 },
                 center: {
                     x: 0.5, // Shift right (positive value)
