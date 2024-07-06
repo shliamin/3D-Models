@@ -7,51 +7,39 @@ export function updateModel() {
     const height = parseFloat(document.getElementById('height').value) / 100;
 
     // Calculate the four corners of the tent's base
-    const point1 = {
-        x: -width / 2,
-        y: -depth / 2,
-        z: 0
-    };
-    
-    const point2 = {
-        x: width / 2,
-        y: -depth / 2,
-        z: 0
-    };
-    
-    const point3 = {
-        x: width / 2,
-        y: depth / 2,
-        z: 0
-    };
-    
-    const point4 = {
-        x: -width / 2,
-        y: depth / 2,
-        z: 0
-    };
+    const point1 = { x: -width / 2, y: -depth / 2, z: 0 };
+    const point2 = { x: width / 2, y: -depth / 2, z: 0 };
+    const point3 = { x: width / 2, y: depth / 2, z: 0 };
+    const point4 = { x: -width / 2, y: depth / 2, z: 0 };
 
     // Calculate the apex point at the top center of the tent
-    const apexPoint = {
-        x: 0,
-        y: 0,
-        z: height
-    };
-
+    const apexPoint = { x: 0, y: 0, z: height };
 
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse3DFromPoints(point1, point3, apexPoint, 100);
     const semiEllipse2 = generateSemiEllipse3DFromPoints(point2, point4, apexPoint, 100);
-    
-    const x_fine1 = semiEllipse1.x;
-    const z_fine1 = semiEllipse1.y;
-    const x_fine2 = semiEllipse2.x;
-    const z_fine2 = semiEllipse2.y;
-    const y = linspace(0, depth, 100);
 
+    // Debugging output
+    console.log('semiEllipse1:', semiEllipse1);
+    console.log('semiEllipse2:', semiEllipse2);
+
+    // Check if the semi-ellipses are generated correctly
+    if (!semiEllipse1 || !semiEllipse2) {
+        console.error("Error generating semi-ellipses.");
+        return;
+    }
+
+    // Transform the data into separate arrays for x, y, and z
+    const x_fine1 = semiEllipse1.map(point => point.x);
+    const y_fine1 = semiEllipse1.map(point => point.y);
+    const z_fine1 = semiEllipse1.map(point => point.z);
+
+    const x_fine2 = semiEllipse2.map(point => point.x);
+    const y_fine2 = semiEllipse2.map(point => point.y);
+    const z_fine2 = semiEllipse2.map(point => point.z);
 
     // Validate arc data
-    if (!Array.isArray(x_fine1) || !Array.isArray(z_fine1) || !Array.isArray(x_fine2) || !Array.isArray(z_fine2) || !Array.isArray(y)) {
+    if (!Array.isArray(x_fine1) || !Array.isArray(z_fine1) || !Array.isArray(x_fine2) || !Array.isArray(z_fine2)) {
         console.error("Error in arc data.");
         return;
     }
@@ -59,29 +47,30 @@ export function updateModel() {
     // Create arcs
     const arc1 = {
         x: x_fine1,
-        y: y,
-        z: z_fine1,
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'blue', width: 5 }
-    };
-    
-    const arc2 = {
-        x: x_fine1.map(x => -x),
-        y: y,
+        y: y_fine1,
         z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
 
-    console.log(`arc1: ${arc1}, arc2: ${arc2}`);
-    
+    const arc2 = {
+        x: x_fine2,
+        y: y_fine2,
+        z: z_fine2,
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
+
+    console.log('arc1:', arc1);
+    console.log('arc2:', arc2);
+
     // Scale axes based on arc end points
     const allX = arc1.x.concat(arc2.x);
     const allY = arc1.y.concat(arc2.y);
     const allZ = arc1.z.concat(arc2.z);
-    
+
     const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
     const minY = Math.min(...allY);
