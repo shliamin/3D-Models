@@ -76,6 +76,8 @@ export function updateModel() {
     let data = [];
 
     // Add arcs and surface to graph
+    data.push(arc1);
+    data.push(arc2);
     data.push(surfaceTrace);
 
     // Update arc lengths
