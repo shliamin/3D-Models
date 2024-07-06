@@ -9,8 +9,8 @@ export async function generateModel() {
 
     const numPoints = 100;
 
-    // Generate arcs using the new functions
-    const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
+    // Calculate diagonals and their end coordinates
+    const { lengths: [diagonal1, diagonal2], endCoordinates: [endCoord1, endCoord2] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
