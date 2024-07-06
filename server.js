@@ -117,6 +117,7 @@ export async function generateModel() {
     }
 }
 
+
 export async function generatePattern() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
