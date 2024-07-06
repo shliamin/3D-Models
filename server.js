@@ -1,4 +1,4 @@
-import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, calculateDiagonals, linspace } from './model-utils.js';
+import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, calculateDiagonals, linspace, findIntersection } from './model-utils.js';
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
