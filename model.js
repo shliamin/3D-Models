@@ -52,6 +52,7 @@ export function updateModel() {
         x: surface.x,
         y: surface.y,
         z: surface.z,
+        type: 'surface',
         colorscale: 'cyan',
         opacity: 0.3
     };
@@ -78,7 +79,7 @@ export function updateModel() {
     // Add arcs and surface to graph
     data.push(arc1);
     data.push(arc2);
-    data.push(surface);
+    data.push(surfaceTrace);
 
     // Update arc lengths
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
