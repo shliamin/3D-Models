@@ -22,51 +22,35 @@ export function findIntersection(arc1, arc2, num_points = 100, epsilon = 5) {
 }
 
 
-function generateArcUntilPoint(arc, num_points) {
-    return {
-        x: arc.x.slice(0, num_points),
-        y: arc.y.slice(0, num_points),
-        z: arc.z.slice(0, num_points)
-    };
-}
-
 export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolation = false) {
     let surface = { x: [], y: [], z: [] };
 
-    let intersectionPoint = null;
+    let intersectionIndex = -1;
 
     // Find the intersection point if halfInterpolation is true
     if (halfInterpolation) {
-        intersectionPoint = findIntersection(arc1, arc2, num_points);
-        if (intersectionPoint) {
-            console.log(`Intersection point found: (${intersectionPoint.x}, ${intersectionPoint.y}, ${intersectionPoint.z})`);
-            
-            // Generate new arcs up to the intersection point
-            arc1 = generateArcUntilPoint(arc1, intersectionPoint.index + 1);
-            arc2 = generateArcUntilPoint(arc2, intersectionPoint.index + 1);
-            
-            num_points = intersectionPoint.index + 1; // Update num_points to the intersection index
+        intersectionIndex = findIntersection(arc1, arc2, num_points);
+        if (intersectionIndex !== -1) {
+            console.log(`Intersection point found at index ${intersectionIndex}: (${arc1.x[intersectionIndex]}, ${arc1.y[intersectionIndex]}, ${arc1.z[intersectionIndex]})`);
         } else {
             console.log('Intersection point not found');
             return surface; // Return empty surface if no intersection is found
         }
     }
 
+    // Adjust points to the intersectionIndex if halfInterpolation is true
+    let max_points = halfInterpolation ? intersectionIndex + 1 : num_points;
+
     for (let i = 0; i < num_points; i++) {
         let xRow = [];
         let yRow = [];
         let zRow = [];
         
-        for (let j = 0; j < num_points; j++) {
-            let t = j / (num_points - 1);
-
-            let x2 = arc2.x[i];
-            let y2 = arc2.y[i];
-            let z2 = arc2.z[i];
-
-            xRow.push((1 - t) * arc1.x[i] + t * x2);
-            yRow.push((1 - t) * arc1.y[i] + t * y2);
-            zRow.push((1 - t) * arc1.z[i] + t * z2);
+        for (let j = 0; j < max_points; j++) {
+            let t = j / (max_points - 1);
+            xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
+            yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
+            zRow.push((1 - t) * arc1.z[i] + t * arc2.z[i]);
         }
 
         surface.x.push(xRow);
@@ -172,4 +156,3 @@ export function calculateDiagonals(length, depth) {
         endCoordinates: [endCoord1Start, endCoord1End, endCoord2Start, endCoord2End]
     };
 }
-
