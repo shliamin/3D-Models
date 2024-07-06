@@ -38,17 +38,34 @@ export function interpolateSurface(arc1, arc2, num_points = 100, interpolationPo
         );
     }
 
-    // Найдем индекс пересечения, если задана точка интерполяции
-    let max_points = num_points;
-    if (interpolationPoint) {
-        let distances1 = arc1.x.map((_, i) => distance({ x: arc1.x[i], y: arc1.y[i], z: arc1.z[i] }, interpolationPoint));
-        let distances2 = arc2.x.map((_, i) => distance({ x: arc2.x[i], y: arc2.y[i], z: arc2.z[i] }, interpolationPoint));
+    // Проверим, что точка интерполяции находится между двумя дугами
+    function isPointBetweenArcs(point, arc1, arc2) {
+        let distances1 = arc1.x.map((_, i) => distance({ x: arc1.x[i], y: arc1.y[i], z: arc1.z[i] }, point));
+        let distances2 = arc2.x.map((_, i) => distance({ x: arc2.x[i], y: arc2.y[i], z: arc2.z[i] }, point));
         
-        // Найдем минимальное расстояние до заданной точки
         let minDistance1 = Math.min(...distances1);
         let minDistance2 = Math.min(...distances2);
         
-        // Максимальная точка интерполяции будет ближайшей точкой к заданной на обеих дугах
+        // Проверим, что точка ближе к обоим дугам, чем максимальное расстояние между дугами
+        let maxDistanceBetweenArcs = Math.max(...arc1.x.map((_, i) => distance({ x: arc1.x[i], y: arc1.y[i], z: arc1.z[i] }, { x: arc2.x[i], y: arc2.y[i], z: arc2.z[i] })));
+        
+        return minDistance1 <= maxDistanceBetweenArcs && minDistance2 <= maxDistanceBetweenArcs;
+    }
+
+    // Найдем индекс пересечения, если задана точка интерполяции
+    let max_points = num_points;
+    if (interpolationPoint) {
+        if (!isPointBetweenArcs(interpolationPoint, arc1, arc2)) {
+            console.log('Interpolation point is not between arcs');
+            return surface; // Return empty surface if interpolation point is not valid
+        }
+
+        let distances1 = arc1.x.map((_, i) => distance({ x: arc1.x[i], y: arc1.y[i], z: arc1.z[i] }, interpolationPoint));
+        let distances2 = arc2.x.map((_, i) => distance({ x: arc2.x[i], y: arc2.y[i], z: arc2.z[i] }, interpolationPoint));
+        
+        let minDistance1 = Math.min(...distances1);
+        let minDistance2 = Math.min(...distances2);
+        
         max_points = Math.min(distances1.indexOf(minDistance1), distances2.indexOf(minDistance2)) + 1;
     }
 
