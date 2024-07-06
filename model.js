@@ -159,7 +159,51 @@ export function updateModel() {
             r: 0,
             b: 0,
             t: 0
+        },
+        annotations: [
+        {
+            showarrow: false,
+            text: "The Perfect Tent Shape",
+            x: 0,
+            y: 0,
+            z: 0,
+            font: {
+                family: "Arial, sans-serif",
+                size: 16,
+                color: "black"
+            },
+            xanchor: 'left',
+            yanchor: 'middle'
+        },
+        {
+            showarrow: false,
+            text: "Optimal Weather Protection",
+            x: 0,
+            y: 0,
+            z: 0.2,
+            font: {
+                family: "Arial, sans-serif",
+                size: 16,
+                color: "black"
+            },
+            xanchor: 'left',
+            yanchor: 'middle'
+        },
+        {
+            showarrow: false,
+            text: "Designed from Experience & Analysis",
+            x: 0,
+            y: 0,
+            z: 0.4,
+            font: {
+                family: "Arial, sans-serif",
+                size: 16,
+                color: "black"
+            },
+            xanchor: 'left',
+            yanchor: 'middle'
         }
+    ]
     };
 
     Plotly.newPlot('tentModel', data, layout);
