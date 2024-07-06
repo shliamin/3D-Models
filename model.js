@@ -44,24 +44,53 @@ export function updateModel() {
         line: { color: 'blue', width: 5 }
     };
 
-    // Interpolate surface
-    const surface = interpolateSurface(arc1, arc2, 100);
+    const arc3 = {
+        x: x_fine2,
+        y: y,
+        z: z_fine2,
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
 
-    // Create surface trace
-    const surfaceTrace = {
-        x: surface.x,
-        y: surface.y,
-        z: surface.z,
+    const arc4 = {
+        x: x_fine2.map(x => -x),
+        y: y,
+        z: z_fine2,
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
+
+    // Interpolate surfaces
+    const surface1 = interpolateSurface(arc1, arc2, 100);
+    const surface2 = interpolateSurface(arc3, arc4, 100);
+
+    // Create surface traces
+    const surfaceTrace1 = {
+        x: surface1.x,
+        y: surface1.y,
+        z: surface1.z,
         type: 'surface',
-        colorscale: [[0, 'cyan'], [1, 'cyan']],,
+        colorscale: [[0, 'cyan'], [1, 'cyan']],
+        opacity: 0.3,
+        showscale: false 
+    };
+
+    const surfaceTrace2 = {
+        x: surface2.x,
+        y: surface2.y,
+        z: surface2.z,
+        type: 'surface',
+        colorscale: [[0, 'cyan'], [1, 'cyan']],
         opacity: 0.3,
         showscale: false 
     };
 
     // Scale axes based on arc end points
-    const allX = arc1.x.concat(arc2.x);
-    const allY = arc1.y.concat(arc2.y);
-    const allZ = arc1.z.concat(arc2.z);
+    const allX = arc1.x.concat(arc2.x, arc3.x, arc4.x);
+    const allY = arc1.y.concat(arc2.y, arc3.y, arc4.y);
+    const allZ = arc1.z.concat(arc2.z, arc3.z, arc4.z);
     
     const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
@@ -73,17 +102,22 @@ export function updateModel() {
     // Calculate arc lengths
     let arcLength1 = calculateArcLength(arc1);
     let arcLength2 = calculateArcLength(arc2);
+    let arcLength3 = calculateArcLength(arc3);
+    let arcLength4 = calculateArcLength(arc4);
 
     // Initialize graph data
     let data = [];
 
-    // Add arcs and surface to graph
+    // Add arcs and surfaces to graph
     data.push(arc1);
     data.push(arc2);
-    data.push(surfaceTrace);
+    data.push(arc3);
+    data.push(arc4);
+    data.push(surfaceTrace1);
+    data.push(surfaceTrace2);
 
     // Update arc lengths
-    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
+    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2 + arcLength3 + arcLength4).toFixed(2)} m`;
 
     let layout = {
         scene: {
