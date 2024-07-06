@@ -1,4 +1,4 @@
-import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, calculateDiagonals, linspace, findIntersection } from './model-utils.js';
+import { generateSemiEllipse, interpolateSurface, calculateDiagonals, linspace, findIntersection } from './model-utils.js';
 
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
@@ -72,6 +72,9 @@ export async function generateModel() {
     const surface3 = interpolateSurface(arc1, arc2, numPoints, 5, true);
     const surface4 = interpolateSurface(arc2, arc3, numPoints, 5, true);
 
+    console.log('Surface3:', surface3);
+    console.log('Surface4:', surface4);
+
     const payload = {
         width,
         depth,
@@ -80,6 +83,8 @@ export async function generateModel() {
         surface4,
         enable_relaxation: true // Always enable relaxation
     };
+
+    console.log('Payload:', payload);
 
     // Show spinner while fetching
     document.getElementById('spinner').style.display = 'block';
