@@ -1,23 +1,23 @@
 import { calculateArcLength, generateSemiEllipse, calculateDiagonals, linspace, interpolateSurface } from './model-utils.js';
 
 export function updateModel() {
-    // Convert values from centimeters to meters
+    // Get values in centimeters and convert to meters
     const width = parseFloat(document.getElementById('width').value) / 100;
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Calculate the diagonals of the tent base
-    const [diagonal1, diagonal2] = calculateDiagonals(width, depth);
+    // Calculate the diagonals and their end coordinates
+    const { lengths: [diagonal1, diagonal2], endCoordinates: [endCoord1, endCoord2] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
     const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
     
     // Extract x and z coordinates for the semi-ellipses
-    const x_fine1 = semiEllipse1.x;
-    const z_fine1 = semiEllipse1.y;
-    const x_fine2 = semiEllipse2.x;
-    const z_fine2 = semiEllipse2.y;
+    const x_fine1 = diagonal1.x;
+    const y_fine1 = diagonal1.y;
+    const x_fine2 = diagonal2.x;
+    const y_fine2 = diagonal2.y;
 
     // Generate y coordinates across the depth of the tent
     const y = linspace(0, depth, 100);
