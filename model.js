@@ -12,7 +12,7 @@ export function updateModel() {
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
     const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
-    
+
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
     const x_fine2 = semiEllipse2.x;
@@ -34,7 +34,7 @@ export function updateModel() {
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
-    
+
     const arc2 = {
         x: x_fine1.map(x => -x),
         y: y,
@@ -44,8 +44,26 @@ export function updateModel() {
         line: { color: 'blue', width: 5 }
     };
 
+    const arc3 = {
+        x: x_fine2,
+        y: y,
+        z: z_fine2,
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
+
+    const arc4 = {
+        x: x_fine2.map(x => -x),
+        y: y,
+        z: z_fine2,
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'blue', width: 5 }
+    };
+
     // Interpolate surface
-    const surface = interpolateSurface(arc1, arc2, 100);
+    const surface = interpolateSurface(arc1, arc2, arc3, arc4, 100);
 
     // Create surface trace
     const surfaceTrace = {
@@ -59,10 +77,10 @@ export function updateModel() {
     };
 
     // Scale axes based on arc end points
-    const allX = arc1.x.concat(arc2.x);
-    const allY = arc1.y.concat(arc2.y);
-    const allZ = arc1.z.concat(arc2.z);
-    
+    const allX = arc1.x.concat(arc2.x, arc3.x, arc4.x);
+    const allY = arc1.y.concat(arc2.y, arc3.y, arc4.y);
+    const allZ = arc1.z.concat(arc2.z, arc3.z, arc4.z);
+
     const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
     const minY = Math.min(...allY);
@@ -80,6 +98,8 @@ export function updateModel() {
     // Add arcs and surface to graph
     data.push(arc1);
     data.push(arc2);
+    data.push(arc3);
+    data.push(arc4);
     data.push(surfaceTrace);
 
     // Update arc lengths
