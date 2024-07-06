@@ -114,7 +114,7 @@ export function updateModel() {
     // Update arc lengths
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
-    let layout = {
+   let layout = {
         scene: {
             xaxis: {
                 title: 'Width',
@@ -150,7 +150,7 @@ export function updateModel() {
             }
         },
         legend: {
-            x: 1, // Place legend to the right of the plot
+            x: 1.1, // Move legend to the right of the plot
             y: 0.5,
             traceorder: 'normal',
             font: {
@@ -162,9 +162,27 @@ export function updateModel() {
             bordercolor: 'rgba(255, 255, 255, 0)', // Make border invisible
             borderwidth: 0
         },
+        annotations: [
+            {
+                showarrow: false,
+                text: "<b>Legend</b><br>The Perfect Tent Shape<br>Optimal Weather Protection<br>Designed from Experience & Analysis<br>Unmatched Durability & Comfort",
+                x: 1.2, // Position text to the right of the plot
+                y: 0.5,
+                font: {
+                    family: "Arial, sans-serif",
+                    size: 14,
+                    color: "black"
+                },
+                xref: 'paper',
+                yref: 'paper',
+                align: 'left',
+                xanchor: 'left',
+                yanchor: 'middle'
+            }
+        ],
         margin: {
             l: 0,
-            r: 100, // Add space for annotations
+            r: 200, // Add more space for annotations
             b: 0,
             t: 0
         }
