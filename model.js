@@ -12,12 +12,12 @@ export function updateModel() {
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
     const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
-    
+
     // Extract x and z coordinates for the semi-ellipses
-    const x_fine1 = diagonal1.x;
-    const y_fine1 = diagonal1.y;
-    const x_fine2 = diagonal2.x;
-    const y_fine2 = diagonal2.y;
+    const x_fine1 = semiEllipse1.x;
+    const z_fine1 = semiEllipse1.z;
+    const x_fine2 = semiEllipse2.x;
+    const z_fine2 = semiEllipse2.z;
 
     // Generate y coordinates across the depth of the tent
     const y = linspace(0, depth, 100);
