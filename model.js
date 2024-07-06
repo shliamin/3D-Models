@@ -46,7 +46,7 @@ export function updateModel() {
 
     const arc3 = {
         x: x_fine2,
-        y: y,
+        y: y.map(v => -v),
         z: z_fine2,
         type: 'scatter3d',
         mode: 'lines',
@@ -55,7 +55,7 @@ export function updateModel() {
 
     const arc4 = {
         x: x_fine2.map(x => -x),
-        y: y,
+        y: y.map(v => -v),
         z: z_fine2,
         type: 'scatter3d',
         mode: 'lines',
