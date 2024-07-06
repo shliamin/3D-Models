@@ -58,28 +58,29 @@ export function updateModel() {
     const allY = arc1.y.concat(arc2.y);
     const allZ = arc1.z.concat(arc2.z);
     
-    const minX = Math.min(...allX);
-    const maxX = Math.max(...allX);
-    const minY = Math.min(...allY);
-    const maxY = Math.max(...allY);
-    const minZ = Math.min(...allZ);
-    const maxZ = Math.max(...allZ);
-
+    // Scale axes based on width, depth, and height
+    const minX = -width / 2;
+    const maxX = width / 2;
+    const minY = 0;
+    const maxY = depth;
+    const minZ = 0;
+    const maxZ = height;
+    
     console.log(`X range: [${minX}, ${maxX}], Y range: [${minY}, ${maxY}], Z range: [${minZ}, ${maxZ}]`);
-
+    
     // Calculate arc lengths
     let arcLength1 = calculateArcLength(arc1);
     let arcLength2 = calculateArcLength(arc2);
-
+    
     console.log(`Arc lengths: ${arcLength1}, ${arcLength2}`);
-
+    
     // Initialize graph data
     let data = [];
-
+    
     // Add arcs to graph
     data.push(arc1);
     data.push(arc2);
-
+    
     // Visualize x, y, z axes separately
     const xAxis = {
         x: [minX, maxX],
@@ -89,7 +90,7 @@ export function updateModel() {
         mode: 'lines',
         line: { color: 'red', width: 2 }
     };
-
+    
     const yAxis = {
         x: [0, 0],
         y: [minY, maxY],
@@ -98,7 +99,7 @@ export function updateModel() {
         mode: 'lines',
         line: { color: 'green', width: 2 }
     };
-
+    
     const zAxis = {
         x: [0, 0],
         y: [0, 0],
@@ -107,14 +108,14 @@ export function updateModel() {
         mode: 'lines',
         line: { color: 'blue', width: 2 }
     };
-
+    
     data.push(xAxis);
     data.push(yAxis);
     data.push(zAxis);
-
+    
     // Update arc lengths
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
-
+    
     let layout = {
         scene: {
             xaxis: {
@@ -161,6 +162,7 @@ export function updateModel() {
             t: 0
         }
     };
-
+    
     Plotly.newPlot('tentModel', data, layout);
+
 }
