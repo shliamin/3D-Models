@@ -41,7 +41,7 @@ export function updateModel() {
         z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
-        line: { color: 'green', width: 5 }
+        line: { color: 'blue', width: 5 }
     };
     
     // Create arc3 with reversed points from arc1
@@ -51,7 +51,7 @@ export function updateModel() {
         z: [...arc1.z].reverse(),
         type: 'scatter3d',
         mode: 'lines',
-        line: { color: 'red', width: 5 }
+        line: { color: 'blue', width: 5 }
     };
     
 
@@ -66,7 +66,7 @@ export function updateModel() {
         z: surface1.z,
         type: 'surface',
         colorscale: [[0, 'cyan'], [1, 'cyan']],
-        opacity: 0.3,
+        opacity: 0.2,
         showscale: false 
     };
 
@@ -77,7 +77,7 @@ export function updateModel() {
         z: surface2.z,
         type: 'surface',
         colorscale: [[0, 'cyan'], [1, 'cyan']],
-        opacity: 0.3,
+        opacity: 0.2,
         showscale: false 
     };
 
