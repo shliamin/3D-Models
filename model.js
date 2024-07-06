@@ -54,7 +54,8 @@ export function updateModel() {
         z: surface.z,
         type: 'surface',
         colorscale: 'cyan',
-        opacity: 0.3
+        opacity: 0.3,
+        showscale: false 
     };
 
     // Scale axes based on arc end points
