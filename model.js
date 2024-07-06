@@ -33,7 +33,7 @@ export function updateModel() {
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'Perfect Tent Frame 1'
+        name: 'Tent Frame 1'
     };
     
     const arc2 = {
@@ -43,7 +43,7 @@ export function updateModel() {
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'Perfect Tent Frame 2'
+        name: 'Tent Frame 2'
     };
     
     // Create arc3 with reversed points from arc1
@@ -70,7 +70,7 @@ export function updateModel() {
         colorscale: [[0, 'cyan'], [1, 'cyan']],
         opacity: 0.2,
         showscale: false,
-        name: 'Tent Wall - Designed from Experience & Analysis'
+        name: 'Tent Wall'
     };
 
     // Create surface trace
@@ -82,7 +82,7 @@ export function updateModel() {
         colorscale: [[0, 'cyan'], [1, 'cyan']],
         opacity: 0.2,
         showscale: false,
-        name: 'Tent Wall - Unmatched Durability & Comfort'
+        name: 'Tent Wall'
     };
 
     // Scale axes based on arc end points
