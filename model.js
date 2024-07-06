@@ -20,14 +20,12 @@ export function updateModel() {
     const z_fine2 = semiEllipse2.z;
 
     // Generate y coordinates across the depth of the tent
-    const y = linspace(0, depth, 100);
-
-    
+    const y_coords = linspace(0, depth, 100);
 
     // Create arcs
     const arc1 = {
         x: x_fine1,
-        y: y,
+        y: y_coords,
         z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
@@ -37,7 +35,7 @@ export function updateModel() {
     // Arc2 is a mirror of Arc1 along the x-axis
     const arc2 = {
         x: x_fine1.map(x => -x),
-        y: y,
+        y: y_coords,
         z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
@@ -46,7 +44,7 @@ export function updateModel() {
 
     const arc3 = {
         x: x_fine2,
-        y: y,
+        y: y_coords,
         z: z_fine2,
         type: 'scatter3d',
         mode: 'lines',
@@ -56,7 +54,7 @@ export function updateModel() {
     // Arc4 is a mirror of Arc3 along the x-axis
     const arc4 = {
         x: x_fine2.map(x => -x),
-        y: y,
+        y: y_coords,
         z: z_fine2,
         type: 'scatter3d',
         mode: 'lines',
@@ -101,25 +99,17 @@ export function updateModel() {
     const maxZ = Math.max(...allZ);
 
     // Calculate arc lengths
-    let arcLength1 = calculateArcLength(arc1);
-    let arcLength2 = calculateArcLength(arc2);
-    
-    // Initialize graph data
-    let data = [];
+    const arcLength1 = calculateArcLength(arc1);
+    const arcLength2 = calculateArcLength(arc2);
 
-    // Add arcs and surfaces to graph
-    data.push(arc1);
-    data.push(arc2);
-    data.push(arc3);
-    data.push(arc4);
-    data.push(surfaceTrace1);
-    data.push(surfaceTrace2);
+    // Initialize graph data
+    const data = [arc1, arc2, arc3, arc4, surfaceTrace1, surfaceTrace2];
 
     // Update arc lengths display
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
     // Define layout of the plot
-    let layout = {
+    const layout = {
         scene: {
             xaxis: {
                 title: 'Width',
@@ -143,9 +133,9 @@ export function updateModel() {
             },
             camera: {
                 eye: {
-                    x: 1, 
-                    y: 0.25, 
-                    z: 0.5 
+                    x: 1.5, 
+                    y: 1.5, 
+                    z: 1.5 
                 },
                 center: {
                     x: 0, 
