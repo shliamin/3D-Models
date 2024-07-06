@@ -44,44 +44,14 @@ export function updateModel() {
         line: { color: 'blue', width: 5 }
     };
 
-    const arc3 = {
-        x: [x_fine1[x_fine1.length - 1], ...x_fine1.slice(1, x_fine1.length - 1), x_fine1[0]],
-        y: y,
-        z: [z_fine1[z_fine1.length - 1], ...z_fine1.slice(1, z_fine1.length - 1), z_fine1[0]],
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'blue', width: 5 }
-    };
-
-    
-    const arc4 = {
-        x: x_fine1.map(x => -x),
-        y: y,
-        z: z_fine1,
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'blue', width: 5 }
-    };
-
     // Interpolate surface
-    const surface1 = interpolateSurface(arc1, arc2, 100);
-    const surface2 = interpolateSurface(arc3, arc4, 100);
+    const surface = interpolateSurface(arc1, arc2, 100);
 
-    // Create surface traces
-    const surfaceTrace1 = {
-        x: surface1.x,
-        y: surface1.y,
-        z: surface1.z,
-        type: 'surface',
-        colorscale: [[0, 'cyan'], [1, 'cyan']],
-        opacity: 0.3,
-        showscale: false 
-    };
-
-     const surfaceTrace2 = {
-        x: surface2.x,
-        y: surface2.y,
-        z: surface2.z,
+    // Create surface trace
+    const surfaceTrace = {
+        x: surface.x,
+        y: surface.y,
+        z: surface.z,
         type: 'surface',
         colorscale: [[0, 'cyan'], [1, 'cyan']],
         opacity: 0.3,
@@ -110,8 +80,7 @@ export function updateModel() {
     // Add arcs and surface to graph
     data.push(arc1);
     data.push(arc2);
-    data.push(surfaceTrace1);
-    data.push(surfaceTrace2);
+    data.push(surfaceTrace);
 
     // Update arc lengths
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
