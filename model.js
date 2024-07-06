@@ -6,17 +6,20 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Calculate the diagonals
+    // Calculate the diagonals of the tent base
     const [diagonal1, diagonal2] = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
     const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
     
+    // Extract x and z coordinates for the semi-ellipses
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
+
+    // Generate y coordinates across the depth of the tent
     const y = linspace(0, depth, 100);
 
     // Validate arc data
@@ -35,6 +38,7 @@ export function updateModel() {
         line: { color: 'blue', width: 5 }
     };
     
+    // Arc2 is a mirror of Arc1 along the x-axis
     const arc2 = {
         x: x_fine1.map(x => -x),
         y: y,
@@ -53,6 +57,7 @@ export function updateModel() {
         line: { color: 'blue', width: 5 }
     };
 
+    // Arc4 is a mirror of Arc3 along the x-axis
     const arc4 = {
         x: x_fine2.map(x => -x),
         y: y,
@@ -62,7 +67,7 @@ export function updateModel() {
         line: { color: 'blue', width: 5 }
     };
 
-    // Interpolate surfaces
+    // Interpolate surfaces between arcs to create tent walls
     const surface1 = interpolateSurface(arc1, arc2, 100);
     const surface2 = interpolateSurface(arc4, arc3, 100);
 
@@ -102,9 +107,7 @@ export function updateModel() {
     // Calculate arc lengths
     let arcLength1 = calculateArcLength(arc1);
     let arcLength2 = calculateArcLength(arc2);
-    let arcLength3 = calculateArcLength(arc3);
-    let arcLength4 = calculateArcLength(arc4);
-
+    
     // Initialize graph data
     let data = [];
 
@@ -116,9 +119,10 @@ export function updateModel() {
     data.push(surfaceTrace1);
     data.push(surfaceTrace2);
 
-    // Update arc lengths
-    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2 + arcLength3 + arcLength4).toFixed(2)} m`;
+    // Update arc lengths display
+    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
+    // Define layout of the plot
     let layout = {
         scene: {
             xaxis: {
@@ -166,5 +170,6 @@ export function updateModel() {
         }
     };
 
+    // Plot the tent model
     Plotly.newPlot('tentModel', data, layout);
 }
