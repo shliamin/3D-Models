@@ -175,18 +175,28 @@ export function linspace(start, stop, num) {
     return arr;
 }
 
-export function generateSemiEllipse(a, b, numPoints) {
-    var xValues = linspace(-a, a, numPoints);
+export function generateSemiEllipse(width, height, numPoints) {
+    function linspace(start, end, numPoints) {
+        var arr = [];
+        var step = (end - start) / (numPoints - 1);
+        for (var i = 0; i < numPoints; i++) {
+            arr.push(start + (step * i));
+        }
+        return arr;
+    }
+
+    var xValues = linspace(-width, width, numPoints);
     var yValuesUpper = [];
     for (var i = 0; i < xValues.length; i++) {
         var x = xValues[i];
-        var y = b * Math.sqrt(1 - (x * x) / (a * a));
-        if (y >= 0) {  //  (y >= 0)
+        var y = height * Math.sqrt(1 - (x * x) / (width * width));
+        if (!isNaN(y) && y >= 0) {
             yValuesUpper.push(y);
         }
     }
     return { x: xValues, y: yValuesUpper };
 }
+
 
 // Function to calculate the diagonals of the base
 export function calculateDiagonals(length, depth) {
