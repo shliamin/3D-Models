@@ -20,23 +20,18 @@ export function findIntersection(arc1, arc2, num_points = 100) {
     return -1; // Returns -1 if there is no intersection
 }
 
-// Function to interpolate between two arcs until the first intersection point
-export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100) {
+// Function to interpolate between two arcs ensuring midpoint interpolation
+export function interpolateHalfway(arc1, arc2, num_points = 100) {
     let surface = { x: [], y: [], z: [] };
 
-    // Find the index of the intersection point
-    let intersectionIndex = findIntersection(arc1, arc2, num_points);
-    if (intersectionIndex === -1) {
-        intersectionIndex = num_points - 1; // Use all points if there is no intersection
-    }
-
-    for (let i = 0; i <= intersectionIndex; i++) {
+    for (let i = 0; i < num_points; i++) {
         let xRow = [];
         let yRow = [];
         let zRow = [];
         
         for (let j = 0; j < num_points; j++) {
-            let t = j / (num_points - 1);
+            // Ensure halfway interpolation
+            let t = 0.5;
             xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
             yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
             zRow.push((1 - t) * arc1.z[i] + t * arc2.z[i]);
