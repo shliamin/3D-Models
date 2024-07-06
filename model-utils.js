@@ -175,32 +175,17 @@ export function linspace(start, stop, num) {
     return arr;
 }
 
-export function generateSemiEllipse3DFromPoints(startPoint, endPoint, apexPoint, numPoints) {
-    var a = Math.abs(endPoint.x - startPoint.x) / 2;
-    var b = Math.abs(endPoint.y - startPoint.y) / 2;
-    var c = apexPoint.z;
-    
-    var centerX = (startPoint.x + endPoint.x) / 2;
-    var centerY = (startPoint.y + endPoint.y) / 2;
-    
-    var xValues = linspace(startPoint.x, endPoint.x, numPoints);
-    var yValues = linspace(startPoint.y, endPoint.y, numPoints);
-    var zValuesUpper = [];
-    
+export function generateSemiEllipse(a, b, numPoints) {
+    var xValues = linspace(-a, a, numPoints);
+    var yValuesUpper = [];
     for (var i = 0; i < xValues.length; i++) {
-        for (var j = 0; j < yValues.length; j++) {
-            var x = xValues[i] - centerX;
-            var y = yValues[j] - centerY;
-            var zSquared = c * c * (1 - (x * x) / (a * a) - (y * y) / (b * b));
-            
-            if (zSquared >= 0) {  
-                var z = Math.sqrt(zSquared);
-                zValuesUpper.push({x: xValues[i], y: yValues[j], z: z});
-            }
+        var x = xValues[i];
+        var y = b * Math.sqrt(1 - (x * x) / (a * a));
+        if (y >= 0) {  //  (y >= 0)
+            yValuesUpper.push(y);
         }
     }
-    
-    return zValuesUpper;
+    return { x: xValues, y: yValuesUpper };
 }
 
 // Function to calculate the diagonals of the base
