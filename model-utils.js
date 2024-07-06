@@ -26,30 +26,29 @@ export function findIntersection(arc1, arc2, num_points = 100, epsilon = 5) {
 }
 
 
-export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolation = false) {
+export function interpolateSurface(arc1, arc2, num_points = 100, interpolationPoint = null) {
     let surface = { x: [], y: [], z: [] };
 
-    let intersectionIndex = -1;
+    let max_points = num_points;
 
-    // Find the intersection point if halfInterpolation is true
-    if (halfInterpolation) {
-        intersectionIndex = findIntersection(arc1, arc2, num_points);
+    // Найдем индекс пересечения, если задана точка интерполяции
+    let intersectionIndex = -1;
+    if (interpolationPoint) {
+        intersectionIndex = findIntersectionIndex(arc1, arc2, interpolationPoint, num_points);
         if (intersectionIndex !== -1) {
             console.log(`Intersection point found at index ${intersectionIndex}: (${arc1.x[intersectionIndex]}, ${arc1.y[intersectionIndex]}, ${arc1.z[intersectionIndex]})`);
+            max_points = intersectionIndex + 1;
         } else {
             console.log('Intersection point not found');
             return surface; // Return empty surface if no intersection is found
         }
     }
 
-    // Adjust points to the intersectionIndex if halfInterpolation is true
-    let max_points = halfInterpolation ? intersectionIndex + 1 : num_points;
-
     for (let i = 0; i < num_points; i++) {
         let xRow = [];
         let yRow = [];
         let zRow = [];
-        
+
         for (let j = 0; j < max_points; j++) {
             let t = j / (max_points - 1);
             xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
@@ -61,10 +60,9 @@ export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolati
         surface.y.push(yRow);
         surface.z.push(zRow);
     }
-    
+
     return surface;
 }
-
 export function calculateSurfaceArea(surface, num_points = 100) {
     let area = 0;
 
