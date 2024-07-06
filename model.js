@@ -51,7 +51,8 @@ export function updateModel() {
         z: [...arc1.z].reverse(),
         type: 'scatter3d',
         mode: 'lines',
-        line: { color: 'blue', width: 5 }
+        line: { color: 'blue', width: 5 },
+        visible: false
     };
     
 
