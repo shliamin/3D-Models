@@ -101,6 +101,10 @@ export function updateModel() {
     let arcLength1 = calculateArcLength(arc1);
     let arcLength2 = calculateArcLength(arc2);
 
+    // Calculate surface areas
+    let surfaceArea1 = calculateSurfaceArea(surface1);
+    let surfaceArea2 = calculateSurfaceArea(surface2);
+
     // Initialize graph data
     let data = [];
 
@@ -111,8 +115,9 @@ export function updateModel() {
     data.push(surfaceTrace1);
     data.push(surfaceTrace2);
 
-    // Update arc lengths
+    // Update arc lengths and surface areas
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
+    document.getElementById('surfaceArea').innerText = `Surface areas: ${(surfaceArea1 + surfaceArea2).toFixed(2)} m²`;
 
    let layout = {
         scene: {
