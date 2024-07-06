@@ -51,38 +51,6 @@ export function interpolateSurfaceUntilIntersection(arc1, arc2, num_points = 100
 }
 
 
-// Function to create half arcs using the logic from createArcs
-export function createHalfArc(startCoord, endCoord, height, num_points = 100) {
-    // Helper function to generate a linspace array
-    function linspace(start, end, num) {
-        const step = (end - start) / (num - 1);
-        return Array(num).fill().map((_, i) => start + (i * step));
-    }
-
-    // Calculate the width and depth based on start and end coordinates
-    const width = Math.abs(endCoord[0] - startCoord[0]);
-    const depth = Math.abs(endCoord[1] - startCoord[1]);
-
-    // Generate the y and theta values
-    const y = linspace(startCoord[1], endCoord[1], num_points);
-    const theta = linspace(0, Math.PI / 2, num_points); // Use half of the arc
-
-    // Calculate the x and z coordinates for the arc
-    const x_fine = theta.map(t => width / 2 * Math.cos(t));
-    const z_fine = theta.map(t => height * Math.sin(t));
-
-    // Create the half arc using positive coordinates
-    const halfArc = {
-        x: x_fine.map(x => Math.abs(x) + startCoord[0]), // Adjust coordinates to start position
-        y: y,
-        z: z_fine.map(z => Math.abs(z))
-    };
-
-    return halfArc;
-}
-
-
-
 export function interpolateSurface(arc1, arc2, num_points = 100) {
     let surface = { x: [], y: [], z: [] };
 
