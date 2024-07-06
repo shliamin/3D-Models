@@ -44,7 +44,15 @@ export function updateModel() {
         line: { color: 'green', width: 5 }
     };
     
-    
+    // Create arc3 with reversed points from arc1
+    const arc3 = {
+        x: [...arc1.x].reverse(),
+        y: [...arc1.y].reverse(),
+        z: [...arc1.z].reverse(),
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'red', width: 5 }
+    };
     
 
     // Interpolate surface
@@ -87,7 +95,7 @@ export function updateModel() {
     // Add arcs and surface to graph
     data.push(arc1);
     data.push(arc2);
-    //data.push(arc3);
+    data.push(arc3);
     data.push(surfaceTrace1);
     //data.push(surfaceTrace2);
 
