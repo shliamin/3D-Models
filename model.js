@@ -25,7 +25,7 @@ export function updateModel() {
     // Create arcs
     const arc1 = {
         x: x_fine1,
-        y: y_coords,
+        y: new Array(x_fine1.length).fill(0), // Starting y-coordinates for arc1
         z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
@@ -35,7 +35,7 @@ export function updateModel() {
     // Arc2 is a mirror of Arc1 along the x-axis
     const arc2 = {
         x: x_fine1.map(x => -x),
-        y: y_coords,
+        y: new Array(x_fine1.length).fill(depth), // Ending y-coordinates for arc2
         z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
@@ -44,7 +44,7 @@ export function updateModel() {
 
     const arc3 = {
         x: x_fine2,
-        y: y_coords,
+        y: new Array(x_fine2.length).fill(0), // Starting y-coordinates for arc3
         z: z_fine2,
         type: 'scatter3d',
         mode: 'lines',
@@ -54,7 +54,7 @@ export function updateModel() {
     // Arc4 is a mirror of Arc3 along the x-axis
     const arc4 = {
         x: x_fine2.map(x => -x),
-        y: y_coords,
+        y: new Array(x_fine2.length).fill(depth), // Ending y-coordinates for arc4
         z: z_fine2,
         type: 'scatter3d',
         mode: 'lines',
@@ -63,7 +63,7 @@ export function updateModel() {
 
     // Interpolate surfaces between arcs to create tent walls
     const surface1 = interpolateSurface(arc1, arc2, 100);
-    const surface2 = interpolateSurface(arc4, arc3, 100);
+    const surface2 = interpolateSurface(arc3, arc4, 100);
 
     // Create surface traces
     const surfaceTrace1 = {
