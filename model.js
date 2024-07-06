@@ -1,4 +1,4 @@
-import { calculateArcLength, generateSemiEllipse, calculateDiagonals, linspace, interpolateSurface } from './model-utils.js';
+import { calculateArcLength, calculateSurfaceArea, generateSemiEllipse, calculateDiagonals, linspace, interpolateSurface } from './model-utils.js';
 
 export function updateModel() {
     // Convert values from centimeters to meters
