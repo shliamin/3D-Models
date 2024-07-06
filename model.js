@@ -6,8 +6,8 @@ export function updateModel() {
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Calculate the diagonals
-    const [diagonal1, diagonal2] = calculateDiagonals(width, depth);
+    // Calculate diagonals and their end coordinates
+    const { lengths: [diagonal1, diagonal2], endCoordinates: [endCoord1, endCoord2] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
