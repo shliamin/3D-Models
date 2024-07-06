@@ -33,7 +33,7 @@ export function updateModel() {
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'Tent Frame 1'
+        name: 'Tent Frame 1 - The Perfect Tent Shape'
     };
     
     const arc2 = {
@@ -43,7 +43,7 @@ export function updateModel() {
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'Tent Frame 2'
+        name: 'Tent Frame 2 - Optimal Weather Protection'
     };
     
     // Create arc3 with reversed points from arc1
@@ -70,7 +70,7 @@ export function updateModel() {
         colorscale: [[0, 'cyan'], [1, 'cyan']],
         opacity: 0.2,
         showscale: false,
-        name: 'Tent Wall'
+        name: 'Tent Wall - Designed from Experience & Analysis'
     };
 
     // Create surface trace
@@ -82,7 +82,7 @@ export function updateModel() {
         colorscale: [[0, 'cyan'], [1, 'cyan']],
         opacity: 0.2,
         showscale: false,
-        name: 'Tent Wall'
+        name: 'Tent Wall - Unmatched Durability & Comfort'
     };
 
     // Scale axes based on arc end points
@@ -167,65 +167,7 @@ export function updateModel() {
             r: 100, // Add space for annotations
             b: 0,
             t: 0
-        },
-        annotations: [
-            {
-                showarrow: false,
-                text: "The Perfect Tent Shape",
-                x: maxX + 0.1, // Position text to the right of the plot
-                y: (maxY + minY) / 2,
-                z: maxZ * 0.9, // Lower the text
-                font: {
-                    family: "Arial, sans-serif",
-                    size: 16,
-                    color: "black"
-                },
-                xanchor: 'left',
-                yanchor: 'middle'
-            },
-            {
-                showarrow: false,
-                text: "Optimal Weather Protection",
-                x: maxX + 0.1,
-                y: (maxY + minY) / 2,
-                z: maxZ * 0.7, // Lower the text
-                font: {
-                    family: "Arial, sans-serif",
-                    size: 16,
-                    color: "black"
-                },
-                xanchor: 'left',
-                yanchor: 'middle'
-            },
-            {
-                showarrow: false,
-                text: "Designed from Experience & Analysis",
-                x: maxX + 0.1,
-                y: (maxY + minY) / 2,
-                z: maxZ * 0.5, // Lower the text
-                font: {
-                    family: "Arial, sans-serif",
-                    size: 16,
-                    color: "black"
-                },
-                xanchor: 'left',
-                yanchor: 'middle'
-            },
-            {
-                showarrow: false,
-                text: "Unmatched Durability & Comfort",
-                x: maxX + 0.1,
-                y: (maxY + minY) / 2,
-                z: maxZ * 0.3, // Lower the text
-                font: {
-                    family: "Arial, sans-serif",
-                    size: 16,
-                    color: "black"
-                },
-                xanchor: 'left',
-                yanchor: 'middle'
-            }
-        ]
+        }
     };
     
     // Update the graph with annotations and legend
