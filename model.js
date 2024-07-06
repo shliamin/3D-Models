@@ -57,7 +57,6 @@ export function updateModel() {
         visible: false
     };
     
-
     // Interpolate surface
     const surface1 = interpolateSurface(arc1, arc2, 100);
     const surface2 = interpolateSurface(arc2, arc3, 100);
@@ -173,7 +172,7 @@ export function updateModel() {
             {
                 showarrow: false,
                 text: "The Perfect Tent Shape",
-                x: maxX + 0.1, // Position text to the right of the plot
+                x: maxX + 0.2, // Position text to the right of the plot
                 y: (maxY + minY) / 2,
                 z: maxZ,
                 font: {
@@ -187,7 +186,7 @@ export function updateModel() {
             {
                 showarrow: false,
                 text: "Optimal Weather Protection",
-                x: maxX + 0.1,
+                x: maxX + 0.2,
                 y: (maxY + minY) / 2,
                 z: maxZ * 0.8,
                 font: {
@@ -201,7 +200,7 @@ export function updateModel() {
             {
                 showarrow: false,
                 text: "Designed from Experience & Analysis",
-                x: maxX + 0.1,
+                x: maxX + 0.2,
                 y: (maxY + minY) / 2,
                 z: maxZ * 0.6,
                 font: {
@@ -215,7 +214,7 @@ export function updateModel() {
             {
                 showarrow: false,
                 text: "Unmatched Durability & Comfort",
-                x: maxX + 0.1,
+                x: maxX + 0.2,
                 y: (maxY + minY) / 2,
                 z: maxZ * 0.4,
                 font: {
