@@ -53,7 +53,7 @@ export function updateModel() {
         y: surface.y,
         z: surface.z,
         type: 'surface',
-        colorscale: 'cyan',
+        colorscale: [[0, 'cyan'], [1, 'cyan']],,
         opacity: 0.3,
         showscale: false 
     };
