@@ -22,11 +22,7 @@ export function updateModel() {
     // Generate y coordinates across the depth of the tent
     const y = linspace(0, depth, 100);
 
-    // Validate arc data
-    if (!Array.isArray(x_fine1) || !Array.isArray(z_fine1) || !Array.isArray(x_fine2) || !Array.isArray(z_fine2) || !Array.isArray(y)) {
-        console.error("Error in arc data.");
-        return;
-    }
+    
 
     // Create arcs
     const arc1 = {
