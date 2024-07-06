@@ -1,41 +1,41 @@
 import { calculateArcLength, generateSemiEllipse, calculateDiagonals, linspace, interpolateSurface } from './model-utils.js';
 
 export function updateModel() {
-    // Получение значений в сантиметрах и преобразование в метры
+    // Get values in centimeters and convert to meters
     const width = parseFloat(document.getElementById('width').value) / 100;
     const depth = parseFloat(document.getElementById('depth').value) / 100;
     const height = parseFloat(document.getElementById('height').value) / 100;
 
-    // Расчет диагоналей и их конечных координат
+    // Calculate diagonals and their end coordinates
     const { lengths: [diagonal1, diagonal2], endCoordinates: [endCoord1, endCoord2] } = calculateDiagonals(width, depth);
 
-    // Генерация полуэллипсов для обеих диагоналей
+    // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
     const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
 
-    // Проверка на правильную инициализацию массивов
+    // Check for correct initialization of arrays
     if (!semiEllipse1 || !semiEllipse1.x || !semiEllipse1.y || semiEllipse1.x.length !== 100 || semiEllipse1.y.length !== 100) {
-        console.error("Ошибка в генерации semiEllipse1: массивы не определены или имеют неправильную длину.");
+        console.error("Error generating semiEllipse1: arrays are not defined or have incorrect length.");
         return;
     }
     if (!semiEllipse2 || !semiEllipse2.x || !semiEllipse2.y || semiEllipse2.x.length !== 100 || semiEllipse2.y.length !== 100) {
-        console.error("Ошибка в генерации semiEllipse2: массивы не определены или имеют неправильную длину.");
+        console.error("Error generating semiEllipse2: arrays are not defined or have incorrect length.");
         return;
     }
 
-    // Извлечение координат x и y для полуэллипсов
+    // Extract x and y coordinates for the semi-ellipses
     const x_fine1 = semiEllipse1.x;
-    const z_fine1 = semiEllipse1.y; // Используем y как z для высоты
+    const z_fine1 = semiEllipse1.y; // Use y as z for height
     const x_fine2 = semiEllipse2.x;
-    const z_fine2 = semiEllipse2.y; // Используем y как z для высоты
+    const z_fine2 = semiEllipse2.y; // Use y as z for height
 
-    // Генерация координат y вдоль глубины палатки
+    // Generate y coordinates along the depth of the tent
     const y_coords = linspace(0, depth, 100);
 
-    // Создание арок
+    // Create arcs
     const arc1 = {
         x: x_fine1,
-        y: new Array(x_fine1.length).fill(0), // Начальные координаты y для arc1
+        y: new Array(x_fine1.length).fill(0), // Initial y-coordinates for arc1
         z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
@@ -44,7 +44,7 @@ export function updateModel() {
 
     const arc2 = {
         x: x_fine1.map(x => -x),
-        y: new Array(x_fine1.length).fill(depth), // Конечные координаты y для arc2
+        y: new Array(x_fine1.length).fill(depth), // Final y-coordinates for arc2
         z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
@@ -53,7 +53,7 @@ export function updateModel() {
 
     const arc3 = {
         x: x_fine2,
-        y: new Array(x_fine2.length).fill(0), // Начальные координаты y для arc3
+        y: new Array(x_fine2.length).fill(0), // Initial y-coordinates for arc3
         z: z_fine2,
         type: 'scatter3d',
         mode: 'lines',
@@ -62,18 +62,18 @@ export function updateModel() {
 
     const arc4 = {
         x: x_fine2.map(x => -x),
-        y: new Array(x_fine2.length).fill(depth), // Конечные координаты y для arc4
+        y: new Array(x_fine2.length).fill(depth), // Final y-coordinates for arc4
         z: z_fine2,
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
 
-    // Интерполяция поверхностей между арками для создания стен палатки
+    // Interpolate surfaces between arcs to create tent walls
     const surface1 = interpolateSurface(arc1, arc2, 100);
     const surface2 = interpolateSurface(arc3, arc4, 100);
 
-    // Создание следов поверхностей
+    // Create surface traces
     const surfaceTrace1 = {
         x: surface1.x,
         y: surface1.y,
@@ -94,7 +94,7 @@ export function updateModel() {
         showscale: false
     };
 
-    // Масштабирование осей на основе конечных точек арок
+    // Scale axes based on arc end points
     const allX = arc1.x.concat(arc2.x, arc3.x, arc4.x);
     const allY = arc1.y.concat(arc2.y, arc3.y, arc4.y);
     const allZ = arc1.z.concat(arc2.z, arc3.z, arc4.z);
@@ -106,32 +106,32 @@ export function updateModel() {
     const minZ = Math.min(...allZ);
     const maxZ = Math.max(...allZ);
 
-    // Вычисление длины арок
+    // Calculate arc lengths
     const arcLength1 = calculateArcLength(arc1);
     const arcLength2 = calculateArcLength(arc2);
 
-    // Инициализация данных графика
+    // Initialize graph data
     const data = [arc1, arc2, arc3, arc4, surfaceTrace1, surfaceTrace2];
 
-    // Обновление отображения длины арок
+    // Update arc lengths display
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
 
-    // Определение макета графика
+    // Define layout of the plot
     const layout = {
         scene: {
             xaxis: {
                 title: 'Width',
-                dtick: 0.1, // Шаг сетки по оси X 10 см
+                dtick: 0.1, // Grid step on X axis 10 cm
                 range: [minX, maxX]
             },
             yaxis: {
                 title: 'Depth',
-                dtick: 0.1, // Шаг сетки по оси Y 10 см
+                dtick: 0.1, // Grid step on Y axis 10 cm
                 range: [minY, maxY]
             },
             zaxis: {
                 title: 'Height',
-                dtick: 0.1, // Шаг сетки по оси Z 10 см
+                dtick: 0.1, // Grid step on Z axis 10 cm
                 range: [minZ, maxZ]
             },
             aspectratio: {
@@ -164,6 +164,6 @@ export function updateModel() {
         }
     };
 
-    // Построение модели палатки
+    // Plot the tent model
     Plotly.newPlot('tentModel', data, layout);
 }
