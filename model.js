@@ -33,7 +33,7 @@ export function updateModel() {
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'Tent Frame 1 - The Perfect Tent Shape'
+        name: 'Perfect Tent Frame 1'
     };
     
     const arc2 = {
@@ -43,7 +43,7 @@ export function updateModel() {
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'Tent Frame 2 - Optimal Weather Protection'
+        name: 'Perfect Tent Frame 2'
     };
     
     // Create arc3 with reversed points from arc1
