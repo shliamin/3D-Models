@@ -151,74 +151,84 @@ export function updateModel() {
             }
         },
         legend: {
-            y: -0.2,
-            yanchor: 'top'
+            x: 1, // Place legend to the right of the plot
+            y: 0.5,
+            traceorder: 'normal',
+            font: {
+                family: 'Arial, sans-serif',
+                size: 12,
+                color: 'black'
+            },
+            bgcolor: 'rgba(255, 255, 255, 0.5)',
+            bordercolor: 'black',
+            borderwidth: 2
         },
         margin: {
             l: 0,
-            r: 0,
+            r: 100, // Add space for annotations
             b: 0,
             t: 0
         },
         annotations: [
-        {
-            showarrow: false,
-            text: "The Perfect Tent Shape",
-            x: width / 2,
-            y: depth / 2,
-            z: height,
-            font: {
-                family: "Arial, sans-serif",
-                size: 16,
-                color: "black"
+            {
+                showarrow: false,
+                text: "The Perfect Tent Shape",
+                x: maxX + 0.1, // Position text to the right of the plot
+                y: (maxY + minY) / 2,
+                z: maxZ,
+                font: {
+                    family: "Arial, sans-serif",
+                    size: 16,
+                    color: "black"
+                },
+                xanchor: 'left',
+                yanchor: 'middle'
             },
-            xanchor: 'center',
-            yanchor: 'bottom'
-        },
-        {
-            showarrow: false,
-            text: "Optimal Weather Protection",
-            x: width / 2,
-            y: depth / 2,
-            z: height * 0.8,
-            font: {
-                family: "Arial, sans-serif",
-                size: 16,
-                color: "black"
+            {
+                showarrow: false,
+                text: "Optimal Weather Protection",
+                x: maxX + 0.1,
+                y: (maxY + minY) / 2,
+                z: maxZ * 0.8,
+                font: {
+                    family: "Arial, sans-serif",
+                    size: 16,
+                    color: "black"
+                },
+                xanchor: 'left',
+                yanchor: 'middle'
             },
-            xanchor: 'center',
-            yanchor: 'bottom'
-        },
-        {
-            showarrow: false,
-            text: "Designed from Experience & Analysis",
-            x: width / 2,
-            y: depth / 2,
-            z: height * 0.6,
-            font: {
-                family: "Arial, sans-serif",
-                size: 16,
-                color: "black"
+            {
+                showarrow: false,
+                text: "Designed from Experience & Analysis",
+                x: maxX + 0.1,
+                y: (maxY + minY) / 2,
+                z: maxZ * 0.6,
+                font: {
+                    family: "Arial, sans-serif",
+                    size: 16,
+                    color: "black"
+                },
+                xanchor: 'left',
+                yanchor: 'middle'
             },
-            xanchor: 'center',
-            yanchor: 'bottom'
-        },
-        {
-            showarrow: false,
-            text: "Unmatched Durability & Comfort",
-            x: width / 2,
-            y: depth / 2,
-            z: height * 0.4,
-            font: {
-                family: "Arial, sans-serif",
-                size: 16,
-                color: "black"
-            },
-            xanchor: 'center',
-            yanchor: 'bottom'
-        }
-    ]
+            {
+                showarrow: false,
+                text: "Unmatched Durability & Comfort",
+                x: maxX + 0.1,
+                y: (maxY + minY) / 2,
+                z: maxZ * 0.4,
+                font: {
+                    family: "Arial, sans-serif",
+                    size: 16,
+                    color: "black"
+                },
+                xanchor: 'left',
+                yanchor: 'middle'
+            }
+        ]
     };
-
+    
+    // Update the graph with annotations and legend
     Plotly.newPlot('tentModel', data, layout);
 }
