@@ -83,7 +83,7 @@ export async function generateModel() {
     document.getElementById('spinner').style.display = 'block';
 
     try {
-        const response = await fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/generate', {
+        const response = await fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/generate_model', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
