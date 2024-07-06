@@ -146,11 +146,14 @@ export function calculateDiagonals(length, depth) {
     const diagonal2 = diagonal1; // Assuming both diagonals are equal for a rectangular base
 
     // Calculate the end coordinates for both diagonals
-    const endCoord1 = { x: length / 2, y: depth / 2 };
-    const endCoord2 = { x: -length / 2, y: depth / 2 };
+    const endCoord1Start = { x: -length / 2, y: -depth / 2 };
+    const endCoord1End = { x: length / 2, y: depth / 2 };
+    const endCoord2Start = { x: length / 2, y: -depth / 2 };
+    const endCoord2End = { x: -length / 2, y: depth / 2 };
 
     return {
         lengths: [diagonal1, diagonal2],
-        endCoordinates: [endCoord1, endCoord2]
+        endCoordinates: [endCoord1Start, endCoord1End, endCoord2Start, endCoord2End]
     };
 }
+
