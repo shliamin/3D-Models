@@ -23,16 +23,22 @@ export function findIntersection(arc1, arc2, num_points = 100) {
 
 export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolation = false) {
     let surface = { x: [], y: [], z: [] };
-    
-    // Determine the maximum j value based on halfInterpolation flag
-    let max_j = halfInterpolation ? Math.floor(num_points / 2) : num_points;
+
+    // Find the intersection point if halfInterpolation is true
+    let max_points = num_points;
+    if (halfInterpolation) {
+        let intersectionIndex = findIntersection(arc1, arc2, num_points);
+        if (intersectionIndex !== -1) {
+            max_points = intersectionIndex + 1;
+        }
+    }
 
     for (let i = 0; i < num_points; i++) {
         let xRow = [];
         let yRow = [];
         let zRow = [];
         
-        for (let j = 0; j < max_j; j++) {
+        for (let j = 0; j < max_points; j++) {
             let t = j / (num_points - 1);
             xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
             yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
