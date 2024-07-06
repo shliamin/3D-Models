@@ -22,6 +22,14 @@ export function findIntersection(arc1, arc2, num_points = 100, epsilon = 5) {
 }
 
 
+function generateArcUntilPoint(arc, num_points) {
+    return {
+        x: arc.x.slice(0, num_points),
+        y: arc.y.slice(0, num_points),
+        z: arc.z.slice(0, num_points)
+    };
+}
+
 export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolation = false) {
     let surface = { x: [], y: [], z: [] };
 
@@ -32,6 +40,11 @@ export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolati
         intersectionPoint = findIntersection(arc1, arc2, num_points);
         if (intersectionPoint) {
             console.log(`Intersection point found: (${intersectionPoint.x}, ${intersectionPoint.y}, ${intersectionPoint.z})`);
+            
+            // Generate new arcs up to the intersection point
+            arc1 = generateArcUntilPoint(arc1, intersectionPoint.index + 1);
+            arc2 = generateArcUntilPoint(arc2, intersectionPoint.index + 1);
+            
             num_points = intersectionPoint.index + 1; // Update num_points to the intersection index
         } else {
             console.log('Intersection point not found');
@@ -47,10 +60,9 @@ export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolati
         for (let j = 0; j < num_points; j++) {
             let t = j / (num_points - 1);
 
-            // If halfInterpolation is true, use intersection point for final point
-            let x2 = halfInterpolation && j === num_points - 1 ? intersectionPoint.x : arc2.x[i];
-            let y2 = halfInterpolation && j === num_points - 1 ? intersectionPoint.y : arc2.y[i];
-            let z2 = halfInterpolation && j === num_points - 1 ? intersectionPoint.z : arc2.z[i];
+            let x2 = arc2.x[i];
+            let y2 = arc2.y[i];
+            let z2 = arc2.z[i];
 
             xRow.push((1 - t) * arc1.x[i] + t * x2);
             yRow.push((1 - t) * arc1.y[i] + t * y2);
