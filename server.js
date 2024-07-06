@@ -1,21 +1,5 @@
 import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, calculateDiagonals, linspace } from './model-utils.js';
 
-function formatPoint(label, point) {
-    if (!point || point.x === undefined || point.y === undefined || point.z === undefined) {
-        return `${label}: (undefined, undefined, undefined)`;
-    }
-    return `${label}: (${point.x.toFixed(2)}, ${point.y.toFixed(2)}, ${point.z.toFixed(2)})`;
-}
-
-function logEndCoordinates(endCoord1Start, endCoord1End, endCoord2Start, endCoord2End, apex) {
-    console.log("End Coordinates:");
-    console.log(formatPoint("endCoord1Start", endCoord1Start));
-    console.log(formatPoint("endCoord1End", endCoord1End));
-    console.log(formatPoint("endCoord2Start", endCoord2Start));
-    console.log(formatPoint("endCoord2End", endCoord2End));
-    console.log(formatPoint("Apex", apex));
-}
-
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
@@ -40,8 +24,6 @@ export async function generateModel() {
 
     // Assuming apex is the highest point of semiEllipse1
     const apex = { x: x_fine1[0], y: y[0], z: z_fine1[0] };
-
-    logEndCoordinates(endCoord1Start, endCoord1End, endCoord2Start, endCoord2End, apex);
     
     // Create arcs
     const arc1 = {
@@ -147,8 +129,6 @@ export async function generatePattern() {
 
     // Assuming apex is the highest point of semiEllipse1
     const apex = { x: x_fine1[0], y: y[0], z: z_fine1[0] };
-
-    logEndCoordinates(endCoord1Start, endCoord1End, endCoord2Start, endCoord2End, apex);
     
     // Create arcs
     const arc1 = {
