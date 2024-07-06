@@ -57,6 +57,21 @@ export function updateModel() {
         visible: false
     };
     
+    // Create a line connecting all bottom coordinates (Tent Frame 3)
+    const bottomLineX = [x_fine1[0], ...x_fine1, x_fine1[x_fine1.length - 1], -x_fine1[x_fine1.length - 1], ...x_fine1.map(x => -x), -x_fine1[0]];
+    const bottomLineY = [0, ...y, y[y.length - 1], y[y.length - 1], ...y.reverse(), 0];
+    const bottomLineZ = Array(bottomLineX.length).fill(0);
+
+    const bottomLine = {
+        x: bottomLineX,
+        y: bottomLineY,
+        z: bottomLineZ,
+        type: 'scatter3d',
+        mode: 'lines',
+        line: { color: 'red', width: 5 },
+        name: 'Tent Frame 3 - Base Connection'
+    };
+
     // Interpolate surface
     const surface1 = interpolateSurface(arc1, arc2, 100);
     const surface2 = interpolateSurface(arc2, arc3, 100);
@@ -108,6 +123,7 @@ export function updateModel() {
     data.push(arc1);
     data.push(arc2);
     data.push(arc3);
+    data.push(bottomLine);
     data.push(surfaceTrace1);
     data.push(surfaceTrace2);
 
