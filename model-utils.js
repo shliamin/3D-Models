@@ -28,71 +28,19 @@ export function findIntersection(arc1, arc2, num_points = 100, epsilon = 5) {
 
 export function interpolateSurface(arc1, arc2, num_points = 100, epsilon = 5, half = false) {
     let surface = { x: [], y: [], z: [] };
-    let intersectionPoint = null;
-
-    function distance(point1, point2) {
-        return Math.sqrt(
-            Math.pow(point1.x - point2.x, 2) +
-            Math.pow(point1.y - point2.y, 2) +
-            Math.pow(point1.z - point2.z, 2)
-        );
-    }
-
-    function isPointBetweenArcs(point, arc1, arc2) {
-        let distances1 = arc1.x.map((_, i) => distance({ x: arc1.x[i], y: arc1.y[i], z: arc1.z[i] }, point));
-        let distances2 = arc2.x.map((_, i) => distance({ x: arc2.x[i], y: arc2.y[i], z: arc2.z[i] }, point));
-
-        let minDistance1 = Math.min(...distances1);
-        let minDistance2 = Math.min(...distances2);
-
-        let maxDistanceBetweenArcs = Math.max(...arc1.x.map((_, i) => distance({ x: arc1.x[i], y: arc1.y[i], z: arc1.z[i] }, { x: arc2.x[i], y: arc2.y[i], z: arc2.z[i] })));
-
-        return minDistance1 <= maxDistanceBetweenArcs && minDistance2 <= maxDistanceBetweenArcs;
-    }
-
     let max_points = num_points;
+
     if (half) {
-        let foundIntersection = false;
-
-        for (let i = 0; i < num_points; i++) {
-            if (foundIntersection) break;
-
-            let xRow = [];
-            let yRow = [];
-            let zRow = [];
-
-            for (let j = 0; j < num_points; j++) {
-                let t = j / (num_points - 1);
-                let x = (1 - t) * arc1.x[i] + t * arc2.x[i];
-                let y = (1 - t) * arc1.y[i] + t * arc2.y[i];
-                let z = (1 - t) * arc1.z[i] + t * arc2.z[i];
-
-                xRow.push(x);
-                yRow.push(y);
-                zRow.push(z);
-
-                if (!foundIntersection && findIntersection({ x: [x], y: [y], z: [z] }, arc2, num_points, epsilon)) {
-                    intersectionPoint = { x, y, z };
-                    foundIntersection = true;
-                    break;
-                }
-            }
-
-            surface.x.push(xRow);
-            surface.y.push(yRow);
-            surface.z.push(zRow);
-        }
-
-        return surface;
+        max_points = Math.ceil(num_points / 2);
     }
 
-    for (let i = 0; i < num_points; i++) {
+    for (let i = 0; i < max_points; i++) {
         let xRow = [];
         let yRow = [];
         let zRow = [];
 
-        for (let j = 0; j < max_points; j++) {
-            let t = j / (max_points - 1);
+        for (let j = 0; j < num_points; j++) {
+            let t = j / (num_points - 1);
             xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
             yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
             zRow.push((1 - t) * arc1.z[i] + t * arc2.z[i]);
@@ -105,7 +53,6 @@ export function interpolateSurface(arc1, arc2, num_points = 100, epsilon = 5, ha
 
     return surface;
 }
-
 
 
 export function calculateSurfaceArea(surface, num_points = 100) {
