@@ -33,7 +33,7 @@ export function updateModel() {
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'The Perfect Tent Shape'
+        name: 'Tent Frame 1 - The Perfect Tent Shape'
     };
     
     const arc2 = {
@@ -43,7 +43,7 @@ export function updateModel() {
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
-        name: 'Optimal Weather Protection'
+        name: 'Tent Frame 2 - Optimal Weather Protection'
     };
     
     // Create arc3 with reversed points from arc1
@@ -162,6 +162,24 @@ export function updateModel() {
             bordercolor: 'rgba(255, 255, 255, 0)', // Make border invisible
             borderwidth: 0
         },
+        annotations: [
+            {
+                showarrow: false,
+                text: "<b>The Perfect Tent Shape!</b>",
+                x: 1.2, // Position text to the right of the plot
+                y: 0.5,
+                font: {
+                    family: "Arial, sans-serif",
+                    size: 14,
+                    color: "black"
+                },
+                xref: 'paper',
+                yref: 'paper',
+                align: 'left',
+                xanchor: 'left',
+                yanchor: 'middle'
+            }
+        ],
         margin: {
             l: 0,
             r: 200, // Add more space for annotations
