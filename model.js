@@ -94,6 +94,7 @@ export function updateModel() {
     // Add arcs and surface to graph
     data.push(arc1);
     data.push(arc2);
+    data.push(arc3);
     data.push(surfaceTrace1);
     //data.push(surfaceTrace2);
 
