@@ -166,7 +166,7 @@ export function updateModel() {
             {
                 showarrow: false,
                 text: "<b>The Perfect Tent Shape</b>",
-                x: 1.2, // Position text to the right of the plot
+                x: 1, // Position text to the right of the plot
                 y: 0.5,
                 font: {
                     family: "Arial, sans-serif",
@@ -182,7 +182,7 @@ export function updateModel() {
         ],
         margin: {
             l: 0,
-            r: 100, // Add more space for annotations
+            r: 200, // Add more space for annotations
             b: 0,
             t: 0
         }
