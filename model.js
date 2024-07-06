@@ -94,9 +94,9 @@ export function updateModel() {
             },
             camera: {
                 eye: {
-                    x: 2, 
-                    y: 0.5, 
-                    z: 1 
+                    x: 1, 
+                    y: 0.25, 
+                    z: 0.5 
                 },
                 center: {
                     x: 0, 
