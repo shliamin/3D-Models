@@ -32,42 +32,42 @@ export function updateModel() {
     // Generate y coordinates along the depth of the tent
     const y_coords = linspace(0, depth, 100);
 
-    // Create arcs
-    const arc1 = {
-        x: x_fine1,
-        y: new Array(x_fine1.length).fill(0), // Initial y-coordinates for arc1
-        z: z_fine1,
-        type: 'scatter3d',
-        mode: 'lines',
-        line: { color: 'blue', width: 5 }
+   const arc1 = {
+    x: x_fine1,
+    y: new Array(x_fine1.length).fill(0), // Начальные координаты y для arc1
+    z: z_fine1,
+    type: 'scatter3d',
+    mode: 'lines',
+    line: { color: 'blue', width: 5 }
     };
-
+    
     const arc2 = {
         x: x_fine1.map(x => -x),
-        y: new Array(x_fine1.length).fill(depth), // Final y-coordinates for arc2
+        y: new Array(x_fine1.length).fill(depth), // Конечные координаты y для arc2
         z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 }
     };
-
+    
     const arc3 = {
         x: x_fine2,
-        y: new Array(x_fine2.length).fill(0), // Initial y-coordinates for arc3
+        y: new Array(x_fine2.length).fill(depth), // Изменено на depth для крест-накрест
         z: z_fine2,
         type: 'scatter3d',
         mode: 'lines',
-        line: { color: 'blue', width: 5 }
+        line: { color: 'red', width: 5 } // Изменен цвет для различия
     };
-
+    
     const arc4 = {
         x: x_fine2.map(x => -x),
-        y: new Array(x_fine2.length).fill(depth), // Final y-coordinates for arc4
+        y: new Array(x_fine2.length).fill(0), // Изменено на 0 для крест-накрест
         z: z_fine2,
         type: 'scatter3d',
         mode: 'lines',
-        line: { color: 'blue', width: 5 }
+        line: { color: 'red', width: 5 } // Изменен цвет для различия
     };
+
 
     // Interpolate surfaces between arcs to create tent walls
     const surface1 = interpolateSurface(arc1, arc2, 100);
