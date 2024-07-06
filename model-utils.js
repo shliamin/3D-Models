@@ -25,32 +25,36 @@ export function findIntersection(arc1, arc2, num_points = 100, epsilon = 5) {
 export function interpolateSurface(arc1, arc2, num_points = 100, halfInterpolation = false) {
     let surface = { x: [], y: [], z: [] };
 
-    let intersectionIndex = -1;
+    let intersectionPoint = null;
 
     // Find the intersection point if halfInterpolation is true
     if (halfInterpolation) {
-        intersectionIndex = findIntersection(arc1, arc2, num_points);
-        if (intersectionIndex !== -1) {
-            console.log(`Intersection point found at index ${intersectionIndex}: (${arc1.x[intersectionIndex]}, ${arc1.y[intersectionIndex]}, ${arc1.z[intersectionIndex]})`);
+        intersectionPoint = findIntersection(arc1, arc2, num_points);
+        if (intersectionPoint) {
+            console.log(`Intersection point found: (${intersectionPoint.x}, ${intersectionPoint.y}, ${intersectionPoint.z})`);
+            num_points = intersectionPoint.index + 1; // Update num_points to the intersection index
         } else {
             console.log('Intersection point not found');
             return surface; // Return empty surface if no intersection is found
         }
     }
 
-    // Adjust points to the intersectionIndex if halfInterpolation is true
-    let max_points = halfInterpolation ? intersectionIndex + 1 : num_points;
-
     for (let i = 0; i < num_points; i++) {
         let xRow = [];
         let yRow = [];
         let zRow = [];
         
-        for (let j = 0; j < max_points; j++) {
-            let t = j / (max_points - 1);
-            xRow.push((1 - t) * arc1.x[i] + t * arc2.x[i]);
-            yRow.push((1 - t) * arc1.y[i] + t * arc2.y[i]);
-            zRow.push((1 - t) * arc1.z[i] + t * arc2.z[i]);
+        for (let j = 0; j < num_points; j++) {
+            let t = j / (num_points - 1);
+
+            // If halfInterpolation is true, use intersection point for final point
+            let x2 = halfInterpolation && j === num_points - 1 ? intersectionPoint.x : arc2.x[i];
+            let y2 = halfInterpolation && j === num_points - 1 ? intersectionPoint.y : arc2.y[i];
+            let z2 = halfInterpolation && j === num_points - 1 ? intersectionPoint.z : arc2.z[i];
+
+            xRow.push((1 - t) * arc1.x[i] + t * x2);
+            yRow.push((1 - t) * arc1.y[i] + t * y2);
+            zRow.push((1 - t) * arc1.z[i] + t * z2);
         }
 
         surface.x.push(xRow);
