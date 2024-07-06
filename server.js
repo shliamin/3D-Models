@@ -1,15 +1,19 @@
 import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, calculateDiagonals, linspace } from './model-utils.js';
 
 function formatPoint(label, point) {
+    if (!point || point.x === undefined || point.y === undefined || point.z === undefined) {
+        return `${label}: (undefined, undefined, undefined)`;
+    }
     return `${label}: (${point.x.toFixed(2)}, ${point.y.toFixed(2)}, ${point.z.toFixed(2)})`;
 }
 
-function logEndCoordinates(endCoord1Start, endCoord1End, endCoord2Start, endCoord2End) {
+function logEndCoordinates(endCoord1Start, endCoord1End, endCoord2Start, endCoord2End, apex) {
     console.log("End Coordinates:");
     console.log(formatPoint("endCoord1Start", endCoord1Start));
     console.log(formatPoint("endCoord1End", endCoord1End));
     console.log(formatPoint("endCoord2Start", endCoord2Start));
     console.log(formatPoint("endCoord2End", endCoord2End));
+    console.log(formatPoint("Apex", apex));
 }
 
 export async function generateModel() {
@@ -24,8 +28,6 @@ export async function generateModel() {
     // Calculate diagonals and their end coordinates
     const { lengths: [diagonal1, diagonal2], endCoordinates: [endCoord1Start, endCoord1End, endCoord2Start, endCoord2End] } = calculateDiagonals(width, depth);
 
-    logEndCoordinates(endCoord1Start, endCoord1End, endCoord2Start, endCoord2End);
-
     // Generate semi-ellipses for both diagonals
     const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
     const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
@@ -35,6 +37,11 @@ export async function generateModel() {
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
     const y = linspace(0, depth, 100);
+
+    // Assuming apex is the highest point of semiEllipse1
+    const apex = { x: x_fine1[0], y: y[0], z: z_fine1[0] };
+
+    logEndCoordinates(endCoord1Start, endCoord1End, endCoord2Start, endCoord2End, apex);
     
     // Create arcs
     const arc1 = {
@@ -137,6 +144,11 @@ export async function generatePattern() {
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
     const y = linspace(0, depth, 100);
+
+    // Assuming apex is the highest point of semiEllipse1
+    const apex = { x: x_fine1[0], y: y[0], z: z_fine1[0] };
+
+    logEndCoordinates(endCoord1Start, endCoord1End, endCoord2Start, endCoord2End, apex);
     
     // Create arcs
     const arc1 = {
