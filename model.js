@@ -56,7 +56,7 @@ export function updateModel() {
 
     // Interpolate surface
     const surface1 = interpolateSurface(arc1, arc2, 100);
-    const surface2 = interpolateSurface(arc2, arc3, 100);
+    //const surface2 = interpolateSurface(arc2, arc3, 100);
 
     // Create surface trace
     const surfaceTrace1 = {
@@ -70,15 +70,7 @@ export function updateModel() {
     };
 
     // Create surface trace
-    const surfaceTrace2 = {
-        x: surface2.x,
-        y: surface2.y,
-        z: surface2.z,
-        type: 'surface',
-        colorscale: [[0, 'cyan'], [1, 'cyan']],
-        opacity: 0.3,
-        showscale: false 
-    };
+    
 
     // Scale axes based on arc end points
     const allX = arc1.x.concat(arc2.x);
@@ -103,7 +95,7 @@ export function updateModel() {
     data.push(arc1);
     data.push(arc2);
     data.push(surfaceTrace1);
-    data.push(surfaceTrace2);
+    //data.push(surfaceTrace2);
 
     // Update arc lengths
     document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
