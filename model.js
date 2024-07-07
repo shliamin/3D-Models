@@ -73,7 +73,7 @@ export function updateModel() {
     const showSurface1 = document.getElementById('surface1').checked;
     const showSurface2 = document.getElementById('surface2').checked;
 
-    // Create surface trace
+    // Shift surfaces to be positive
     const surfaceTrace1 = {
         x: surface1.x.map(x => x + shiftX),
         y: surface1.y.map(y => y + shiftY),
@@ -112,8 +112,8 @@ export function updateModel() {
     let arcLength2 = calculateArcLength(arc2);
 
     // Calculate surface areas only for visible surfaces
-    let surfaceArea1 = showSurface1 ? calculateSurfaceArea(surfaceTrace1) : 0;
-    let surfaceArea2 = showSurface2 ? calculateSurfaceArea(surfaceTrace2) : 0;
+    let surfaceArea1 = showSurface1 ? calculateSurfaceArea(surface1) : 0;
+    let surfaceArea2 = showSurface2 ? calculateSurfaceArea(surface2) : 0;
 
     // Initialize graph data
     let data = [];
