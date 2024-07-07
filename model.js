@@ -10,14 +10,14 @@ export function updateModel() {
     const { lengths: [diagonal1, diagonal2], endCoordinates: [endCoord1Start, endCoord1End, endCoord2Start, endCoord2End] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
-    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
-    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 300);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 300);
     
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
-    const y = linspace(0, depth, 100);
+    const y = linspace(0, depth, 300);
 
     // Validate arc data
     if (!Array.isArray(x_fine1) || !Array.isArray(z_fine1) || !Array.isArray(x_fine2) || !Array.isArray(z_fine2) || !Array.isArray(y)) {
@@ -58,8 +58,8 @@ export function updateModel() {
     };
     
     // Interpolate surface
-    const surface1 = interpolateSurface(arc1, arc2, 100);
-    const surface2 = interpolateSurface(arc2, arc3, 100);
+    const surface1 = interpolateSurface(arc1, arc2, 300);
+    const surface2 = interpolateSurface(arc2, arc3, 300);
 
     // Check the state of the checkboxes
     const showSurface1 = document.getElementById('surface1').checked;
