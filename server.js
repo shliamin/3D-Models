@@ -60,10 +60,6 @@ export async function generateModel() {
     // Interpolate surfaces
     const surface1 = interpolateSurface(arc1, arc2, 300);
     const surface2 = interpolateSurface(arc2, arc3, 300);
-
-    //const intersection1 = findIntersection(arc1, arc3, 100)
-    //const intersection2 = findIntersection(arc2, arc3, 100)
-
     
     const surface3 = interpolateSurface(arc1, arc2, 300, 5, true);
     const surface4 = interpolateSurface(arc2, arc3, 300, 5, true);
@@ -78,6 +74,8 @@ export async function generateModel() {
         surface4,
         enable_relaxation: true // Always enable relaxation
     };
+
+    console.log('Sending payload for 3D Model:', payload);
 
     // Show spinner while fetching
     document.getElementById('spinner').style.display = 'block';
@@ -94,6 +92,8 @@ export async function generateModel() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+
+        console.log('3D Model file successfully sent to server.');
 
         const blob = await response.blob();
         const link = document.createElement('a');
@@ -168,9 +168,6 @@ export async function generatePattern() {
     };
 
     // Interpolate surfaces until intersection
-    //const intersection1 = findIntersection(arc1, arc3, 100)
-    //const intersection2 = findIntersection(arc2, arc3, 100)
-    
     const surface3 = interpolateSurface(arc1, arc2, 300, 5, true);
     const surface4 = interpolateSurface(arc2, arc3, 300, 5, true);
     
@@ -182,6 +179,8 @@ export async function generatePattern() {
         surface4,
         enable_relaxation: true // Always enable relaxation
     };
+
+    console.log('Sending payload for 2D Pattern:', payload);
 
     // Show spinner while fetching
     document.getElementById('spinner').style.display = 'block';
@@ -198,6 +197,8 @@ export async function generatePattern() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+
+        console.log('2D Pattern file successfully sent to server.');
 
         const blob = await response.blob();
         const link = document.createElement('a');
