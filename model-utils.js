@@ -10,7 +10,7 @@ export function calculateArcLength(arc) {
     return length;
 }
 
-export function findIntersection(arc1, arc2, num_points = 100, epsilon = 5) {
+export function findIntersection(arc1, arc2, num_points = 300, epsilon = 3) {
     for (let i = 0; i < num_points; i++) {
         if (Math.abs(arc1.x[i] - arc2.x[i]) < epsilon &&
             Math.abs(arc1.y[i] - arc2.y[i]) < epsilon &&
@@ -26,7 +26,7 @@ export function findIntersection(arc1, arc2, num_points = 100, epsilon = 5) {
 }
 
 
-export function interpolateSurface(arc1, arc2, num_points = 100, epsilon = 5, half = false) {
+export function interpolateSurface(arc1, arc2, num_points = 300, epsilon = 3, half = false) {
     let surface = { x: [], y: [], z: [] };
     let max_points = num_points;
 
@@ -55,7 +55,7 @@ export function interpolateSurface(arc1, arc2, num_points = 100, epsilon = 5, ha
 }
 
 
-export function calculateSurfaceArea(surface, num_points = 100) {
+export function calculateSurfaceArea(surface, num_points = 300) {
     let area = 0;
 
     for (let i = 0; i < num_points - 1; i++) {
