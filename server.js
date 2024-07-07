@@ -7,20 +7,20 @@ export async function generateModel() {
 
     console.log('Current values for 3D Model:', { width, depth, height });
 
-    const numPoints = 300;
+    const numPoints = 100;
 
     // Calculate diagonals and their end coordinates
     const { lengths: [diagonal1, diagonal2], endCoordinates: [endCoord1Start, endCoord1End, endCoord2Start, endCoord2End] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
-    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 300);
-    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 300);
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
     
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
-    const y = linspace(0, depth, 300);
+    const y = linspace(0, depth, 100);
 
     // Assuming apex is the highest point of semiEllipse1
     const apex = { x: x_fine1[0], y: y[0], z: z_fine1[0] };
@@ -58,11 +58,11 @@ export async function generateModel() {
     };
 
     // Interpolate surfaces
-    const surface1 = interpolateSurface(arc1, arc2, 300);
-    const surface2 = interpolateSurface(arc2, arc3, 300);
+    const surface1 = interpolateSurface(arc1, arc2, 100);
+    const surface2 = interpolateSurface(arc2, arc3, 100);
     
-    const surface3 = interpolateSurface(arc1, arc2, 300, 5, true);
-    const surface4 = interpolateSurface(arc2, arc3, 300, 5, true);
+    const surface3 = interpolateSurface(arc1, arc2, 100, 5, true);
+    const surface4 = interpolateSurface(arc2, arc3, 100, 5, true);
 
     const payload = {
         width,
@@ -117,20 +117,20 @@ export async function generatePattern() {
 
     console.log('Current values for 2D Pattern:', { width, depth, height });
 
-    const numPoints = 300;
+    const numPoints = 100;
 
     // Generate half arcs using the new function
     const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
-    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 300);
-    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 300);
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
     
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
-    const y = linspace(0, depth, 300);
+    const y = linspace(0, depth, 100);
 
     // Assuming apex is the highest point of semiEllipse1
     const apex = { x: x_fine1[0], y: y[0], z: z_fine1[0] };
@@ -168,8 +168,8 @@ export async function generatePattern() {
     };
 
     // Interpolate surfaces until intersection
-    const surface3 = interpolateSurface(arc1, arc2, 300, 5, true);
-    const surface4 = interpolateSurface(arc2, arc3, 300, 5, true);
+    const surface3 = interpolateSurface(arc1, arc2, 100, 5, true);
+    const surface4 = interpolateSurface(arc2, arc3, 100, 5, true);
     
     const payload = {
         width,
