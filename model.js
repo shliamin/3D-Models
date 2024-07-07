@@ -73,6 +73,10 @@ export function updateModel() {
     const showSurface1 = document.getElementById('surface1').checked;
     const showSurface2 = document.getElementById('surface2').checked;
 
+    // Validate surface data
+    console.log("Surface 1 data:", surface1);
+    console.log("Surface 2 data:", surface2);
+
     // Create surface trace with shifted coordinates
     const surfaceTrace1 = {
         x: surface1.x,
