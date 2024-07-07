@@ -10,14 +10,14 @@ export function updateModel() {
     const { lengths: [diagonal1, diagonal2], endCoordinates: [endCoord1Start, endCoord1End, endCoord2Start, endCoord2End] } = calculateDiagonals(width, depth);
 
     // Generate semi-ellipses for both diagonals
-    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100); // Reduced to 100 points
-    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100); // Reduced to 100 points
-
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 300);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 300);
+    
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
-    const y = linspace(0, depth, 100); // Reduced to 100 points
+    const y = linspace(0, depth, 300);
 
     // Validate arc data
     if (!Array.isArray(x_fine1) || !Array.isArray(z_fine1) || !Array.isArray(x_fine2) || !Array.isArray(z_fine2) || !Array.isArray(y)) {
@@ -25,36 +25,28 @@ export function updateModel() {
         return;
     }
 
-    // Calculate min values for shifting coordinates
-    const minX = Math.min(...x_fine1, ...x_fine2.map(x => -x));
-    const minY = Math.min(...y);
-    const minZ = Math.min(...z_fine1, ...z_fine2);
-
-    // Shift all coordinates to be positive
-    const shiftX = -minX;
-    const shiftY = -minY;
-    const shiftZ = -minZ;
-
+    // Create arcs
     const arc1 = {
-        x: x_fine1.map(x => x + shiftX),
-        y: y.map(y => y + shiftY),
-        z: z_fine1.map(z => z + shiftZ),
+        x: x_fine1,
+        y: y,
+        z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
         name: 'Tent Frame 1'
     };
-
+    
     const arc2 = {
-        x: x_fine2.map(x => -x + shiftX),
-        y: y.map(y => y + shiftY),
-        z: z_fine2.map(z => z + shiftZ),
+        x: x_fine1.map(x => -x),
+        y: y,
+        z: z_fine1,
         type: 'scatter3d',
         mode: 'lines',
         line: { color: 'blue', width: 5 },
         name: 'Tent Frame 2'
     };
-
+    
+    // Create arc3 with reversed points from arc1
     const arc3 = {
         x: [...arc1.x].reverse(),
         y: [...arc1.y].reverse(),
@@ -64,20 +56,16 @@ export function updateModel() {
         line: { color: 'blue', width: 5 },
         visible: false
     };
-
-    // Interpolate surface using shifted coordinates
-    const surface1 = interpolateSurface(arc1, arc2, 100); // Reduced to 100 points
-    const surface2 = interpolateSurface(arc2, arc3, 100); // Reduced to 100 points
+    
+    // Interpolate surface
+    const surface1 = interpolateSurface(arc1, arc2, 300);
+    const surface2 = interpolateSurface(arc2, arc3, 300);
 
     // Check the state of the checkboxes
     const showSurface1 = document.getElementById('surface1').checked;
     const showSurface2 = document.getElementById('surface2').checked;
 
-    // Validate surface data
-    console.log("Surface 1 data:", surface1);
-    console.log("Surface 2 data:", surface2);
-
-    // Create surface trace with shifted coordinates
+    // Create surface trace
     const surfaceTrace1 = {
         x: surface1.x,
         y: surface1.y,
@@ -90,6 +78,7 @@ export function updateModel() {
         visible: showSurface1
     };
 
+    // Create surface trace
     const surfaceTrace2 = {
         x: surface2.x,
         y: surface2.y,
@@ -106,9 +95,12 @@ export function updateModel() {
     const allX = arc1.x.concat(arc2.x);
     const allY = arc1.y.concat(arc2.y);
     const allZ = arc1.z.concat(arc2.z);
-
+    
+    const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
+    const minY = Math.min(...allY);
     const maxY = Math.max(...allY);
+    const minZ = Math.min(...allZ);
     const maxZ = Math.max(...allZ);
 
     // Calculate arc lengths
@@ -130,25 +122,25 @@ export function updateModel() {
     if (showSurface2) data.push(surfaceTrace2);
 
     // Update arc lengths and surface areas
-    document.getElementById('arcLength').innerText = `Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m`;
-    document.getElementById('surfaceArea').innerText = `Surface areas: ${(surfaceArea1 + surfaceArea2).toFixed(2)} m²`;
+    document.getElementById('arcLength').innerText = Arcs length: ${(arcLength1 + arcLength2).toFixed(2)} m;
+    document.getElementById('surfaceArea').innerText = Surface areas: ${(surfaceArea1 + surfaceArea2).toFixed(2)} m²;
 
     let layout = {
         scene: {
             xaxis: {
                 title: 'Width',
                 dtick: 0.1, // Grid step on X axis 10 cm
-                range: [0, maxX]
+                range: [minX, maxX]
             },
             yaxis: {
                 title: 'Depth',
                 dtick: 0.1, // Grid step on Y axis 10 cm
-                range: [0, maxY]
+                range: [minY, maxY]
             },
             zaxis: {
                 title: 'Height',
                 dtick: 0.1, // Grid step on Z axis 10 cm
-                range: [0, maxZ]
+                range: [minZ, maxZ]
             },
             aspectratio: {
                 x: width / Math.max(width, depth, height),
@@ -157,14 +149,14 @@ export function updateModel() {
             },
             camera: {
                 eye: {
-                    x: 1.5,
-                    y: 0.5,
-                    z: 0.75
+                    x: 1.5, 
+                    y: 0.5, 
+                    z: 0.75 
                 },
                 center: {
-                    x: 0,
+                    x: 0, 
                     y: 0,
-                    z: 0
+                    z: 0 
                 }
             }
         },
@@ -206,7 +198,7 @@ export function updateModel() {
             t: 0
         }
     };
-
+    
     // Update the graph with annotations and legend
     Plotly.newPlot('tentModel', data, layout);
 }
