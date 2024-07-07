@@ -103,11 +103,8 @@ export function updateModel() {
     const allY = arc1.y.concat(arc2.y);
     const allZ = arc1.z.concat(arc2.z);
 
-    const minX = Math.min(...allX);
     const maxX = Math.max(...allX);
-    const minY = Math.min(...allY);
     const maxY = Math.max(...allY);
-    const minZ = Math.min(...allZ);
     const maxZ = Math.max(...allZ);
 
     // Calculate arc lengths
@@ -137,17 +134,17 @@ export function updateModel() {
             xaxis: {
                 title: 'Width',
                 dtick: 0.1, // Grid step on X axis 10 cm
-                range: [minX, maxX]
+                range: [0, maxX]
             },
             yaxis: {
                 title: 'Depth',
                 dtick: 0.1, // Grid step on Y axis 10 cm
-                range: [minY, maxY]
+                range: [0, maxY]
             },
             zaxis: {
                 title: 'Height',
                 dtick: 0.1, // Grid step on Z axis 10 cm
-                range: [minZ, maxZ]
+                range: [0, maxZ]
             },
             aspectratio: {
                 x: width / Math.max(width, depth, height),
