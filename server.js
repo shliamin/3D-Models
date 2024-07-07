@@ -117,7 +117,7 @@ export async function generatePattern() {
 
     console.log('Current values for 2D Pattern:', { width, depth, height });
 
-    const numPoints = 100;
+    const numPoints = 300;
 
     // Generate half arcs using the new function
     const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
