@@ -92,6 +92,6 @@ function removeBackgroundBlur() {
 }
 
 function redirectToPaypalMe(amount) {
-    let paypalMeLink = `/pay/${amount}`;
+    let paypalMeLink = `https://interactive-tent-0697ab02fbe0.herokuapp.com/pay/${amount}`;
     window.location.href = paypalMeLink;
 }
