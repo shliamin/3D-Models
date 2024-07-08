@@ -1,5 +1,32 @@
 import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, calculateDiagonals, linspace, findIntersection } from './model-utils.js';
 
+let selectedAmount = 0;
+
+function showPromoCodeModal(amount) {
+    selectedAmount = amount;
+    const modal = document.getElementById("promoCodeModal");
+    modal.style.display = "block";
+}
+
+function closePromoCodeModal() {
+    const modal = document.getElementById("promoCodeModal");
+    modal.style.display = "none";
+}
+
+function checkPromoCode() {
+    const promoCode = document.getElementById("promoCodeInput").value;
+    if (promoCode === "YOUR_PROMO_CODE") {
+        // Hide modal
+        closePromoCodeModal();
+
+        // Handle the payment bypass
+        handlePaymentWithoutPayPal(selectedAmount);
+    } else {
+        // Redirect to PayPal if promo code is invalid
+        redirectToPaypalMe(selectedAmount);
+    }
+}
+
 function handlePaymentWithoutPayPal(amount) {
     if (amount == 3) {
         generateModel(); 
@@ -227,3 +254,8 @@ export async function generatePattern() {
         document.getElementById('spinner').style.display = 'none';
     }
 }
+
+// Expose the functions to global scope
+window.showPromoCodeModal = showPromoCodeModal;
+window.checkPromoCode = checkPromoCode;
+window.closePromoCodeModal = closePromoCodeModal;
