@@ -1,5 +1,18 @@
 import { generateSemiEllipse, generateHalfSemiEllipse, interpolateSurface, calculateDiagonals, linspace, findIntersection } from './model-utils.js';
 
+function handlePaymentWithoutPayPal(amount) {
+    if (amount == 3) {
+        generateModel(); 
+    } else if (amount == 10) {
+        generatePattern(); 
+    }
+}
+
+function redirectToPaypalMe(amount) {
+    let paypalMeLink = `https://www.paypal.me/efimsh/${amount}`;
+    window.location.href = paypalMeLink;
+}
+
 export async function generateModel() {
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
