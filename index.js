@@ -1,7 +1,7 @@
 import { updateModel } from './model.js';
 
-document.getElementById('generateModelButton').onclick = () => redirectToPaypalMe(3);
-document.getElementById('generatePatternButton').onclick = () => redirectToPaypalMe(10);
+document.getElementById('generateModelButton').onclick = () => savePayloadAndRedirect(3);
+document.getElementById('generatePatternButton').onclick = () => savePayloadAndRedirect(10);
 document.getElementById('width').onchange = validateAndUpdateModel;
 document.getElementById('depth').onchange = validateAndUpdateModel;
 document.getElementById('height').onchange = validateAndUpdateModel;
@@ -91,7 +91,52 @@ function removeBackgroundBlur() {
     }
 }
 
-function redirectToPaypalMe(amount) {
-    let paypalMeLink = `https://interactive-tent-0697ab02fbe0.herokuapp.com/pay/${amount}`;
-    window.location.href = paypalMeLink;
+function savePayloadAndRedirect(amount) {
+    const width = parseFloat(document.getElementById('width').value);
+    const depth = parseFloat(document.getElementById('depth').value);
+    const height = parseFloat(document.getElementById('height').value);
+
+    const numPoints = 100;
+
+    const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
+    const x_fine1 = semiEllipse1.x;
+    const z_fine1 = semiEllipse1.y;
+    const x_fine2 = semiEllipse2.x;
+    const z_fine2 = semiEllipse2.y;
+    const y = linspace(0, depth, 100);
+
+    const surface1 = interpolateSurface(arc1, arc2, 100);
+    const surface2 = interpolateSurface(arc2, arc3, 100);
+    const surface3 = interpolateSurface(arc1, arc2, 100, 5, true);
+    const surface4 = interpolateSurface(arc2, arc3, 100, 5, true);
+
+    const payload = {
+        width,
+        depth,
+        height,
+        surface1,
+        surface2,
+        surface3,
+        surface4,
+        enable_relaxation: true
+    };
+
+    fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/save_payload', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ payload, amount })
+    }).then(response => {
+        if (response.ok) {
+            let paypalMeLink = `https://www.paypal.me/efimsh/${amount}`;
+            window.location.href = paypalMeLink;
+        } else {
+            console.error('Failed to save payload.');
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+    });
 }
