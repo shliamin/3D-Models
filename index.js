@@ -92,3 +92,11 @@ function removeBackgroundBlur() {
         document.body.removeChild(blurDiv);
     }
 }
+
+
+function redirectToPaypalMe(amount) {
+    let paypalMeLink = `https://www.paypal.me/efimsh/${amount}`;
+    window.location.href = paypalMeLink;
+}
+
+
