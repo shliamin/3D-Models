@@ -176,7 +176,7 @@ export function updateModel() {
         annotations: [
             {
                 showarrow: false,
-                text: "<b>👈 The Perfect Tent Shape </b>
+                text: "<b>👈 The Perfect Tent Shape </b>\n
                     <b>👈 The Perfect Tent Shape </b>",
                 x: 1, // Position text to the right of the plot
                 y: 0.5,
