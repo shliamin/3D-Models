@@ -304,10 +304,12 @@ body.blurred {
     cursor: pointer;
 }
 
+/* Add styles for the modal */
 .modal {
     display: none;
     position: fixed;
     z-index: 1;
+    padding-top: 100px;
     left: 0;
     top: 0;
     width: 100%;
@@ -315,12 +317,11 @@ body.blurred {
     overflow: auto;
     background-color: rgb(0,0,0);
     background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 5% auto;
+    margin: auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
