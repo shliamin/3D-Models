@@ -148,14 +148,24 @@ function savePayloadAndRedirect(amount) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ payload, amount })
-    }).then(response => {
-        if (response.ok) {
-            let paypalMeLink = `https://www.paypal.me/efimsh/${amount}`;
-            window.location.href = paypalMeLink;
-        } else {
-            console.error('Failed to save payload.');
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    }).catch(error => {
-        console.error('Error:', error);
+        return response.json();
+    })
+    .then(data => {
+        if (data.status === 'success') {
+            redirectToPaypalMe(amount);
+        }
+    })
+    .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
     });
+}
+
+function redirectToPaypalMe(amount) {
+    let paypalMeLink = `https://www.paypal.me/efimsh/${amount}`;
+    window.location.href = paypalMeLink;
 }
