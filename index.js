@@ -1,4 +1,5 @@
 import { updateModel } from './model.js';
+import { generateSemiEllipse, interpolateSurface, calculateDiagonals, linspace } from './model-utils.js';
 
 document.getElementById('generateModelButton').onclick = () => savePayloadAndRedirect(3);
 document.getElementById('generatePatternButton').onclick = () => savePayloadAndRedirect(10);
@@ -99,18 +100,36 @@ function savePayloadAndRedirect(amount) {
     const numPoints = 100;
 
     const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
-    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, 100);
-    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, 100);
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, numPoints);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, numPoints);
     const x_fine1 = semiEllipse1.x;
     const z_fine1 = semiEllipse1.y;
     const x_fine2 = semiEllipse2.x;
     const z_fine2 = semiEllipse2.y;
-    const y = linspace(0, depth, 100);
+    const y = linspace(0, depth, numPoints);
 
-    const surface1 = interpolateSurface(arc1, arc2, 100);
-    const surface2 = interpolateSurface(arc2, arc3, 100);
-    const surface3 = interpolateSurface(arc1, arc2, 100, 5, true);
-    const surface4 = interpolateSurface(arc2, arc3, 100, 5, true);
+    const arc1 = {
+        x: x_fine1,
+        y: y,
+        z: z_fine1
+    };
+
+    const arc2 = {
+        x: x_fine1.map(x => -x),
+        y: y,
+        z: z_fine1
+    };
+
+    const arc3 = {
+        x: [...arc1.x].reverse(),
+        y: [...arc1.y].reverse(),
+        z: [...arc1.z].reverse()
+    };
+
+    const surface1 = interpolateSurface(arc1, arc2, numPoints);
+    const surface2 = interpolateSurface(arc2, arc3, numPoints);
+    const surface3 = interpolateSurface(arc1, arc2, numPoints, 5, true);
+    const surface4 = interpolateSurface(arc2, arc3, numPoints, 5, true);
 
     const payload = {
         width,
