@@ -176,7 +176,7 @@ export function updateModel() {
         annotations: [
             {
                 showarrow: false,
-                text: "<b>The Perfect Tent Shape </b><br><i>Real-Life Tent Testing</i><br><i>Code Reliability</i><br><i>Delaunay Triangulation</i><br><i>Fast & Advanced Geometry Processing</i><br><i>Accurate Surface Reduction</i>",
+                text: "<b>The Perfect Tent Shape </b><br><i>Real-Life Tent Testing</i><br><i>Code Reliability</i><br><i>Delaunay Triangulation</i><br><i>Advanced Geometry Processing</i><br><i>Accurate Surface Reduction</i><br><i>Faster Computations</i>",
                 x: 1, // Position text to the right of the plot
                 y: 0.5,
                 font: {
