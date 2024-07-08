@@ -104,9 +104,13 @@
             <p>The entered value is outside the permissible limits. Please enter a value between 10% and 200% of the standard value.</p>
         </div>
     </div>
-    <div class="input-group">
-        <label for="promoCode">Promo Code:</label>
-        <input type="text" id="promoCode" placeholder="Enter promo code">
+   <div id="promoCodeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePromoCodeModal()">&times;</span>
+            <h2>Enter Promo Code</h2>
+            <input type="text" id="promoCodeInput" placeholder="Enter promo code">
+            <button onclick="checkPromoCode()">Submit</button>
+        </div>
     </div>
     <button id="applyPromoCodeButton" class="styled-button" onclick="applyPromoCode()">Apply Promo Code</button>
     <script type="module" src="index.js"></script>
