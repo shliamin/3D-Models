@@ -1,9 +1,7 @@
 import { updateModel } from './model.js';
-import { generateModel } from './server.js';
-import { generatePattern } from './server.js';
 
-document.getElementById('generateModelButton').onclick = generateModel;
-document.getElementById('generatePatternButton').onclick = generatePattern;
+document.getElementById('generateModelButton').onclick = () => redirectToPaypalMe(3);
+document.getElementById('generatePatternButton').onclick = () => redirectToPaypalMe(10);
 document.getElementById('width').onchange = validateAndUpdateModel;
 document.getElementById('depth').onchange = validateAndUpdateModel;
 document.getElementById('height').onchange = validateAndUpdateModel;
@@ -93,10 +91,7 @@ function removeBackgroundBlur() {
     }
 }
 
-
 function redirectToPaypalMe(amount) {
-    let paypalMeLink = `https://www.paypal.me/efimsh/${amount}`;
+    let paypalMeLink = `/pay/${amount}`;
     window.location.href = paypalMeLink;
 }
-
-
