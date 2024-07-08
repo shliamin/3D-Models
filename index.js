@@ -169,3 +169,34 @@ function redirectToPaypalMe(amount) {
     let paypalMeLink = `https://www.paypal.me/efimsh/${amount}`;
     window.location.href = paypalMeLink;
 }
+
+async function applyPromoCode() {
+    const promoCode = document.getElementById('promoCode').value;
+
+    try {
+        const response = await fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/apply_promo_code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ promo_code: promoCode })
+        });
+
+        if (!response.ok) {
+            throw new Error('Invalid promo code');
+        }
+
+        const data = await response.json();
+        if (data.valid) {
+            alert('Promo code applied successfully! You can now proceed to download.');
+            // Redirect to appropriate download link or perform any other action
+            window.location.href = data.redirect_url;
+        } else {
+            alert('Invalid promo code');
+        }
+    } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+        alert('Invalid promo code');
+    }
+}
+
