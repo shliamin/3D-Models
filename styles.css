@@ -149,19 +149,18 @@ button.styled-button:active {
     align-items: center;
     margin-top: 20px;
     width: 100%;
-    max-width: 500px; /* Adjust max-width as necessary */
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .promo-code-container input[type="text"] {
-    width: 70%;
-    padding: 8px;
-    font-size: 14px;
+    padding: 10px;
+    font-size: 16px;
     border: 2px solid #ccc;
     border-radius: 5px;
     margin-right: 10px;
     transition: border-color 0.3s;
+    flex: 1 1 60%; /* 60% width */
+    height: 48px; /* Ensure the input field has the same height as the button */
+    box-sizing: border-box;
 }
 
 .promo-code-container input[type="text"]:focus {
@@ -170,24 +169,17 @@ button.styled-button:active {
 }
 
 .promo-code-container button {
-    width: 30%;
-    padding: 8px 10px;
-    font-size: 14px;
+    padding: 10px 20px;
+    font-size: 16px;
     background-color: black;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
-}
-
-.promo-code-container button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-.promo-code-container button:active {
-    background-color: #003d7a;
+    flex: 1 1 40%; /* 40% width */
+    height: 48px; /* Ensure the button has the same height as the input field */
+    box-sizing: border-box;
 }
 
 
