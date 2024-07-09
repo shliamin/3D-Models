@@ -31,7 +31,7 @@ function validateAndUpdateModel(event) {
     const value = parseInt(target.value);
     let minValue, maxValue;
 
-    switch(target.id) {
+    switch (target.id) {
         case 'width':
             minValue = standardValues.width * 0.1;
             maxValue = standardValues.width * 2;
@@ -62,13 +62,13 @@ function showPopup() {
     document.body.classList.add('blurred');
 
     const closeButton = document.getElementById('closePopup');
-    closeButton.onclick = function() {
+    closeButton.onclick = function () {
         popup.style.display = 'none';
         document.body.classList.remove('blurred');
         removeBackgroundBlur();
     };
 
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == popup) {
             popup.style.display = 'none';
             document.body.classList.remove('blurred');
@@ -160,23 +160,23 @@ function savePayloadAndRedirect(amount) {
         },
         body: JSON.stringify({ payload, amount })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.status === 'success') {
-            redirectToPaypalMe(amount);
-        }
-    })
-    .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
-    })
-    .finally(() => {
-        hideSpinner();
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                redirectToPaypalMe(amount);
+            }
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        })
+        .finally(() => {
+            hideSpinner();
+        });
 }
 
 function redirectToPaypalMe(amount) {
@@ -188,7 +188,54 @@ async function applyPromoCode() {
     showSpinner();
 
     const promoCode = document.getElementById('promoCode').value;
-    const amount = document.getElementById('generateModelButton').onclick === generateModel ? 3 : 10;
+    const width = parseFloat(document.getElementById('width').value);
+    const depth = parseFloat(document.getElementById('depth').value);
+    const height = parseFloat(document.getElementById('height').value);
+
+    const numPoints = 100;
+
+    const { lengths: [diagonal1, diagonal2] } = calculateDiagonals(width, depth);
+    const semiEllipse1 = generateSemiEllipse(diagonal1 / 2, height, numPoints);
+    const semiEllipse2 = generateSemiEllipse(diagonal2 / 2, height, numPoints);
+    const x_fine1 = semiEllipse1.x;
+    const z_fine1 = semiEllipse1.y;
+    const x_fine2 = semiEllipse2.x;
+    const z_fine2 = semiEllipse2.y;
+    const y = linspace(0, depth, numPoints);
+
+    const arc1 = {
+        x: x_fine1,
+        y: y,
+        z: z_fine1
+    };
+
+    const arc2 = {
+        x: x_fine1.map(x => -x),
+        y: y,
+        z: z_fine1
+    };
+
+    const arc3 = {
+        x: [...arc1.x].reverse(),
+        y: [...arc1.y].reverse(),
+        z: [...arc1.z].reverse()
+    };
+
+    const surface1 = interpolateSurface(arc1, arc2, numPoints);
+    const surface2 = interpolateSurface(arc2, arc3, numPoints);
+    const surface3 = interpolateSurface(arc1, arc2, numPoints, 5, true);
+    const surface4 = interpolateSurface(arc2, arc3, numPoints, 5, true);
+
+    const payload = {
+        width,
+        depth,
+        height,
+        surface1,
+        surface2,
+        surface3,
+        surface4,
+        enable_relaxation: true
+    };
 
     try {
         const response = await fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/check_promo_code', {
@@ -196,7 +243,7 @@ async function applyPromoCode() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ promo_code: promoCode })
+            body: JSON.stringify({ promo_code: promoCode, payload })
         });
 
         if (!response.ok) {
@@ -204,10 +251,10 @@ async function applyPromoCode() {
         }
 
         const data = await response.json();
-        if (data.status === 'success' && data.amount === amount) {
-            if (amount === 3) {
+        if (data.status === 'success') {
+            if (data.amount === 3) {
                 generateModel();
-            } else if (amount === 10) {
+            } else if (data.amount === 10) {
                 generatePattern();
             }
         } else {
