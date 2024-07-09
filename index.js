@@ -8,6 +8,7 @@ document.getElementById('depth').onchange = validateAndUpdateModel;
 document.getElementById('height').onchange = validateAndUpdateModel;
 document.getElementById('surface1').onchange = updateModel; // Surface 1
 document.getElementById('surface2').onchange = updateModel; // Surface 2
+document.getElementById('applyPromoCodeButton').onclick = applyPromoCode;
 
 window.onload = () => {
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
@@ -172,9 +173,10 @@ function redirectToPaypalMe(amount) {
 
 async function applyPromoCode() {
     const promoCode = document.getElementById('promoCode').value;
+    const amount = document.getElementById('generateModelButton').onclick === generateModel ? 3 : 10;
 
     try {
-        const response = await fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/apply_promo_code', {
+        const response = await fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/check_promo_code', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -187,10 +189,12 @@ async function applyPromoCode() {
         }
 
         const data = await response.json();
-        if (data.valid) {
-            alert('Promo code applied successfully! You can now proceed to download.');
-            // Redirect to appropriate download link or perform any other action
-            window.location.href = data.redirect_url;
+        if (data.status === 'success' && data.amount === amount) {
+            if (amount === 3) {
+                generateModel();
+            } else if (amount === 10) {
+                generatePattern();
+            }
         } else {
             alert('Invalid promo code');
         }
