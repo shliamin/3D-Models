@@ -101,35 +101,44 @@ function hideSpinner() {
     document.getElementById('spinner').style.display = 'none';
 }
 
-function savePayloadAndRedirect(amount) {
+async function savePayloadAndRedirect(amount) {
     showSpinner();
 
     const payload = getPayload();
-    
-    fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/save_payload', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ payload, amount })
-    })
-    .then(response => {
+
+    try {
+        const response = await fetch('https://interactive-tent-0697ab02fbe0.herokuapp.com/save_payload', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ payload, amount })
+        });
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return response.json();
-    })
-    .then(data => {
-        if (data.status === 'success') {
-            redirectToPaypalMe(amount);
+
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            const data = await response.json();
+            if (data.status === 'success') {
+                redirectToPaypalMe(amount);
+            }
+        } else if (contentType && contentType.includes('application/zip')) {
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'models.zip';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
-    })
-    .finally(() => {
+    } finally {
         hideSpinner();
-    });
+    }
 }
 
 function getPayload() {
@@ -207,11 +216,22 @@ async function applyPromoCode() {
             throw new Error('Invalid promo code');
         }
 
-        const data = await response.json();
-        if (data.status === 'success') {
-            window.location.href = data.redirect_url;
-        } else {
-            alert('Invalid promo code');
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            const data = await response.json();
+            if (data.status === 'success') {
+                window.location.href = data.redirect_url;
+            } else {
+                alert('Invalid promo code');
+            }
+        } else if (contentType && contentType.includes('application/zip')) {
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'patterns.zip';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
