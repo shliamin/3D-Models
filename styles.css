@@ -143,20 +143,45 @@ button.styled-button:active {
     transform: translateY(0);
 }
 
-.promo-styled-button{
-    width: 100%;
-    max-width: 200px;
-    background-color: transparent;
-    color: #333;
-    border: 1px solid #ccc;
+.promo-code-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.promo-code-container input[type="text"] {
     padding: 10px;
-    text-align: center;
-    text-decoration: none;
     font-size: 16px;
-    margin: 10px 0;
-    cursor: pointer;
+    border: 2px solid #ccc;
     border-radius: 5px;
+    margin-right: 10px;
+    transition: border-color 0.3s;
+}
+
+.promo-code-container input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.promo-code-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
+}
+
+.promo-code-container button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.promo-code-container button:active {
+    background-color: #003d7a;
 }
 
 #generatePatternButton {
