@@ -143,6 +143,22 @@ button.styled-button:active {
     transform: translateY(0);
 }
 
+.promo-styled-button{
+    width: 100%;
+    max-width: 200px;
+    background-color: transparent;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
 #generatePatternButton {
     background: linear-gradient(45deg, #e0e0e0, #b3b3b3); 
     font-weight: bold;
