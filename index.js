@@ -93,7 +93,17 @@ function removeBackgroundBlur() {
     }
 }
 
+function showSpinner() {
+    document.getElementById('spinner').style.display = 'block';
+}
+
+function hideSpinner() {
+    document.getElementById('spinner').style.display = 'none';
+}
+
 function savePayloadAndRedirect(amount) {
+    showSpinner();
+
     const width = parseFloat(document.getElementById('width').value);
     const depth = parseFloat(document.getElementById('depth').value);
     const height = parseFloat(document.getElementById('height').value);
@@ -163,6 +173,9 @@ function savePayloadAndRedirect(amount) {
     })
     .catch(error => {
         console.error('There has been a problem with your fetch operation:', error);
+    })
+    .finally(() => {
+        hideSpinner();
     });
 }
 
@@ -172,6 +185,8 @@ function redirectToPaypalMe(amount) {
 }
 
 async function applyPromoCode() {
+    showSpinner();
+
     const promoCode = document.getElementById('promoCode').value;
     const amount = document.getElementById('generateModelButton').onclick === generateModel ? 3 : 10;
 
@@ -201,5 +216,7 @@ async function applyPromoCode() {
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
         alert('Invalid promo code');
+    } finally {
+        hideSpinner();
     }
 }
