@@ -57,7 +57,9 @@
                     </div>
                 </div>
             </div>
-            <div class="buttons">
+             <div class="buttons">
+                <input type="text" id="promoCode" placeholder="Enter promo code">
+                <button id="checkPromoCodeButton" class="styled-button" onclick="checkPromoCode()">Check Promo Code</button>
                 <button id="generateModelButton" class="styled-button" onclick="redirectToPaypalMe(3)">Generate 3D Models<br> $3</button>
                 <button id="generatePatternButton" class="styled-button" onclick="redirectToPaypalMe(10)">Generate 2D Patterns<br> $10</button>
             </div>
@@ -102,14 +104,6 @@
         <div class="popup-content">
             <span class="close-button" id="closePopup">&times;</span>
             <p>The entered value is outside the permissible limits. Please enter a value between 10% and 200% of the standard value.</p>
-        </div>
-    </div>
-   <div id="promoCodeModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closePromoCodeModal()">&times;</span>
-            <h2>Enter Promo Code</h2>
-            <input type="text" id="promoCodeInput" placeholder="Enter promo code">
-            <button onclick="checkPromoCode()">Submit</button>
         </div>
     </div>
     <script type="module" src="index.js"></script>
