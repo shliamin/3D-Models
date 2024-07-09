@@ -148,11 +148,16 @@ button.styled-button:active {
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+    width: 100%;
+    max-width: 500px; /* Adjust max-width as necessary */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .promo-code-container input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
+    width: 70%;
+    padding: 8px;
+    font-size: 14px;
     border: 2px solid #ccc;
     border-radius: 5px;
     margin-right: 10px;
@@ -165,9 +170,10 @@ button.styled-button:active {
 }
 
 .promo-code-container button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
+    width: 30%;
+    padding: 8px 10px;
+    font-size: 14px;
+    background-color: black;
     color: white;
     border: none;
     border-radius: 5px;
@@ -183,6 +189,7 @@ button.styled-button:active {
 .promo-code-container button:active {
     background-color: #003d7a;
 }
+
 
 #generatePatternButton {
     background: linear-gradient(45deg, #e0e0e0, #b3b3b3); 
