@@ -252,11 +252,9 @@ async function applyPromoCode() {
 
         const data = await response.json();
         if (data.status === 'success') {
-            if (data.amount === 3) {
-                generateModel();
-            } else if (data.amount === 10) {
-                generatePattern();
-            }
+            // Здесь клиентская часть просто получает подтверждение успешного промокода.
+            // Основная обработка, в том числе редирект, должна происходить на серверной части.
+            window.location.href = data.redirect_url;
         } else {
             alert('Invalid promo code');
         }
